@@ -1,0 +1,175 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><img src="./img/sifco.PNG" alt=""></a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="./inicio.html">Inicio</a>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Mantenimiento
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" >Clientes</a></li>
+                        <li><a class="dropdown-item" href="#" >Fondos</a></li>
+                        <li><a class="dropdown-item" href="#" >Usuarios</a></li>
+                        <li><a class="dropdown-item disabled" href="#" >Productos</a></li>
+                        <!--li><hr class="dropdown-divider"></li-->
+
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Gestión Prestamos
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li><a class="dropdown-item" href="#" disabled>Registro Prestamos</a></li>
+                        <li><a class="dropdown-item" href="#" disabled>Registro Abonos</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Gestion Fondos
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li class="nav-item dropend">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Carga Diaria
+                            </a>
+                            <ul class="dropdown-menu">        
+                                <li><a id="mnLiq_aperCarga" class="dropdown-item" href="#" disabled>Apertura Inventario</a></li>
+                                <li><a id="mnLiq_cargaDia" class="dropdown-item" href="#" disabled>Genera Recargas</a></li>
+        
+                            </ul>
+                        </li>
+                       
+                        <li><a id="mnLiq_depositos" class="dropdown-item" href="#" disabled>Depositos / Tránsferencias</a></li>
+                        <li><a id="mnLiq_cierreDia" class="dropdown-item" href="#" disabled>Estado Liquidación</a></li>
+                        <li><a id="mnLiq_ajustes" class="dropdown-item" href="#" disabled>Ajustes a Liquidación</a></li>
+
+                       
+
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Inventarios
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li><a id="mnInv_entradas" class="dropdown-item" href="#">Compras / Ingresos</a></li>
+                        <li><a id="mnInv_salidas" class="dropdown-item" href="#">Requisiciones / Salidas</a></li>
+                        <li><a id="mnInv_traslados" class="dropdown-item" href="#">Traslados entre Bodegas</a></li>
+                        <li><a id="mnInv_ajustes" class="dropdown-item" href="#">Ajustes de Inventario</a></li>
+
+
+
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Gestión Crédito
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li><a id="mCXC" class="dropdown-item" href="./actualizaCredito.html">Actualiza Créditos</a></li>
+                        <li><a id="mCXC_RegFac" class="dropdown-item" href="#">Registro facturas</a></li>
+                        <li><a id="mCXC_RegAbo" class="dropdown-item" href="#">Registro Abonos</a></li>
+
+
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Facturación Electrónica
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li><a id="mnFE_aceptaFE" class="dropdown-item" href="#">Aceptación/Rechazo Documentos</a></li>
+                        <li><a id="mnFE_reenviaFE" class="dropdown-item" href="#">Reenvío facturas rechazadas</a></li>
+                        <li><a id="mnFE_emiteNC" class="dropdown-item" href="#">Genera Nota Crédito</a></li>
+                        <li><a id="mnFE_emiteND" class="dropdown-item" href="#">Genera Nota Débito</a></li>
+                        <li><a id="mnFE_emiteFC" class="dropdown-item" href="#">Genera Factura Compras</a></li>
+
+
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+
+                    <a id="nomUsuDrop" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown">Usuario
+
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li id="mnUsuario" class="dropdown-header">
+                            <h6>Nombre Usuario</h6>
+                            <span>Titulo</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="./cambio-pin.html">
+                                <i class="bi bi-person"></i>
+                                <span>Cambio PIN</span>
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a class="dropdown-item" href="./configuracion.html">
+                                <i class="bi bi-gear"></i>
+                                <span>Configuración</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-question-circle"></i>
+                                <span>Ayuda</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="javascript:cerrarSession();">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Cerrar Sesión</span>
+                            </a>
+                        </li>
+
+                    </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
