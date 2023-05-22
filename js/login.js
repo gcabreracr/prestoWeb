@@ -72,7 +72,7 @@ $(function () {
 
     function checkUser() {
         var req = [];
-        req.w = 'apiSeccab';
+        req.w = 'apiPresto';
         req.r = 'login_usuario';
         req.id_usuario = $('#idUsuario').val();
         //req.pin_pass = $('#pinUsuario').val();
