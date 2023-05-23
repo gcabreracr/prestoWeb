@@ -5,7 +5,7 @@ $(function () {
     $('#codCliente').val('');
 
 
-    if(localStorage.getItem("COD_CLIENTE")){
+    if (localStorage.getItem("COD_CLIENTE")) {
 
         $('#codCliente').val(localStorage.getItem("COD_CLIENTE"));
 
@@ -13,7 +13,7 @@ $(function () {
     }
 
 
-  
+
     $('#btnIngresar').on('click', function (e) {
         e.preventDefault();
         loginUsuario();
@@ -75,7 +75,6 @@ $(function () {
         req.w = 'apiPresto';
         req.r = 'login_usuario';
         req.id_usuario = $('#idUsuario').val();
-        //req.pin_pass = $('#pinUsuario').val();
 
         api_postRequest(req,
             function (data) {
@@ -95,21 +94,26 @@ $(function () {
 
                         } else {
 
-                            var cod_usuario = data.resp.codigo_usu;
-                            var nom_usuario = data.resp.nombre_usu;
-                            var tipo_usuario = data.resp.tipo_usu;
-                            var cod_pdv = data.resp.cod_pdv;
-                            var nom_pdv = data.resp.nom_pdv;
-                            var cod_agencia = data.resp.cod_agencia;
-                            var nom_agencia = data.resp.nom_agencia;
-                            var cod_bodega = data.resp.cod_bodega;
+                            let cod_usuario = data.resp.cod_usuario;
+                            let nom_usuario = data.resp.nom_usuario;
+                            let tipo_usuario = data.resp.tipo_usuario;
+                            let est_usuario = data.resp.est_usuario;
 
+                            if (est_usuario==0){
+                                sweetAlert({ title: "Usuario INACTIVO", type: "error" });
+                                return;
+
+                            }
+                            
 
                             switch (tipo_usuario) {
                                 case '1':
                                     var titUsuario = 'Vendedor';
                                     break;
-                                case '2':               
+                                case '2':
+                                    var titUsuario = 'ADM Fondo';
+                                    break;
+                                case '3':
                                     var titUsuario = 'ADM General';
                                     break;
                                 default:
@@ -121,13 +125,12 @@ $(function () {
                             sessionStorage.setItem("COD_USUARIO", cod_usuario);
                             sessionStorage.setItem("TIPO_USUARIO", tipo_usuario);
                             sessionStorage.setItem("TIT_USUARIO", titUsuario);
-                            sessionStorage.setItem("NOM_USUARIO", nom_usuario);                           
+                            sessionStorage.setItem("NOM_USUARIO", nom_usuario);
 
-                            localStorage.setItem("COD_CLIENTE",$('#codCliente').val());
+                            localStorage.setItem("COD_CLIENTE", $('#codCliente').val());
 
 
-                            //sessionStorage.setItem("NOM_IMP", nom_imp);
-                            //sessionStorage.setItem("ANCHO_TKT", ancho_tkt);
+                          
 
                             iGoTo('./inicio.html');
                         }
