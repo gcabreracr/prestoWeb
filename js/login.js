@@ -78,6 +78,7 @@ $(function () {
 
         api_postRequest(req,
             function (data) {
+                console.log(data);
 
                 if (data.resp != null) {
 
@@ -88,7 +89,7 @@ $(function () {
 
                         let pin = $('#pinUsuario').val();
 
-                        if (pin != data.resp.pass_usu) {
+                        if (pin != data.resp.pin_pass) {
 
                             sweetAlert({ title: "PIN Incorrecto", type: "error" });
 

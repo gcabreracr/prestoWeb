@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PRESTO</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="./img/Presto.png" rel="icon">
+  <!--link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"-->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+
+
+  <link rel="stylesheet" href="./css/presto.css">
+
+
+  <!-- DataTables CSS files-->
+  <link rel="stylesheet" type="text/css" href="../assets/datatables/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets/Buttons-2.3.6/css/buttons.dataTables.min.css">
+
+
+  <!-- Sweet Alert Files-->
+  <link type="text/css" href="../assets/css/sweetalert.css" rel="stylesheet" />
+  <script src="../assets/js/sweetalert.min.js"></script>
+
+
+  <!-- jQuery js-->
+  <script src="../assets/js/jquery-3.6.3.min.js"></script>
+  <script src="../assets/datatables/js/jquery.dataTables.min.js"></script>
+  <!--script src="../assets/Buttons-2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="../assets/Buttons-2.3.6/js/buttons.html5.min.js"></script-->
+
+
+  <!-- App SIFCCO JS -->
+  <script src="./js/prestoMain.js"></script>
+
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header class="bg-light sticky-top">
+
+    <div id="header">
+
+      <script>
+
+        checkInicioSesion();
+
+        addHeader();
+
+      </script>
+
+    </div>
+
+    <div class="container">
+
+      <div class="mb-lg-3">
+
+        <div class="col-6">
+          <h2>Actualiza Clientes</h2>
+
+
+        </div><!-- End Page Title -->
+
+        <!-- Barra botones -->
+        <div class="col-6">
+
+          <!--button id="btnActualizar" class="btn btn-primary" data-bs-toggle="tooltip"
+            title="Enviar">Actualizar</i></button-->
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </header><!-- End Header -->
+
+
+
+  <div class="container">
+
+    <div class="">
+
+      <div id="spinner" class="text-center" style="display: none">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+
+      <div class="row d-flex justify-content-center">
+
+        <!-- Div del formulario-->
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+
+              <form id="actClientes_form" method="post" autocomplete="off">
+
+                <div class="input-group mb-3">
+                  <label for="txtCodCliente" class="col-sm-3 col-form-label me-2"># Cédula</label>
+                  <div class="col-sm-4 me-2">
+                    <input id="txtCodCliente" name="txtCodCliente" type="text" class="form-control"
+                      oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="15" inputmode="numeric"
+                      autofocus>
+                  </div>
+                  <div class="col-3">
+                    <button id="btnBuscaCli" class="btn btn-light" data-bs-toggle="modal"
+                      data-bs-target="#modBuscaCli"><i class="bi bi-search" data-bs-toggle="tooltip"
+                        title="Buscar"></i></button>
+
+                  </div>
+
+                </div>
+
+                <div class="row mb-3">
+                  <label for="txtNomCliente" class="col-lg-3 col-form-label">Nombre</label>
+                  <div class="col-sm-9">
+                    <input id="txtNomCliente" name="txtNomCliente" type="text" class="form-control" maxlength="40">
+                  </div>
+
+                </div>
+
+                <div class="row mb-3">
+                  <label for="txtApeCliente" class="col-lg-3 col-form-label">Apellidos</label>
+                  <div class="col-sm-9">
+                    <input id="txtApeCliente" name="txtApeCliente" type="text" class="form-control" maxlength="40">
+                  </div>
+
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-lg-3 col-form-label">Provincia</label>
+                  <div class="col-lg-6">
+                    <select id="cbProvincias" class="form-select" aria-label="Default select example">
+  
+                    </select>
+                  </div>
+                </div>
+  
+                <div class="row mb-3">
+                  <label class="col-lg-3 col-form-label">Canton</label>
+                  <div class="col-lg-6">
+                    <select id="cbCantones" class="form-select" aria-label="Default select example">
+  
+                    </select>
+                  </div>
+                </div>
+  
+                <div class="row mb-3">
+                  <label class="col-lg-3 col-form-label">Distrito</label>
+                  <div class="col-lg-6">
+                    <select id="cbDistrito" class="form-select" aria-label="Default select example">  
+                    </select>
+                  </div>
+                </div>
+  
+                <div class="row mb-3">
+                  <label for="txtSennas" class="col-lg-3 col-form-label">Otras Señas</label>
+                  <div class="col-lg-9"> 
+                      <textarea class="form-control" name="txtSennas" id="txtSennas" rows="3" maxlength="200"></textarea>                    
+                  </div>
+
+                </div>
+
+
+              
+
+                <div class="input-group mb-3">
+                  <label class="col-sm-3 col-form-label"></label>
+                  <div class="col-sm-6">
+
+                    <button id="btnActualizar" class="btn btn-success me-3">Actualizar</i></button>
+                    <button id="btnCancelar" class="btn btn-dark">Cancelar</i></button>
+
+                  </div>
+
+                </div>
+
+
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </div>
+
+    </div><!-- End #main -->
+
+  </div>
+
+  <!-- Modal Buscar Cliente-->
+  <div class="modal fade" id="modBuscaCli" tabindex="-1" aria-labelledby="modBuscaCliLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modBuscaCliLabel">Buscar Cliente</h5>
+          <button id="btnCerrarModCli" type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+
+             
+              <div class="table-responsive">
+                <table id="tblClientes" class="table table-light" width="100%">
+                  <thead>
+                    <tr>
+                     
+                      <th >Descripcion</th>
+                      <th ></th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+
+
+
+
+            </div>
+          </div>
+
+
+        </div>
+        <!--div class="modal-footer">
+          <button id="btnSelCliMod" type="button" class="btn btn-primary">Seleccionar</button>
+        </div-->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======= Footer ======= -->
+  <footer>
+    <div class="text-center">
+      &copy; Copyright <strong><span>Seccab Software</span></strong>. Derechos Reservados
+    </div>
+
+  </footer><!-- End Footer -->
+
+
+
+  <!-- Vendor JS Files -->
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+  <!-- Archivo JS pagina -->
+
+  <script src="./js/actualizaClientes.js"></script>
+
+</body>
+
+</html>
