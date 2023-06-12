@@ -117,8 +117,8 @@
               <form id="actUsuarios_form" method="post" autocomplete="off">
 
                 <div class="input-group mb-3">
-                  <label for="txtCodUsuario" class="col-sm-3 col-form-label me-2">ID Usuario</label>
-                  <div class="col-sm-4 me-2">
+                  <label for="txtCodUsuario" class="col-3 col-form-label me-2">ID Usuario</label>
+                  <div class="col-4 me-2">
                     <input id="txtCodUsuario" name="txtCodCliente" type="text" class="form-control" maxlength="20"
                       autofocus>
                   </div>
@@ -141,16 +141,19 @@
 
 
                 <div class="row mb-3">
-                  <label class="col-lg-3 col-form-label">Tipo</label>
-                  <div class="col-lg-6">
+                  <label class="col-3 col-form-label">Tipo</label>
+                  <div class="col-6">
                     <select id="cbTipoUsu" class="form-select" aria-label="Default select example">
+                      <option selected value="1">Vendedor</option>
+                      <option value="2">ADM Fondo</option>
+                      <option value="3">ADM General</option>
                     </select>
                   </div>
                 </div>
 
                 <div class="row mb-3">
-                  <label class="col-lg-3 col-form-label">Estado</label>
-                  <div class="col-lg-6">
+                  <label class="col-3 col-form-label">Estado</label>
+                  <div class="col-6">
                     <select id="cbEstadoUsu" class="form-select" aria-label="Default select example">
                       <option value="0">Inactivo</option>
                       <option selected value="1">Activo</option>
@@ -158,20 +161,15 @@
                   </div>
                 </div>
 
-
-
                 <div class="input-group mb-3">
                   <label class="col-sm-3 col-form-label"></label>
                   <div class="col-sm-6">
 
-                    <button id="btnActualizar" class="btn btn-success me-3">Actualizar</i></button>
-                    <button id="btnCancelar" class="btn btn-dark">Cancelar</i></button>
+                    <button id="btnActualizar" class="btn btn-success me-3">Actualizar</button>
+                    <button id="btnCancelar" class="btn btn-dark">Cancelar</button>
 
                   </div>
-
                 </div>
-
-
 
               </form>
 
@@ -192,11 +190,11 @@
               </div>
 
               <div class="table-responsive">
-                <table id="tblVentaTkt" class="table table-primary">
+                <table id="tblFondosUsu" class="table table-primary">
                   <thead>
                     <tr>
                       <th class="col-2 text-center">Código</th>
-                      <th class="col-6">Nombre</th>                      
+                      <th class="col-6">Nombre</th>
                       <th class="col-4 text-center"></th>
                     </tr>
                   </thead>
@@ -207,10 +205,8 @@
                 </table>
               </div>
             </div>
-
           </div>
         </div>
-
 
       </div>
 
@@ -219,22 +215,22 @@
   </div>
 
   <!-- Modal Buscar Cliente-->
-  <div class="modal fade" id="modBuscaCli" tabindex="-1" aria-labelledby="modBuscaCliLabel" aria-hidden="true">
+  <div class="modal fade" id="modBuscaUsu" tabindex="-1" aria-labelledby="modBuscaUsuLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modBuscaCliLabel">Buscar Cliente</h5>
-          <button id="btnCerrarModCli" type="button" class="btn-close" data-bs-dismiss="modal"
+          <h5 class="modal-title" id="modBuscaUsuLabel">Buscar Cliente</h5>
+          <button id="btnCerrarModUsu" type="button" class="btn-close" data-bs-dismiss="modal"
             aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="card">
             <div class="card-body">
               <div class="table-responsive">
-                <table id="tblClientes" class="table table-light" width="100%">
+                <table id="tblUsuarios" class="table table-light" width="100%">
                   <thead>
                     <tr>
-                      <th>Nombre del Cliente</th>
+                      <th>Nombre del Usuario</th>
                       <th></th>
 
                     </tr>
@@ -312,7 +308,7 @@
 
   <!-- Archivo JS pagina -->
 
-  <script src="./js/actualizaClientes.js"></script>
+  <script src="./js/actualizaUsuarios.js"></script>
 
 </body>
 

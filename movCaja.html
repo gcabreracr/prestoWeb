@@ -2,16 +2,15 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>PRESTO</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="./img/Presto.png" rel="icon">
+  <link href="./img/presto.ico" rel="icon">
   <!--link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"-->
 
   <!-- Google Fonts -->
@@ -50,6 +49,7 @@
   <script src="./js/prestoMain.js"></script>
 
 
+
 </head>
 
 <body>
@@ -74,7 +74,7 @@
       <div class="mb-lg-3">
 
         <div class="col-6">
-          <h2>Actualiza Clientes</h2>
+          <h2>Movimientos de Cajas</h2>
 
 
         </div><!-- End Page Title -->
@@ -95,7 +95,6 @@
   </header><!-- End Header -->
 
 
-
   <div class="container">
 
     <div class="">
@@ -106,96 +105,77 @@
         </div>
       </div>
 
+
       <div class="row d-flex justify-content-center">
 
         <!-- Div del formulario-->
-        <div class="col-lg-6">
+        <div class="col-lg-5">
 
           <div class="card">
             <div class="card-body">
 
-              <form id="actClientes_form" method="post" autocomplete="off">
+              <form id="estadoCaja_form" method="POST" autocomplete="off">
 
-                <div class="input-group mb-3">
-                  <label for="txtCodCliente" class="col-sm-3 col-form-label me-2"># Cédula</label>
-                  <div class="col-sm-4 me-2">
-                    <input id="txtCodCliente" name="txtCodCliente" type="text" class="form-control"
-                      oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="15" inputmode="numeric"
-                      autofocus>
+
+                <div class="row mb-3">
+                  <label class="col-lg-3 col-form-label">Caja</label>
+                  <div class="col-lg-8">
+                    <select id="cbCajas" class="form-select" aria-label="Default select example" autofocus>
+
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-lg-3 col-form-label">Fondo</label>
+                  <div class="col-lg-8">
+                    <select id="cbFondos" class="form-select" aria-label="Default select example">
+                    </select>
+                  </div>
+                </div>
+
+
+                <div class="row mb-3 mt-2">
+                  <label for="fechaMov" class="col-3 col-form-label">Fecha Mov</label>
+                  <div class="col-4">
+                    <input id="fechaMov" name="fechaMov" type="date" class="form-control">
                   </div>
                   <div class="col-3">
-                    <button id="btnBuscaCli" class="btn btn-light" data-bs-toggle="modal"
-                      data-bs-target="#modBuscaCli"><i class="bi bi-search" data-bs-toggle="tooltip"
-                        title="Buscar"></i></button>
-
+                    <button id="btnNuevoMov" class="btn btn-dark">Nuevo</button>
                   </div>
-
                 </div>
 
                 <div class="row mb-3">
-                  <label for="txtNomCliente" class="col-lg-3 col-form-label">Nombre</label>
+                  <label for="txtDocRef" class="col-3 col-form-label">Doc. Ref.</label>
+                  <div class="col-6">
+                    <input id="txtDocRef" name="txtDocRef" type="text" class="form-control" maxlength="20">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="txtDetalle" class="col-sm-3 col-form-label">Detalle</label>
                   <div class="col-sm-9">
-                    <input id="txtNomCliente" name="txtNomCliente" type="text" class="form-control" maxlength="40">
+                    <input id="txtDetalle" name="txtDetalle" type="text" class="form-control" maxlength="50">
                   </div>
-
                 </div>
 
                 <div class="row mb-3">
-                  <label for="txtApeCliente" class="col-lg-3 col-form-label">Apellidos</label>
-                  <div class="col-sm-9">
-                    <input id="txtApeCliente" name="txtApeCliente" type="text" class="form-control" maxlength="40">
-                  </div>
-
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Provincia</label>
-                  <div class="col-lg-6">
-                    <select id="cbProvincias" class="form-select" aria-label="Default select example">                     
-                    </select>
-                  </div>                 
-                 
-                </div>
-  
-                <div class="row mb-3">
-                  <label class="col-lg-3 col-form-label">Canton</label>
-                  <div class="col-lg-6">
-                    <select id="cbCantones" class="form-select" aria-label="Default select example">  
-                    </select>
+                  <label for="txtMonMov" class="col-3 col-form-label">Monto</label>
+                  <div class="col-6">
+                    <input id="txtMonMov" name="txtMonMov" type="text" class="form-control text-end"
+                      oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="15" inputmode="numeric">
                   </div>
                 </div>
-  
-                <div class="row mb-3">
-                  <label class="col-lg-3 col-form-label">Distrito</label>
-                  <div class="col-lg-6">
-                    <select id="cbDistritos" class="form-select" aria-label="Default select example">  
-                    </select>
-                  </div>
-                </div>
-  
-                <div class="row mb-3">
-                  <label for="txtSennas" class="col-lg-3 col-form-label">Otras Señas</label>
-                  <div class="col-lg-9"> 
-                      <textarea class="form-control" name="txtSennas" id="txtSennas" rows="3" maxlength="200"></textarea>                    
-                  </div>
-
-                </div>
-
-
-              
 
                 <div class="input-group mb-3">
                   <label class="col-sm-3 col-form-label"></label>
                   <div class="col-sm-6">
 
-                    <button id="btnActualizar" class="btn btn-success me-3">Actualizar</i></button>
-                    <button id="btnCancelar" class="btn btn-dark">Cancelar</i></button>
+                    <button id="btnActualizar" class="btn btn-success me-3">Actualizar</button>
+                    <button id="btnCancelar" class="btn btn-dark">Cancelar</button>
 
                   </div>
-
                 </div>
-
-
 
               </form>
 
@@ -203,37 +183,22 @@
           </div>
         </div>
 
+        <!-- Div del data teble-->
+        <div class="col-lg-7">
 
-
-
-      </div>
-
-    </div><!-- End #main -->
-
-  </div>
-
-  <!-- Modal Buscar Cliente-->
-  <div class="modal fade" id="modBuscaCli" tabindex="-1" aria-labelledby="modBuscaCliLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modBuscaCliLabel">Buscar Cliente</h5>
-          <button id="btnCerrarModCli" type="button" class="btn-close" data-bs-dismiss="modal"
-            aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
           <div class="card">
             <div class="card-body">
+              <h5>Detalle Movimientos</h5>
 
-             
               <div class="table-responsive">
-                <table id="tblClientes" class="table table-light" width="100%">
+                <table id="tblMovCaja" class="table table-primary">
                   <thead>
                     <tr>
-                     
-                      <th >Descripcion</th>
-                      <th ></th>
-
+                      <th class="col text-center">Fecha</th>
+                      <th class="">Doc. Ref</th>
+                      <th class="">Detalle</th>
+                      <th class="col text-end">Monto</th>
+                      <th class="col-3 text-center"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -241,22 +206,15 @@
                   </tbody>
                 </table>
               </div>
-
-
-
-
             </div>
           </div>
-
-
         </div>
-        <!--div class="modal-footer">
-          <button id="btnSelCliMod" type="button" class="btn btn-primary">Seleccionar</button>
-        </div-->
-      </div>
-    </div>
-  </div>
 
+      </div>
+
+    </div><!-- End #main -->
+
+  </div>
 
   <!-- ======= Footer ======= -->
   <footer>
@@ -274,7 +232,7 @@
 
   <!-- Archivo JS pagina -->
 
-  <script src="./js/actualizaClientes.js"></script>
+  <script src="./js/movCaja.js"></script>
 
 </body>
 

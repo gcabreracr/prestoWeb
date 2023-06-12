@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>PRESTO</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="./img/presto.ico" rel="icon">
+  <!--link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"-->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+
+
+  <link rel="stylesheet" href="./css/presto.css">
+
+
+  <!-- DataTables CSS files-->
+  <link rel="stylesheet" type="text/css" href="../assets/datatables/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets/Buttons-2.3.6/css/buttons.dataTables.min.css">
+
+
+  <!-- Sweet Alert Files-->
+  <link type="text/css" href="../assets/css/sweetalert.css" rel="stylesheet" />
+  <script src="../assets/js/sweetalert.min.js"></script>
+
+
+  <!-- jQuery js-->
+  <script src="../assets/js/jquery-3.6.3.min.js"></script>
+  <script src="../assets/datatables/js/jquery.dataTables.min.js"></script>
+  <!--script src="../assets/Buttons-2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="../assets/Buttons-2.3.6/js/buttons.html5.min.js"></script-->
+
+
+  <!-- App SIFCCO JS -->
+  <script src="./js/prestoMain.js"></script>
+
+
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header class="bg-light sticky-top">
+
+    <div id="header">
+
+      <script>
+
+        checkInicioSesion();
+
+        addHeader();
+
+      </script>
+
+    </div>
+
+    <div class="container">
+
+      <div class="mb-lg-3">
+
+        <div class="col-6">
+          <h2>Estado de Caja</h2>
+
+
+        </div><!-- End Page Title -->
+
+        <!-- Barra botones -->
+        <div class="col-6">
+
+          <!--button id="btnActualizar" class="btn btn-primary" data-bs-toggle="tooltip"
+            title="Enviar">Actualizar</i></button-->
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </header><!-- End Header -->
+
+
+  <div class="container">
+
+    <div class="">
+
+      <div id="spinner" class="text-center" style="display: none">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+
+
+      <div class="row d-flex justify-content-center">
+
+        <!-- Div del formulario-->
+        <div class="col-lg-5">
+
+          <div class="card">
+            <div class="card-body">
+
+              <form id="estadoCaja_form" method="POST" autocomplete="off">
+
+
+                <div class="row mb-3">
+                  <label class="col-lg-3 col-form-label">Caja</label>
+                  <div class="col-lg-8">
+                    <select id="cbCajas" class="form-select" aria-label="Default select example" autofocus>
+
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-lg-3 col-form-label">Fondo</label>
+                  <div class="col-lg-8">
+                    <select id="cbFondos" class="form-select" aria-label="Default select example">
+                    </select>
+                  </div>
+                </div>
+
+
+                <div class="row mb-3 mt-2">
+                  <label for="fechaIni" class="col-sm-3 col-form-label">Fecha Inicial</label>
+                  <div class="col-sm-4">
+                    <input id="fechaIni" name="fechaIni" type="date" class="form-control">
+                  </div>
+                </div>
+
+                <div class="row mb-3 mt-2">
+                  <label for="fechaFin" class="col-sm-3 col-form-label">Fecha Final</label>
+                  <div class="col-sm-4">
+                    <input id="fechaFin" name="fechaFin" type="date" class="form-control">
+                  </div>
+                  <div class="col-3">
+                    <button id="btnConsultar" class="btn btn-dark">Consultar</button>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="txtSaldoIni" class="col-sm-6 col-form-label text-end">Saldo Inicial</label>
+                  <div class="col-sm-4">
+                    <input id="txtSaldoIni" name="txtSaldoIni" type="text" class="form-control text-end" disabled>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="txtTotMov" class="col-sm-6 col-form-label text-end">Monto Movimientos</label>
+                  <div class="col-sm-4">
+                    <input id="txtTotMov" name="txtTotMov" type="text" class="form-control text-end" disabled>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="txtSaldoFin" class="col-sm-6 col-form-label text-end">Saldo Final</label>
+                  <div class="col-sm-4">
+                    <input id="txtSaldoFin" name="txtSaldoFin" type="text" class="form-control text-end" disabled>
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Div del data teble-->
+        <div class="col-lg-7">
+
+          <div class="card">
+            <div class="card-body">
+              <h5>Detalle Movimientos</h5>
+
+              <div class="table-responsive">
+                <table id="tblMovCaja" class="table table-primary">
+                  <thead>
+                    <tr>
+                      <th class="col text-center">Fecha</th>
+                      <th class="">Doc. Ref</th>
+                      <th class="">Detalle</th>
+                      <th class="col text-end">Monto</th>                      
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- End #main -->
+
+  </div>
+
+  <!-- ======= Footer ======= -->
+  <footer >
+    <div class="text-center">
+      &copy; Copyright <strong><span>Seccab Software</span></strong>. Derechos Reservados
+    </div>
+
+  </footer><!-- End Footer -->
+
+
+
+  <!-- Vendor JS Files -->
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+  <!-- Archivo JS pagina -->
+
+  <script src="./js/consultaEstadoCaja.js"></script>
+
+</body>
+
+</html>
