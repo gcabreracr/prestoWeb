@@ -3,7 +3,11 @@ $(function () {
     /** Procesos de carga de pagina */
     cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
 
-    //activaMenu();
+
+    var nuevo = true;
+    var latitud = 0.00;
+    var longitud = 0.00;
+    var estado = 1;
 
     const $txtCodCliente = $('#txtCodCliente');
     const $txtNomCliente = $('#txtNomCliente');
@@ -38,13 +42,15 @@ $(function () {
             let code = e.keyCode || e.which;
             if (code == 13 || code == 9) {
 
-                if ($txtCodCliente.val().length > 0) {
+                if ($txtCodCliente.val().length > 9) {
 
                     console.log('Consultando Cliente')
 
-                    activaCampos();
+                    consultaCliente();
 
-                    $txtNomCliente.focus();
+                    //activaCampos();
+
+                    //$txtNomCliente.focus();
 
 
                 }
@@ -285,15 +291,33 @@ $(function () {
         let req = [];
         req.w = 'apiPresto';
         req.r = 'consulta_cliente';
-        req.cod
+        req.id_cliente = $txtCodCliente.val();
+
+        api_postRequest(req,
+            function (data) {
+                if (data.resp == null) {
+                    nuevo = true;
+                    longitud = 0.00;
+                    latitud = 0.00;
+                    estado = 1;
+                    limpiaCampos();
+                    activaCampos();
+                    $txtNomCliente.focus();
 
 
+                } else {
 
-        let codCliente = $txtCodCliente.val();
+                    nuevo=false;
+                    $txtNomCliente.val(data.resp.nom_cliente);
+                    $txtApeCliente.val(data.resp.ape_cliente);
+                    llenaComboProvincias();
+                    
 
+                }
 
-
-
+            }, function (data) {
+                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            });
 
     }
 
