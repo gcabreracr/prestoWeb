@@ -5,6 +5,9 @@ $(function () {
 
 
     var nuevo = true;
+    var idProvincia = 0;
+    var idCanton = 0;
+    var idDistrito = 0;
     var latitud = 0.00;
     var longitud = 0.00;
     var estado = 1;
@@ -42,7 +45,7 @@ $(function () {
             let code = e.keyCode || e.which;
             if (code == 13 || code == 9) {
 
-                if ($txtCodCliente.val().length > 9) {
+                if ($txtCodCliente.val().length > 0) {
 
                     console.log('Consultando Cliente')
 
@@ -119,6 +122,9 @@ $(function () {
 
             $txtCodCliente.val('');
             $txtCodCliente.focus();
+            idProvincia=0;
+            idCanton=0;
+            idDistrito=0;
             limpiaCampos();
 
             e.preventDefault();
@@ -126,9 +132,8 @@ $(function () {
 
 
         $btnActualizar.click(function (e) {
-
-
             e.preventDefault();
+            actualizaCliente();
         });
 
 
@@ -189,20 +194,24 @@ $(function () {
                     let provincias = data.resp.provincias;
                     for (item in provincias) {
 
-                        let idProvincia = provincias[item]['idProvincia'];
-                        let nomProvincia = provincias[item]['nomProvincia'];
+                        let _idProvincia = provincias[item]['idProvincia'];
+                        let _nomProvincia = provincias[item]['nomProvincia'];
 
                         $('#cbProvincias').append($("<option>", {
-                            value: idProvincia,
-                            text: nomProvincia
+                            value: _idProvincia,
+                            text: _nomProvincia
                         }));
                     }
+
+                    $("#cbProvincias option[value='" + idProvincia + "']").attr("selected", true);
+
+                    llenaComboCantones();
+
                 }
             }, function (data) {
                 sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
             });
 
-        llenaComboCantones();
 
 
     }
@@ -217,7 +226,8 @@ $(function () {
 
         $('#cbCantones').empty();
 
-        api_postRequest(req,
+        api_postRequest(
+            req,
             function (data) {
                 $('#spinner').hide();
 
@@ -225,24 +235,23 @@ $(function () {
                     let cantones = data.resp.cantones;
                     for (item in cantones) {
 
-                        let idCanton = cantones[item]['idCanton'];
-                        let nomCanton = cantones[item]['nomCanton'];
+                        let _idCanton = cantones[item]['idCanton'];
+                        let _nomCanton = cantones[item]['nomCanton'];
 
                         $('#cbCantones').append($("<option>", {
-                            value: idCanton,
-                            text: nomCanton
+                            value: _idCanton,
+                            text: _nomCanton
                         }));
                     }
+
+                    $("#cbCantones option[value='" + idCanton + "']").attr("selected", true);
+                    llenaComboDistritos();
                 }
+
             }, function (data) {
                 sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
             });
 
-
-
-
-
-        llenaComboDistritos();
 
     }
 
@@ -267,14 +276,16 @@ $(function () {
                     let distritos = data.resp.distritos;
                     for (item in distritos) {
 
-                        let idDistrito = distritos[item]['idDistrito'];
-                        let nomDistrito = distritos[item]['nomDistrito'];
+                        let _idDistrito = distritos[item]['idDistrito'];
+                        let _nomDistrito = distritos[item]['nomDistrito'];
 
                         $('#cbDistritos').append($("<option>", {
-                            value: idDistrito,
-                            text: nomDistrito
+                            value: _idDistrito,
+                            text: _nomDistrito
                         }));
                     }
+
+                    $("#cbDistritos option[value='" + idDistrito + "']").attr("selected", true);
                 }
             }, function (data) {
                 sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
@@ -295,29 +306,136 @@ $(function () {
 
         api_postRequest(req,
             function (data) {
+                $('#spinner').hide();
+
                 if (data.resp == null) {
                     nuevo = true;
                     longitud = 0.00;
                     latitud = 0.00;
                     estado = 1;
-                    limpiaCampos();
+                    //limpiaCampos();
                     activaCampos();
                     $txtNomCliente.focus();
 
-
                 } else {
 
-                    nuevo=false;
+                    nuevo = false;
                     $txtNomCliente.val(data.resp.nom_cliente);
                     $txtApeCliente.val(data.resp.ape_cliente);
+                    $txtSennas.val(data.resp.sennas);
+                    idProvincia = data.resp.idProvincia;
+                    idCanton = data.resp.idCanton;
+                    idDistrito = data.resp.idDistrito;
+                    latitud = data.resp.latitud;
+                    longitud = data.resp.longitud;
+                    estado = data.resp.est_cliente;
+
                     llenaComboProvincias();
-                    
+
+                    activaCampos();
+                    $txtNomCliente.focus();
 
                 }
 
             }, function (data) {
                 sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
             });
+    }
+
+
+    function actualizaCliente() {
+
+        if ($txtNomCliente.val().length == 0) {
+
+            $txtNomCliente.focus();
+            sweetAlert({ title: "Campo de nombre es requerido", type: "error" });
+            return;
+        }
+
+        if ($txtApeCliente.val().length == 0) {
+
+            $txtApeCliente.focus();
+            sweetAlert({ title: "Campo de apellidos es requerido", type: "error" });
+            return;
+
+        }
+
+        if ($(":selected", $('#cbProvincias')).val() == 0) {
+
+            $cbProvincias.focus();
+            sweetAlert({ title: "Seleccione una provincia válida", type: "error" });
+            return;
+
+        }
+        if ($(":selected", $('#cbCantones')).val() == 0) {
+
+            $cbCantones.focus();
+            sweetAlert({ title: "Seleccione un cantón válido", type: "error" });
+            return;
+
+        }
+        if ($(":selected", $('#cbDistritos')).val() == 0) {
+
+            $cbDistritos.focus();
+            sweetAlert({ title: "Seleccione un distrito válido", type: "error" });
+            return;
+
+        }
+
+
+        if ($txtSennas.val().length == 0) {
+
+            $txtSennas.focus();
+            sweetAlert({ title: "Campo de otras señas es requerido", type: "error" });
+            return;
+
+        }
+
+
+        $('#spinner').show();
+
+        let req = [];
+        req.w = 'apiPresto';
+        req.r = 'actualiza_cliente';
+        //req.nuevo = nuevo;
+        req.id_cliente = $txtCodCliente.val();
+        req.nom_cliente = $txtNomCliente.val();
+        req.ape_cliente = $txtApeCliente.val();
+        req.idProvincia = $(":selected", $('#cbProvincias')).val();
+        req.provincia = $(":selected", $('#cbProvincias')).text();
+        req.idCanton = $(":selected", $('#cbCantones')).val();
+        req.canton = $(":selected", $('#cbCantones')).text();
+        req.idDistrito = $(":selected", $('#cbDistritos')).val();
+        req.distrito = $(":selected", $('#cbDistritos')).text();
+        req.sennas = $txtSennas.val();
+        req.latitud = latitud;
+        req.longitud = longitud;
+        req.est_cliente = estado;
+
+        api_postRequest(
+            req,
+            function (data) {
+                $('#spinner').hide();
+
+                let _msg = data.resp.msg; 
+              
+                idProvincia=0;
+                idCanton=0;
+                idDistrito=0;
+                limpiaCampos();
+                $txtCodCliente.focus();
+                sweetAlert({ title: _msg, type: "success" });
+
+
+
+            }, function (data) {
+                $('#spinner').hide();
+
+                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            });
+
+
+
 
     }
 
