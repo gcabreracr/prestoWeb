@@ -12,6 +12,8 @@ $(function () {
     var longitud = 0.00;
     var estado = 1;
 
+    var listaClientes =[];
+
     const $txtCodCliente = $('#txtCodCliente');
     const $txtNomCliente = $('#txtNomCliente');
     const $txtApeCliente = $('#txtApeCliente');
@@ -22,9 +24,12 @@ $(function () {
 
     const $txtSennas = $('#txtSennas');
 
+    var $tblClientes;
 
     const $btnBuscaCli = $('#btnBuscaCli').click(function (e) {
         e.preventDefault();
+        llenaTablaClientes();
+
     });
 
     const $btnActualizar = $('#btnActualizar');
@@ -36,6 +41,36 @@ $(function () {
 
 
     function ini_componentes() {
+
+        $tblClientes = $('#tblClientes').DataTable({
+
+            destroy: true,
+            data: listaClientes,
+            columns: [
+
+                {
+                    data: 'nomCliente',
+
+
+                },
+                {
+                    defaultContent: '<button class="editar btn btn-light"><i class="bi bi-arrow-right-circle"></i></button>',
+                    className: 'dt-right',
+                    width: '10%'
+
+
+                }
+
+            ],
+
+            ordering: false,
+            language: lenguaje_data_table
+
+        }); /// Fin de creacion de datatable
+
+        $tblClientes.clear().draw();
+
+
 
         $txtCodCliente.focus(function () {
             $(this).select();
@@ -122,9 +157,9 @@ $(function () {
 
             $txtCodCliente.val('');
             $txtCodCliente.focus();
-            idProvincia=0;
-            idCanton=0;
-            idDistrito=0;
+            idProvincia = 0;
+            idCanton = 0;
+            idDistrito = 0;
             limpiaCampos();
 
             e.preventDefault();
@@ -136,6 +171,19 @@ $(function () {
             actualizaCliente();
         });
 
+        $('#tblClientes').on('click', 'button.editar', function () {
+
+            let fila = $tblClientes.row($(this).parents('tr')).index();
+
+            $('#modBuscaCli').modal('hide');
+
+            $txtCodCliente.val(listaClientes[fila].idCliente);
+
+            consultaCliente();
+
+            //console.log(listaClientes[fila]);
+
+        }); // Fin de funcion boton editar numero table
 
 
 
@@ -417,13 +465,13 @@ $(function () {
             function (data) {
                 $('#spinner').hide();
 
-                let _msg = data.resp.msg; 
-              
-                idProvincia=0;
-                idCanton=0;
-                idDistrito=0;
-                limpiaCampos();
+                let _msg = data.resp.msg;
                 $txtCodCliente.focus();
+                idProvincia = 0;
+                idCanton = 0;
+                idDistrito = 0;
+                limpiaCampos();
+
                 sweetAlert({ title: _msg, type: "success" });
 
 
@@ -434,10 +482,48 @@ $(function () {
                 sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
             });
 
-
-
-
     }
+
+
+    function llenaTablaClientes() {
+
+        let req = [];
+        req.w = 'apiPresto';
+        req.r = 'listar_clientes';
+
+
+        $tblClientes.clear().draw();
+
+
+        api_postRequest(req,
+            function (data) {
+                console.log(data);
+
+                if (data.resp != null) {
+
+                    let clientes = data.resp.clientes;
+
+                    listaClientes = [];
+
+                    for (let i = 0; i < clientes.length; i++) {
+                        let cliente = new Object();
+                        cliente.idCliente = clientes[i].id_cliente;
+                        cliente.nomCliente = clientes[i].ape_cliente +", "+clientes[i].nom_cliente;
+
+                        listaClientes.push(cliente);
+                    }
+
+
+                    $tblClientes.rows.add(listaClientes).draw();
+
+                }
+
+            }
+            , function (data) {
+                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            });
+    }
+
 
 
 
