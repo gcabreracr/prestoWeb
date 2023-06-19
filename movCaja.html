@@ -108,41 +108,87 @@
 
       <div class="row d-flex justify-content-center">
 
-        <!-- Div del formulario-->
-        <div class="col-lg-5">
+
+
+        <!-- Div del data teble-->
+        <div class="">
 
           <div class="card">
             <div class="card-body">
 
+
+              <div class="row mb-3">
+                <label class="col-2 col-form-label">Fondo</label>
+                <div class="col-6">
+                  <select id="cbFondos" class="form-select" aria-label="Default select example" autofocus>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-2 col-form-label">Caja</label>
+                <div class="col-6">
+                  <select id="cbUsuarios" class="form-select" aria-label="Default select example" autofocus>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <button id="btnNuevoMov" class="btn btn-dark">Nuevo</button>
+              </div>
+
+
+
+              <div class="table-responsive">
+                <table id="tblMovCaja" class="table table-primary">
+                  <thead>
+                    <tr>
+                      <th class="col-2 text-center">Fecha</th>
+                      <th class="col-2">Doc. Ref</th>
+                      <th class="col-4">Detalle</th>
+                      <th class="col-2 text-end">Monto</th>
+                      <th class="col-2 text-center"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- End #main -->
+
+  </div>
+
+
+
+
+  <!-- Modal Formulario Movimiento-->
+  <div class="modal fade" id="modForFondo" tabindex="-1" aria-labelledby="modForFondoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modForFondoLabel">Buscar Cliente</h5>
+          <button id="btnCerrarModForm" type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+
               <form id="estadoCaja_form" method="POST" autocomplete="off">
-
-
-                <div class="row mb-3">
-                  <label class="col-lg-3 col-form-label">Caja</label>
-                  <div class="col-lg-8">
-                    <select id="cbCajas" class="form-select" aria-label="Default select example" autofocus>
-
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-lg-3 col-form-label">Fondo</label>
-                  <div class="col-lg-8">
-                    <select id="cbFondos" class="form-select" aria-label="Default select example">
-                    </select>
-                  </div>
-                </div>
-
 
                 <div class="row mb-3 mt-2">
                   <label for="fechaMov" class="col-3 col-form-label">Fecha Mov</label>
                   <div class="col-4">
                     <input id="fechaMov" name="fechaMov" type="date" class="form-control">
                   </div>
-                  <div class="col-3">
-                    <button id="btnNuevoMov" class="btn btn-dark">Nuevo</button>
-                  </div>
+
                 </div>
 
                 <div class="row mb-3">
@@ -181,43 +227,19 @@
 
             </div>
           </div>
+
+
         </div>
-
-        <!-- Div del data teble-->
-        <div class="col-lg-7">
-
-          <div class="card">
-            <div class="card-body">
-              <h5>Detalle Movimientos</h5>
-
-              <div class="table-responsive">
-                <table id="tblMovCaja" class="table table-primary">
-                  <thead>
-                    <tr>
-                      <th class="col text-center">Fecha</th>
-                      <th class="">Doc. Ref</th>
-                      <th class="">Detalle</th>
-                      <th class="col text-end">Monto</th>
-                      <th class="col-3 text-center"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary">Guardar cambios</button>
         </div>
-
       </div>
-
-    </div><!-- End #main -->
-
+    </div>
   </div>
-
   <!-- ======= Footer ======= -->
   <footer>
+
     <div class="text-center">
       &copy; Copyright <strong><span>Seccab Software</span></strong>. Derechos Reservados
     </div>

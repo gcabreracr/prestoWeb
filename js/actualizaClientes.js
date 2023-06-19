@@ -227,7 +227,7 @@ $(function () {
 
     function llenaComboProvincias() {
 
-        $('#spinner').show();
+        $('#spinnerP').show();
         let req = [];
         req.w = 'apiPresto';
         req.r = 'llena_provincias';
@@ -236,7 +236,7 @@ $(function () {
 
         api_postRequest(req,
             function (data) {
-                $('#spinner').hide();
+                $('#spinnerP').hide();
 
                 if (data.resp != null) {
                     let provincias = data.resp.provincias;
@@ -265,7 +265,7 @@ $(function () {
     }
 
     function llenaComboCantones() {
-        $('#spinner').show();
+        $('#spinnerC').show();
 
         let req = [];
         req.w = 'apiPresto';
@@ -277,7 +277,7 @@ $(function () {
         api_postRequest(
             req,
             function (data) {
-                $('#spinner').hide();
+                $('#spinnerC').hide();
 
                 if (data.resp != null) {
                     let cantones = data.resp.cantones;
@@ -305,7 +305,7 @@ $(function () {
 
     function llenaComboDistritos() {
 
-        $('#spinner').show();
+        $('#spinnerD').show();
 
         let req = [];
         req.w = 'apiPresto';
@@ -318,7 +318,7 @@ $(function () {
 
         api_postRequest(req,
             function (data) {
-                $('#spinner').hide();
+                $('#spinnerD').hide();
 
                 if (data.resp != null) {
                     let distritos = data.resp.distritos;
