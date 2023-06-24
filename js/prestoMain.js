@@ -268,3 +268,17 @@ function activaMenu() {
 
 
 }
+
+/*** Funcion para verificar acceso a modulos de usuario Administrado */
+function enlaceAdm(_pagina) {
+
+  let tipoUsuario = sessionStorage.getItem('TIPO_USUARIO');
+
+  if (tipoUsuario == 1) {
+    sweetAlert({ title: "Usuario NO tiene acceso autorizado al Módulo Administrador", type: "info" });
+    return;
+  }
+
+  iGoTo(_pagina);
+
+}
