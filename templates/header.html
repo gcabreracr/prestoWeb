@@ -20,8 +20,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="./actualizaClientes.html">Clientes</a></li>
-                        <li><a class="dropdown-item disabled" href="./actualizaFondos.html">Fondos</a></li>
-                        <li><a class="dropdown-item" href="./actualizaUsuarios.html">Usuarios</a></li>
+                        <li><a class="dropdown-item disabled" href="javascript:enlaceAdm('./actualizaFondos.html')">Fondos</a></li>
+                        <li><a class="dropdown-item" href="javascript:enlaceAdm('./actualizaUsuarios.html')">Usuarios</a></li>
                         <li><a class="dropdown-item disabled" href="#">Productos</a></li>
                         <!--li><hr class="dropdown-divider"></li-->
 
@@ -64,9 +64,9 @@
                     </a>
                     <ul class="dropdown-menu">
 
-                        <li><a class="dropdown-item" href="javascript:enlaceAdm('./monFondo.html')" disabled>Registro Movimientos</a>
+                        <li><a class="dropdown-item" href="javascript:enlaceAdm('./movFondo.html')" disabled>Registro Movimientos</a>
                         </li>
-                        <li><a class="dropdown-item" href="./consultaEstadoFondo.html" disabled>Consulta Estado Fondo</a></li>
+                        <li><a class="dropdown-item" href="javascript:enlaceAdm('./consultaMovFondo.html')" disabled>Consulta Estado Fondo</a></li>
 
                     </ul>
                 </li>
@@ -80,9 +80,9 @@
 
                     <ul class="dropdown-menu">
 
-                        <li><a class="dropdown-item" href="./movCaja.html">Registro Movimientos</a>
+                        <li><a class="dropdown-item" href="javascript:enlaceAdm('./movCaja.html')">Registro Movimientos</a>
                         </li>
-                        <li><a class="dropdown-item" href="./consultaEstadoCaja.html">Consulta Estado Caja</a></li>
+                        <li><a class="dropdown-item" href="javascript:enlaceAdm('./consultaMovCaja.html')">Consulta Estado Caja</a></li>
 
 
                     </ul>
@@ -115,7 +115,7 @@
 
 
                         <li>
-                            <a class="dropdown-item" href="./configuracion.html">
+                            <a class="dropdown-item" href="#">
                                 <i class="bi bi-gear"></i>
                                 <span>Configuración</span>
                             </a>

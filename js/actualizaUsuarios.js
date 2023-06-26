@@ -233,6 +233,8 @@ $(function () {
         $btnActualizar.click(function (e) {
 
 
+            actualizaUsuario();
+
             e.preventDefault();
         });
 
@@ -257,7 +259,6 @@ $(function () {
         $cbEstadoUsu.prop('disabled', true);
         $btnActualizar.prop('disabled', true);
         $btnAgregaFondo.prop('disabled', true);
-        //$tblFondosUsu.attr('disabled','disabled');
 
 
     }
@@ -267,7 +268,6 @@ $(function () {
         $cbTipoUsu.prop('disabled', false);
         $cbEstadoUsu.prop('disabled', false);
         $btnActualizar.prop('disabled', false);
-        $btnAgregaFondo.prop('disabled', false);
 
     }
 
@@ -293,19 +293,19 @@ $(function () {
                     let _tipoUsu = data.resp.tipo_usuario;
                     let _estUsu = data.resp.est_usuario;
                     $txtNomUsuario.val(_nomUsu);
-
+                    $btnAgregaFondo.prop('disabled', false);
                     $("#cbTipoUsu option[value='" + _tipoUsu + "']").attr("selected", true);
                     $("#cbEstadoUsu option[value='" + _estUsu + "']").attr("selected", true);
+                    nuevo = false;
 
                 } else {
                     limpiaCampos();
+                    nuevo = true;
                 }
 
 
                 llenaTablaFondosUsu();
-
                 activaCampos();
-
                 $txtNomUsuario.focus();
 
 
@@ -524,6 +524,42 @@ $(function () {
     }
 
 
+    function actualizaUsuario() {
+
+        $('#spinner').show();
+
+        let req = [];
+        req.w = 'apiPresto';
+        req.r = 'actualiza_usuario';
+        req.nuevo = nuevo;
+        req.cod_usuario = $txtCodUsuario.val();
+        req.nom_usuario = $txtNomUsuario.val();
+        req.tipo_usuario = $(":selected", $('#cbTipoUsu')).val();
+        req.est_usuario = $(":selected", $('#cbEstadoUsu')).val();
+
+
+        api_postRequest(
+            req,
+            function (data) {
+                $('#spinner').hide();
+
+                $btnAgregaFondo.prop('disabled', false);
+
+                let _msg = data.resp.msg;
+                sweetAlert({ title: _msg, type: "success" });
+
+
+            },
+            function (data) {
+                $('#spinner').hide();
+                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            }
+        );
+
+
+
+
+    }
 
 
 

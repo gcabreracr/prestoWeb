@@ -39,7 +39,6 @@ $(function () {
     limpiaCampos();
     inactivaCampos();
 
-
     function ini_componentes() {
 
         $tblClientes = $('#tblClientes').DataTable({
@@ -84,12 +83,7 @@ $(function () {
 
                     console.log('Consultando Cliente')
 
-                    consultaCliente();
-
-                    //activaCampos();
-
-                    //$txtNomCliente.focus();
-
+                    consultaCliente();                   
 
                 }
 
@@ -361,7 +355,7 @@ $(function () {
                     longitud = 0.00;
                     latitud = 0.00;
                     estado = 1;
-                    //limpiaCampos();
+                   
                     activaCampos();
                     $txtNomCliente.focus();
 
@@ -376,14 +370,14 @@ $(function () {
                     idDistrito = data.resp.idDistrito;
                     latitud = data.resp.latitud;
                     longitud = data.resp.longitud;
-                    estado = data.resp.est_cliente;
-
-                    llenaComboProvincias();
-
+                    estado = data.resp.est_cliente;                  
                     activaCampos();
                     $txtNomCliente.focus();
 
                 }
+
+                llenaComboProvincias();
+
 
             }, function (data) {
                 sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });

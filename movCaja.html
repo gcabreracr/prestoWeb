@@ -10,7 +10,7 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="./img/presto.ico" rel="icon">
+  <link href="./img/Presto.ico" rel="icon">
   <!--link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"-->
 
   <!-- Google Fonts -->
@@ -74,7 +74,7 @@
       <div class="mb-lg-3">
 
         <div class="col-6">
-          <h2>Movimientos de Cajas</h2>
+          <h2>Registra Movimiento Cajas</h2>
 
 
         </div><!-- End Page Title -->
@@ -116,7 +116,6 @@
           <div class="card">
             <div class="card-body">
 
-
               <div class="row mb-3">
                 <label class="col-2 col-form-label">Fondo</label>
                 <div class="col-6">
@@ -135,12 +134,13 @@
 
               <div class="mb-3">
                 <button id="btnNuevoMov" class="btn btn-dark">Nuevo</button>
+
               </div>
 
 
 
               <div class="table-responsive">
-                <table id="tblMovCaja" class="table table-primary">
+                <table id="tblMovCaja" class="table table-primary" width="100%">
                   <thead>
                     <tr>
                       <th class="col-2 text-center">Fecha</th>
@@ -169,24 +169,23 @@
 
 
   <!-- Modal Formulario Movimiento-->
-  <div class="modal fade" id="modForFondo" tabindex="-1" aria-labelledby="modForFondoLabel" aria-hidden="true">
+  <div class="modal fade" id="modForCaja" tabindex="-1" aria-labelledby="modForCajaLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modForFondoLabel">Buscar Cliente</h5>
+          <h5 class="modal-title" id="modForCajaLabel">Detalle del movimiento</h5>
           <button id="btnCerrarModForm" type="button" class="btn-close" data-bs-dismiss="modal"
             aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="card">
             <div class="card-body">
-
-              <form id="estadoCaja_form" method="POST" autocomplete="off">
+              <form id="movCaja_form" method="POST" autocomplete="off">
 
                 <div class="row mb-3 mt-2">
-                  <label for="fechaMov" class="col-3 col-form-label">Fecha Mov</label>
+                  <label for="txtFechaMov" class="col-3 col-form-label">Fecha Mov</label>
                   <div class="col-4">
-                    <input id="fechaMov" name="fechaMov" type="date" class="form-control">
+                    <input id="txtFechaMov" name="txtFechaMov" type="date" class="form-control">
                   </div>
 
                 </div>
@@ -207,19 +206,9 @@
 
                 <div class="row mb-3">
                   <label for="txtMonMov" class="col-3 col-form-label">Monto</label>
-                  <div class="col-6">
+                  <div class="col-4">
                     <input id="txtMonMov" name="txtMonMov" type="text" class="form-control text-end"
                       oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="15" inputmode="numeric">
-                  </div>
-                </div>
-
-                <div class="input-group mb-3">
-                  <label class="col-sm-3 col-form-label"></label>
-                  <div class="col-sm-6">
-
-                    <button id="btnActualizar" class="btn btn-success me-3">Actualizar</button>
-                    <button id="btnCancelar" class="btn btn-dark">Cancelar</button>
-
                   </div>
                 </div>
 
@@ -231,8 +220,8 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary">Guardar cambios</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
         </div>
       </div>
     </div>
