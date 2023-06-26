@@ -74,7 +74,7 @@
       <div class="mb-lg-3">
 
         <div class="col-6">
-          <h2>Consulta Movimientos Caja</h2>
+          <h2>Consulta Estado Fondo</h2>
 
 
         </div><!-- End Page Title -->
@@ -114,94 +114,43 @@
           <div class="card">
             <div class="card-body">
 
-              <form id="estadoCaja_form" method="POST" autocomplete="off">
+              <form id="estadoFondo_form" method="POST" autocomplete="off">
 
-
-                <div class="row mb-3">
-                  <label class="col-lg-3 col-form-label">Caja</label>
-                  <div class="col-lg-8">
-                    <select id="cbUsuarios" class="form-select" aria-label="Default select example" autofocus>
-                    </select>
-                  </div>
-                </div>
 
                 <div class="row mb-3">
                   <label class="col-lg-3 col-form-label">Fondo</label>
                   <div class="col-lg-8">
-                    <select id="cbFondos" class="form-select" aria-label="Default select example">
+                    <select id="cbFondos" class="form-select" aria-label="Default select example" autofocus>
+
                     </select>
                   </div>
                 </div>
-
-
-                <div class="row mb-3 mt-2">
-                  <label for="txtFechaIni" class="col-sm-3 col-form-label">Fecha Inicial</label>
-                  <div class="col-sm-5">
-                    <input id="txtFechaIni" name="txtFechaIni" type="date" class="form-control">
+               
+                <div class="row mb-3">
+                  <label for="txtMonFondo" class="col-sm-6 col-form-label text-end">Monto Fondo</label>
+                  <div class="col-sm-4">
+                    <input id="txtMonFondo" name="txtMontoFondo" type="text" class="form-control text-end" disabled>
                   </div>
                 </div>
-
-                <div class="row mb-3 mt-2">
-                  <label for="txtFechaFin" class="col-sm-3 col-form-label">Fecha Final</label>
-                  <div class="col-sm-5">
-                    <input id="txtFechaFin" name="txtFechaFin" type="date" class="form-control">
-                  </div>
-                  <div class="col-3">
-                    <button id="btnConsultar" class="btn btn-dark">Consultar</button>
+                <div class="row mb-3">
+                  <label for="txtMonCreditos" class="col-sm-6 col-form-label text-end">Monto Cartera Credito</label>
+                  <div class="col-sm-4">
+                    <input id="txtMonCreditos" name="txtMonCreditos" type="text" class="form-control text-end" disabled>
                   </div>
                 </div>
 
                 <div class="row mb-3">
-                  <label for="txtSaldoIni" class="col-sm-6 col-form-label text-end">Saldo Inicial</label>
+                  <label for="txtMonCaja" class="col-sm-6 col-form-label text-end">Monto en Cajas</label>
                   <div class="col-sm-4">
-                    <input id="txtSaldoIni" name="txtSaldoIni" type="text" class="form-control text-end" disabled>
+                    <input id="txtMonCaja" name="txtMonCaja" type="text" class="form-control text-end" disabled>
                   </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="txtTotMov" class="col-sm-6 col-form-label text-end">Monto Movimientos</label>
-                  <div class="col-sm-4">
-                    <input id="txtTotMov" name="txtTotMov" type="text" class="form-control text-end" disabled>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="txtSaldoFin" class="col-sm-6 col-form-label text-end">Saldo Final</label>
-                  <div class="col-sm-4">
-                    <input id="txtSaldoFin" name="txtSaldoFin" type="text" class="form-control text-end" disabled>
-                  </div>
-                </div>
+                </div>              
 
               </form>
 
             </div>
           </div>
-        </div>
-
-        <!-- Div del data teble-->
-        <div class="col-lg-7">
-
-          <div class="card">
-            <div class="card-body">
-              <h5>Detalle Movimientos</h5>
-
-              <div class="table-responsive">
-                <table id="tblMovCaja" class="table table-primary">
-                  <thead>
-                    <tr>
-                      <th class="col-2 text-center">Fecha</th>
-                      <th class="col-2">Doc. Ref</th>
-                      <th class="">Detalle</th>
-                      <th class="col-3 text-end">Monto</th>                      
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+        </div>      
 
       </div>
 
@@ -210,7 +159,7 @@
   </div>
 
   <!-- ======= Footer ======= -->
-  <footer >
+  <footer>
     <div class="text-center">
       &copy; Copyright <strong><span>Seccab Software</span></strong>. Derechos Reservados
     </div>
@@ -225,7 +174,7 @@
 
   <!-- Archivo JS pagina -->
 
-  <script src="./js/consultaMovCaja.js"></script>
+  <script src="./js/consultaEstadoFondo.js"></script>
 
 </body>
 

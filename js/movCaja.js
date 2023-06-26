@@ -41,7 +41,7 @@ $(function(){
             {
                data: 'fecMov',
                className: 'dt-center',
-               width: '10%'
+               width: '20%'
             },
             {
                data: 'docRef',

@@ -1,55 +1,42 @@
-$(function(){
+$(function () {
 
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
-
-   var listaMovFondo = [];
+  
+   var listaSaldosCaja = [];
  
 
-   const $cbFondos = $('#cbFondos');  
+   const $cbUsuarios = $('#cbUsuarios');
+   
+   const $txtSaldoTot = $('#txtSaldoTot').val('0'); 
 
-   const $txtFechaIni = $('#txtFechaIni').val(obtieneFechaActual());
-   const $txtFechaFin = $('#txtFechaFin').val(obtieneFechaActual());
-
-   const $txtSaldoIni = $('#txtSaldoIni').val('0');
-   const $txtTotMov = $('#txtTotMov').val('0');
-   const $txtSaldoFin = $('#txtSaldoFin').val('0');
-
-   const $btnConsultar = $('#btnConsultar');
-
-   var $tblMovFondo;
-
-
-
+  
+   var $tblSaldosCaja;
    ini_componentes();
-   llenaComboFondos();
-
+  
+   llenaComboUsuarios();
 
 
    function ini_componentes() {
 
 
-      $tblMovFondo = $('#tblMovFondo').DataTable({
+      $tblSaldosCaja = $('#tblSaldosCaja').DataTable({
 
          destroy: true,
-         data: listaMovFondo,
+         data: listaSaldosCaja,
          columns: [
             {
-               data: 'fecMov',
+               data: 'codFondo',
                className: 'dt-center',
-               width: '20%'
+               width: '10%'
             },
             {
-               data: 'docRef',
+               data: 'nomFondo',
 
             },
+           
             {
-               data: 'detMov',
-
-            },
-
-            {
-               data: 'monMov',
+               data: 'salFondo',
                width: '20%',
                className: 'dt-right',
                render: DataTable.render.number(',', '.'),
@@ -63,51 +50,45 @@ $(function(){
 
       }); /// Fin de creacion de datatable
 
-      $tblMovFondo.clear().draw();
+      $tblSaldosCaja.clear().draw();
 
 
-      $cbFondos.change(function () {
+     
 
-         $tblMovFondo.clear().draw();
-         listaMovFondo = [];
+      $cbUsuarios.change(function () {
 
-      });
+         $tblSaldosCaja.clear().draw();
+         listaSaldosCaja = [];
 
-      
-      $btnConsultar.click(function (e) {
+         let _codUsuario = $(":selected", $('#cbUsuarios')).val();
 
-         e.preventDefault();
+         if (_codUsuario == 0) {
 
-         let _codFondo = $(":selected", $('#cbFondos')).val();
-
-         if (_codFondo == 0) {
-
-            $cbFondos.focus();
-            sweetAlert({ title: "Debe seleccionar un fondo", type: "error" });
+            $cbUsuarios.focus();
+            sweetAlert({ title: "Debe seleccionar un usuario", type: "error" });
             return;
-
          }
 
-         consultaMovimientos();
+         consultaSaldos();
 
       });
 
    }
 
 
-   function llenaComboFondos() {
+   function llenaComboUsuarios() {
 
       $('#spinner').show();
 
       let req = [];
       req.w = 'apiPresto';
-      req.r = 'lista_fondos';
+      req.r = 'lista_usuarios';
 
-      $cbFondos.empty();
+      $cbUsuarios.empty();
 
-      $cbFondos.append($("<option>", {
+      $cbUsuarios.append($("<option>", {
          value: 0,
-         text: 'Seleccione un Fondo'
+         text: 'Seleccione un Usuario'
       }));
 
       api_postRequest(
@@ -117,17 +98,16 @@ $(function(){
 
             if (data.resp != null) {
 
-               let _listaFondos = data.resp.listaFondos;
+               let _listaUsuarios = data.resp.listaUsu;
 
+               for (item in _listaUsuarios) {
 
-               for (item in _listaFondos) {
+                  let _codUsu = _listaUsuarios[item]['cod_usuario'];
+                  let _nomUsu = _listaUsuarios[item]['nom_usuario'];
 
-                  let _codFondo = _listaFondos[item]['cod_fondo'];
-                  let _nomFondo = _listaFondos[item]['nom_fondo'];
-
-                  $cbFondos.append($("<option>", {
-                     value: _codFondo,
-                     text: _nomFondo
+                  $cbUsuarios.append($("<option>", {
+                     value: _codUsu,
+                     text: _nomUsu
                   }));
                }
 
@@ -143,34 +123,33 @@ $(function(){
    }
 
 
-   function consultaMovimientos() {
+   function consultaSaldos() {
+
+      return;
 
 
       $('#spinner').show();
 
       let req = [];
       req.w = 'apiPresto';
-      req.r = 'consulta_periodo_mov_fondo';
-      req.cod_fondo = $(":selected", $('#cbFondos')).val();     
-      req.fecha_inicial = $txtFechaIni.val();
-      req.fecha_final = $txtFechaFin.val();
+      req.r = 'consulta_saldos_caja';    
+      req.cod_usuario = $(":selected", $('#cbUsuarios')).val();
+     
 
-
-      $tblMovFondo.clear().draw();
+      $tblSaldosCaja.clear().draw();
 
       api_postRequest(
          req,
          function (data) {
             $('#spinner').hide();
-            //console.log(data);
+            console.log(data);
 
             if (data.resp != null) {
 
-               let _saldoIni = Number.parseInt(data.resp.saldo_inicial);
 
                let _movimientos = data.resp.movimientos;
 
-               listaMovFondo = [];
+               listaMovCaja = [];
 
                let _montoMov = 0;
 
@@ -189,7 +168,7 @@ $(function(){
                   //mov.monMov = _movimientos[i].mon_mov;
                   _montoMov = _montoMov + Number.parseInt(_movimientos[i].mon_mov);
 
-                  listaMovFondo.push(mov);
+                  listaMovCaja.push(mov);
                }
 
                _saldoFin = _saldoIni + _montoMov;
@@ -199,7 +178,7 @@ $(function(){
                $txtSaldoFin.val(nf_entero.format(_saldoFin));
 
 
-               $tblMovFondo.rows.add(listaMovFondo).draw();
+               $tblMovCaja.rows.add(listaMovCaja).draw();
             }
 
          },
@@ -209,12 +188,5 @@ $(function(){
          }
       );
    }
-
-
-
-
-  
-
-   
 
 });

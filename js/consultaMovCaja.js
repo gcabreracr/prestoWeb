@@ -1,12 +1,13 @@
-$(function(){
+$(function () {
 
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
-
-   var listaMovFondo = [];
+  
+   var listaMovCaja = [];
  
 
-   const $cbFondos = $('#cbFondos');  
+   const $cbFondos = $('#cbFondos');
+   const $cbUsuarios = $('#cbUsuarios');
 
    const $txtFechaIni = $('#txtFechaIni').val(obtieneFechaActual());
    const $txtFechaFin = $('#txtFechaFin').val(obtieneFechaActual());
@@ -17,22 +18,22 @@ $(function(){
 
    const $btnConsultar = $('#btnConsultar');
 
-   var $tblMovFondo;
+   var $tblMovCaja;
 
 
 
    ini_componentes();
    llenaComboFondos();
-
+   llenaComboUsuarios();
 
 
    function ini_componentes() {
 
 
-      $tblMovFondo = $('#tblMovFondo').DataTable({
+      $tblMovCaja = $('#tblMovCaja').DataTable({
 
          destroy: true,
-         data: listaMovFondo,
+         data: listaMovCaja,
          columns: [
             {
                data: 'fecMov',
@@ -63,22 +64,37 @@ $(function(){
 
       }); /// Fin de creacion de datatable
 
-      $tblMovFondo.clear().draw();
+      $tblMovCaja.clear().draw();
 
 
       $cbFondos.change(function () {
 
-         $tblMovFondo.clear().draw();
-         listaMovFondo = [];
+         $tblMovCaja.clear().draw();
+         listaMovCaja = [];
 
       });
 
-      
+      $cbUsuarios.change(function () {
+
+         $tblMovCaja.clear().draw();
+         listaMovCaja = [];
+
+
+      });
+
       $btnConsultar.click(function (e) {
 
          e.preventDefault();
 
          let _codFondo = $(":selected", $('#cbFondos')).val();
+         let _codUsuario = $(":selected", $('#cbUsuarios')).val();
+
+         if (_codUsuario == 0) {
+
+            $cbUsuarios.focus();
+            sweetAlert({ title: "Debe seleccionar un usuario", type: "error" });
+            return;
+         }
 
          if (_codFondo == 0) {
 
@@ -91,6 +107,8 @@ $(function(){
          consultaMovimientos();
 
       });
+
+
 
    }
 
@@ -143,6 +161,53 @@ $(function(){
    }
 
 
+   function llenaComboUsuarios() {
+
+      $('#spinner').show();
+
+      let req = [];
+      req.w = 'apiPresto';
+      req.r = 'lista_usuarios';
+
+      $cbUsuarios.empty();
+
+      $cbUsuarios.append($("<option>", {
+         value: 0,
+         text: 'Seleccione un Usuario'
+      }));
+
+      api_postRequest(
+         req,
+         function (data) {
+            $('#spinner').hide();
+
+            if (data.resp != null) {
+
+               let _listaUsuarios = data.resp.listaUsu;
+
+               for (item in _listaUsuarios) {
+
+                  let _codUsu = _listaUsuarios[item]['cod_usuario'];
+                  let _nomUsu = _listaUsuarios[item]['nom_usuario'];
+
+                  $cbUsuarios.append($("<option>", {
+                     value: _codUsu,
+                     text: _nomUsu
+                  }));
+               }
+
+
+            }
+         },
+         function (data) {
+            $('#spinner').hide();
+            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+         }
+      );
+
+   }
+
+
    function consultaMovimientos() {
 
 
@@ -150,19 +215,20 @@ $(function(){
 
       let req = [];
       req.w = 'apiPresto';
-      req.r = 'consulta_periodo_mov_fondo';
-      req.cod_fondo = $(":selected", $('#cbFondos')).val();     
+      req.r = 'consulta_periodo_mov_caja';
+      req.cod_fondo = $(":selected", $('#cbFondos')).val();
+      req.cod_usuario = $(":selected", $('#cbUsuarios')).val();
       req.fecha_inicial = $txtFechaIni.val();
       req.fecha_final = $txtFechaFin.val();
 
 
-      $tblMovFondo.clear().draw();
+      $tblMovCaja.clear().draw();
 
       api_postRequest(
          req,
          function (data) {
             $('#spinner').hide();
-            //console.log(data);
+            console.log(data);
 
             if (data.resp != null) {
 
@@ -170,7 +236,7 @@ $(function(){
 
                let _movimientos = data.resp.movimientos;
 
-               listaMovFondo = [];
+               listaMovCaja = [];
 
                let _montoMov = 0;
 
@@ -189,7 +255,7 @@ $(function(){
                   //mov.monMov = _movimientos[i].mon_mov;
                   _montoMov = _montoMov + Number.parseInt(_movimientos[i].mon_mov);
 
-                  listaMovFondo.push(mov);
+                  listaMovCaja.push(mov);
                }
 
                _saldoFin = _saldoIni + _montoMov;
@@ -199,7 +265,7 @@ $(function(){
                $txtSaldoFin.val(nf_entero.format(_saldoFin));
 
 
-               $tblMovFondo.rows.add(listaMovFondo).draw();
+               $tblMovCaja.rows.add(listaMovCaja).draw();
             }
 
          },
@@ -209,12 +275,5 @@ $(function(){
          }
       );
    }
-
-
-
-
-  
-
-   
 
 });
