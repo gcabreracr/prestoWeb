@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>PRESTO</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="./img/Presto.ico" rel="icon">
+  <!--link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"-->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+
+
+  <link rel="stylesheet" href="./css/presto.css">
+
+
+  <!-- DataTables CSS files-->
+  <link rel="stylesheet" type="text/css" href="../assets/datatables/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="../assets/Buttons-2.3.6/css/buttons.dataTables.min.css">
+
+
+  <!-- Sweet Alert Files-->
+  <link type="text/css" href="../assets/css/sweetalert.css" rel="stylesheet" />
+  <script src="../assets/js/sweetalert.min.js"></script>
+
+
+  <!-- jQuery js-->
+  <script src="../assets/js/jquery-3.6.3.min.js"></script>
+  <script src="../assets/datatables/js/jquery.dataTables.min.js"></script>
+  <!--script src="../assets/Buttons-2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="../assets/Buttons-2.3.6/js/buttons.html5.min.js"></script-->
+
+
+  <!-- App SIFCCO JS -->
+  <script src="./js/prestoMain.js"></script>
+
+
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header class="bg-light sticky-top">
+
+    <div id="header">
+
+      <script>
+
+        checkInicioSesion();
+
+        addHeader();
+
+      </script>
+
+    </div>
+
+    <div class="container">
+
+      <div class="row mb-2">
+
+        <div class="col-4">
+          <h2>Registro Prestamos</h2>
+
+
+        </div><!-- End Page Title -->
+
+        <!-- Barra botones -->
+        <div class="col-8 d-flex justify-content-end">
+
+          <button id="btnGuardar" class="btn btn-primary me-2">Guardar</i></button>
+          <button id="btnAnular" class="btn btn-warning me-2">Anular</i></button>
+          <button id="btnCancelar" class="btn btn-dark">Cancelar</i></button>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </header><!-- End Header -->
+
+
+  <div class="container">
+
+    <div class="">
+
+      <div id="spinner" class="text-center" style="display: none">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+
+
+      <div class="row d-flex justify-content-center">
+
+        <!-- Div del formulario-->
+        <div class="col-md-8">
+
+          <div class="card">
+            <div class="card-body">
+
+              <form id="regPtmo_form" method="POST" autocomplete="off">
+
+
+                <div class="row mb-3">
+                  <label for="txtNumPtmo" class="col-sm-3 col-form-label"># Tarjeta</label>
+                  <div class="col-sm-3 me-2">
+                    <input id="txtNumPtmo" name="txtNumPtmo" type="text" class="form-control"
+                      oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="10" inputmode="numeric"
+                      autofocus>
+                  </div>
+                  <div class="col-3">
+                    <button id="btnBuscaPtmo" class="btn btn-light" data-bs-toggle="modal"
+                      data-bs-target="#modBuscaPtmo"><i class="bi bi-search" data-bs-toggle="tooltip"
+                        title="Buscar"></i></button>
+
+                  </div>
+
+                </div>
+
+                <div class="row mb-3">
+                  <label for="txtCodCliente" class="col-sm-3 col-form-label">Código Cliente</label>
+                  <div class="col-sm-3 me-2">
+                    <input id="txtCodCliente" name="txtCodCliente" type="text" class="form-control"
+                      oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="6" inputmode="numeric">
+                  </div>
+                  <div class="col-3">
+                    <button id="btnBuscaCli" class="btn btn-light" data-bs-toggle="modal"
+                      data-bs-target="#modBuscaCli"><i class="bi bi-search" data-bs-toggle="tooltip"
+                        title="Buscar"></i></button>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="txtNomCli" class="col-sm-3 col-form-label">Nombre</label>
+                  <div class="col-sm-9">
+                    <input id="txtNomCli" name="txtNomCli" type="text" class="form-control" disabled>
+                  </div>
+                </div>
+
+                <div class="row mb-3 mt-2">
+                  <label for="txtFecPtmo" class="col-sm-3 col-form-label">Fecha</label>
+                  <div class="col-sm-3">
+                    <input id="txtFecPtmo" name="txtFechaIni" type="date" class="form-control">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Caja</label>
+                  <div class="col-sm-6">
+                    <select id="cbUsuarios" class="form-select" aria-label="Default select example">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Fondo</label>
+                  <div class="col-sm-6">
+                    <select id="cbFondos" class="form-select" aria-label="Default select example">
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Producto</label>
+                  <div class="col-sm-6">
+                    <select id="cbProductos" class="form-select" aria-label="Default select example">
+                    </select>
+                  </div>
+                </div>
+
+
+
+                <div class="row">
+
+                  <div class="col-6">
+
+
+
+
+
+                    <div class="row mb-3">
+                      <label for="txtMonPtmo" class="col-sm-6 col-form-label text-end">Monto Prestamo</label>
+                      <div class="col-sm-6">
+                        <input id="txtMonPtmo" name="txtMonPtmo" type="text" class="form-control text-end">
+                      </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                      <label for="txtTotMov" class="col-sm-6 col-form-label text-end">Monto Ints</label>
+                      <div class="col-sm-6">
+                        <input id="txtTotMov" name="txtTotMov" type="text" class="form-control text-end" disabled>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="txtSaldoFin" class="col-sm-6 col-form-label text-end">Monto Total</label>
+                      <div class="col-sm-6">
+                        <input id="txtSaldoFin" name="txtSaldoFin" type="text" class="form-control text-end" disabled>
+                      </div>
+                    </div>
+
+
+                  </div>
+                  
+                  <div class="col-6">
+
+
+                    <div class="row mb-3">
+                      <label for="txtMonPtmo" class="col-sm-6 col-form-label text-end">Numero Cuotas</label>
+                      <div class="col-sm-6">
+                        <input id="txtMonPtmo" name="txtMonPtmo" type="text" class="form-control text-end">
+                      </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                      <label for="txtTotMov" class="col-sm-6 col-form-label text-end">Monto Cuota</label>
+                      <div class="col-sm-6">
+                        <input id="txtTotMov" name="txtTotMov" type="text" class="form-control text-end" disabled>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="cbForPago" class="col-sm-6 col-form-label text-end">Forma Pago</label>
+                      <div class="col-sm-6">
+                        <select id="cb>ForPago" class="form-select" aria-label="Default select example">
+                        </select>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+              </form>
+
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <!-- Div del data teble-->
+      <div class="col-md-4">
+
+        <div class="card">
+          <div class="card-body">
+            <h5>Detalle Cuotas</h5>
+
+            <div class="table-responsive">
+              <table id="tblCuotas" class="table table-primary">
+                <thead>
+                  <tr>
+                    <th class="col-2 text-center">#</th>
+                    <th class="text-center">Fecha</th>
+                    <th class="text-end">Monto</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- End #main -->
+
+  </div>
+
+  <!-- Modal Buscar Prestamo-->
+  <div class="modal fade" id="modBuscaPtmo" tabindex="-1" aria-labelledby="modBuscaPtmoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modBuscaPtmoLabel">Buscar Cliente</h5>
+          <button id="btnCerrarModPtmo" type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="tblPtmos" class="table table-light" width="100%">
+                  <thead>
+                    <tr>
+                      <th class="col-2">Numero</th>
+                      <th class="">Cliente</th>
+                      <th class="col-1"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--div class="modal-footer">
+            <button id="btnSelCliMod" type="button" class="btn btn-primary">Seleccionar</button>
+          </div-->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Buscar Cliente-->
+  <div class="modal fade" id="modBuscaCli" tabindex="-1" aria-labelledby="modBuscaCliLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modBuscaCliLabel">Buscar Cliente</h5>
+          <button id="btnCerrarModCli" type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="tblClientes" class="table table-light" width="100%">
+                  <thead>
+                    <tr>
+                      <th class="col-9">Nombre</th>
+                      <th class="col-3"></th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--div class="modal-footer">
+          <button id="btnSelCliMod" type="button" class="btn btn-primary">Seleccionar</button>
+        </div-->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======= Footer ======= -->
+  <footer>
+    <div class="text-center">
+      &copy; Copyright <strong><span>Seccab Software</span></strong>. Derechos Reservados
+    </div>
+
+  </footer><!-- End Footer -->
+
+
+
+  <!-- Vendor JS Files -->
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+  <!-- Archivo JS pagina -->
+
+  <script src="./js/registroPtmos.js"></script>
+
+</body>
+
+</html>

@@ -117,10 +117,10 @@
               <form id="actClientes_form" method="post" autocomplete="off">
 
                 <div class="row mb-3">
-                  <label for="txtCodCliente" class="col-3 col-form-label me-2"># Cédula</label>
-                  <div class="col-4 me-2">
+                  <label for="txtCodCliente" class="col-sm-3 col-form-label">Código Cliente</label>
+                  <div class="col-sm-3 me-2">
                     <input id="txtCodCliente" name="txtCodCliente" type="text" class="form-control"
-                      oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="15" inputmode="numeric"
+                      oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="6" inputmode="numeric"
                       autofocus>
                   </div>
                   <div class="col-3">
@@ -131,6 +131,16 @@
                   </div>
 
                 </div>
+
+
+                <div class="row mb-3">
+                  <label for="txtIdCliente" class="col-3 col-form-label"># Cédula</label>
+                  <div class="col-sm-4 me-2">
+                    <input id="txtIdCliente" name="txtIdCliente" type="text" class="form-control"
+                      oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="15" inputmode="numeric">
+                  </div>
+                </div>
+
 
                 <div class="row mb-3">
                   <label for="txtNomCliente" class="col-lg-3 col-form-label">Nombre</label>

@@ -12,9 +12,11 @@ $(function () {
     var longitud = 0.00;
     var estado = 1;
 
-    var listaClientes =[];
+    var listaClientes = [];
 
     const $txtCodCliente = $('#txtCodCliente');
+    const $txtIdCliente = $('#txtIdCliente');
+
     const $txtNomCliente = $('#txtNomCliente');
     const $txtApeCliente = $('#txtApeCliente');
 
@@ -81,15 +83,38 @@ $(function () {
 
                 if ($txtCodCliente.val().length > 0) {
 
-                    console.log('Consultando Cliente')
+                    consultaCliente();
 
-                    consultaCliente();                   
+                } else {
+
+                    nuevo = true;
+                    longitud = 0.00;
+                    latitud = 0.00;
+                    estado = 1;
+                    //limpiaCampos();
+                    activaCampos();
+                    $txtIdCliente.focus();
+
 
                 }
 
                 e.preventDefault();
             }
         });
+
+        $txtIdCliente.focus(function () {
+            $(this).select();
+
+        }).keydown(function (e) {
+            let code = e.keyCode || e.which;
+            if (code == 13 || code == 9) {
+
+                $txtNomCliente.focus();
+
+                e.preventDefault();
+            }
+        });
+
 
         $txtNomCliente.focus(function () {
             $(this).select();
@@ -171,11 +196,10 @@ $(function () {
 
             $('#modBuscaCli').modal('hide');
 
-            $txtCodCliente.val(listaClientes[fila].idCliente);
+            $txtCodCliente.val(listaClientes[fila].codCliente);
 
             consultaCliente();
 
-            //console.log(listaClientes[fila]);
 
         }); // Fin de funcion boton editar numero table
 
@@ -186,6 +210,7 @@ $(function () {
     function limpiaCampos() {
 
         $txtCodCliente.val('');
+        $txtIdCliente.val('');
         $txtNomCliente.val('');
         $txtApeCliente.val('');
         $txtSennas.val('');
@@ -196,7 +221,8 @@ $(function () {
 
 
     function inactivaCampos() {
-        //$txtNomCliente.attr('disabled','disabled');
+
+        $txtIdCliente.prop("disabled", true);
         $txtNomCliente.prop("disabled", true);
         $txtApeCliente.prop('disabled', true);
         $cbProvincias.prop('disabled', true);
@@ -208,6 +234,8 @@ $(function () {
     }
 
     function activaCampos() {
+
+        $txtIdCliente.prop("disabled", false);
         $txtNomCliente.prop("disabled", false);
         $txtApeCliente.prop('disabled', false);
         $cbProvincias.prop('disabled', false);
@@ -344,37 +372,33 @@ $(function () {
         let req = [];
         req.w = 'apiPresto';
         req.r = 'consulta_cliente';
-        req.id_cliente = $txtCodCliente.val();
+        req.cod_cliente = $txtCodCliente.val();
+        //req.id_cliente = $txtCodCliente.val();
 
         api_postRequest(req,
             function (data) {
                 $('#spinner').hide();
 
                 if (data.resp == null) {
-                    nuevo = true;
-                    longitud = 0.00;
-                    latitud = 0.00;
-                    estado = 1;
-                   
-                    activaCampos();
-                    $txtNomCliente.focus();
 
-                } else {
-
-                    nuevo = false;
-                    $txtNomCliente.val(data.resp.nom_cliente);
-                    $txtApeCliente.val(data.resp.ape_cliente);
-                    $txtSennas.val(data.resp.sennas);
-                    idProvincia = data.resp.idProvincia;
-                    idCanton = data.resp.idCanton;
-                    idDistrito = data.resp.idDistrito;
-                    latitud = data.resp.latitud;
-                    longitud = data.resp.longitud;
-                    estado = data.resp.est_cliente;                  
-                    activaCampos();
-                    $txtNomCliente.focus();
-
+                    $txtCodCliente.focus();
+                    sweetAlert({ title: "Código Cliente NO Existe", type: "error" });
+                    return;
                 }
+
+                nuevo = false;
+                $txtIdCliente.val(data.resp.id_cliente);
+                $txtNomCliente.val(data.resp.nom_cliente);
+                $txtApeCliente.val(data.resp.ape_cliente);
+                $txtSennas.val(data.resp.sennas);
+                idProvincia = data.resp.idProvincia;
+                idCanton = data.resp.idCanton;
+                idDistrito = data.resp.idDistrito;
+                latitud = data.resp.latitud;
+                longitud = data.resp.longitud;
+                estado = data.resp.est_cliente;
+                activaCampos();
+                $txtIdCliente.focus();
 
                 llenaComboProvincias();
 
@@ -439,8 +463,10 @@ $(function () {
         let req = [];
         req.w = 'apiPresto';
         req.r = 'actualiza_cliente';
-        //req.nuevo = nuevo;
-        req.id_cliente = $txtCodCliente.val();
+
+        req.nuevo = nuevo;
+        req.cod_cliente = $txtCodCliente.val();
+        req.id_cliente = $txtIdCliente.val();
         req.nom_cliente = $txtNomCliente.val();
         req.ape_cliente = $txtApeCliente.val();
         req.idProvincia = $(":selected", $('#cbProvincias')).val();
@@ -501,8 +527,8 @@ $(function () {
 
                     for (let i = 0; i < clientes.length; i++) {
                         let cliente = new Object();
-                        cliente.idCliente = clientes[i].id_cliente;
-                        cliente.nomCliente = clientes[i].ape_cliente +", "+clientes[i].nom_cliente;
+                        cliente.codCliente = clientes[i].cod_cliente;
+                        cliente.nomCliente = clientes[i].ape_cliente + ", " + clientes[i].nom_cliente;
 
                         listaClientes.push(cliente);
                     }
