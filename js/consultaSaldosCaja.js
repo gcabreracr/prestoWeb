@@ -2,18 +2,18 @@ $(function () {
 
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
-  
+
    var listaSaldosCaja = [];
- 
+
 
    const $cbUsuarios = $('#cbUsuarios');
-   
-   const $txtSaldoTot = $('#txtSaldoTot').val('0'); 
 
-  
+   const $txtSaldoTot = $('#txtSaldoTot').val('0');
+
+
    var $tblSaldosCaja;
    ini_componentes();
-  
+
    llenaComboUsuarios();
 
 
@@ -26,17 +26,17 @@ $(function () {
          data: listaSaldosCaja,
          columns: [
             {
-               data: 'codFondo',
+               data: 'codigo',
                className: 'dt-center',
                width: '10%'
             },
             {
-               data: 'nomFondo',
+               data: 'nombre',
 
             },
-           
+
             {
-               data: 'salFondo',
+               data: 'saldo',
                width: '20%',
                className: 'dt-right',
                render: DataTable.render.number(',', '.'),
@@ -53,12 +53,13 @@ $(function () {
       $tblSaldosCaja.clear().draw();
 
 
-     
+
 
       $cbUsuarios.change(function () {
 
          $tblSaldosCaja.clear().draw();
-         listaSaldosCaja = [];
+         //listaSaldosCaja = [];
+         $txtSaldoTot.val('0');
 
          let _codUsuario = $(":selected", $('#cbUsuarios')).val();
 
@@ -125,16 +126,14 @@ $(function () {
 
    function consultaSaldos() {
 
-      return;
-
 
       $('#spinner').show();
 
       let req = [];
       req.w = 'apiPresto';
-      req.r = 'consulta_saldos_caja';    
+      req.r = 'consulta_saldos_caja';
       req.cod_usuario = $(":selected", $('#cbUsuarios')).val();
-     
+
 
       $tblSaldosCaja.clear().draw();
 
@@ -142,44 +141,35 @@ $(function () {
          req,
          function (data) {
             $('#spinner').hide();
-            console.log(data);
+            //console.log(data);
+
+            let _saldoTotal = 0;
+            listaSaldosCaja = [];
 
             if (data.resp != null) {
 
+               let _saldos = data.resp.saldos;
 
-               let _movimientos = data.resp.movimientos;
+               for (let i = 0; i < _saldos.length; i++) {
+                  
+                  let fondo = new Object();
 
-               listaMovCaja = [];
+                  fondo.codigo = _saldos[i].cod_fondo;
+                  fondo.nombre = _saldos[i].nom_fondo;
 
-               let _montoMov = 0;
+                  let _saldo = Number.parseInt(_saldos[i].saldo);
+                  fondo.saldo = _saldo;
 
-               for (let i = 0; i < _movimientos.length; i++) {
-                  let mov = new Object();
-                  mov.numConse = _movimientos[i].num_conse;
+                  _saldoTotal += _saldo;                
 
-                  let a_fecha = (_movimientos[i].fec_mov).split('-');
-                  let fecha_liq = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
-                  mov.fecMov = fecha_liq;
-                  //mov.fecMov = _movimientos[i].fec_mov;
-                  mov.docRef = _movimientos[i].doc_refe;
-                  mov.detMov = _movimientos[i].det_mov;
-
-                  mov.monMov = Number.parseInt(_movimientos[i].mon_mov);
-                  //mov.monMov = _movimientos[i].mon_mov;
-                  _montoMov = _montoMov + Number.parseInt(_movimientos[i].mon_mov);
-
-                  listaMovCaja.push(mov);
+                  listaSaldosCaja.push(fondo);
                }
-
-               _saldoFin = _saldoIni + _montoMov;
-
-               $txtSaldoIni.val(nf_entero.format(_saldoIni));
-               $txtTotMov.val(nf_entero.format(_montoMov));
-               $txtSaldoFin.val(nf_entero.format(_saldoFin));
-
-
-               $tblMovCaja.rows.add(listaMovCaja).draw();
+              
             }
+
+            $tblSaldosCaja.rows.add(listaSaldosCaja).draw();
+
+            $txtSaldoTot.val(nf_entero.format(_saldoTotal));
 
          },
          function (data) {

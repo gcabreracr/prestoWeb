@@ -1,4 +1,4 @@
-$(function(){
+$(function () {
 
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
@@ -11,9 +11,9 @@ $(function(){
    const $cbFondos = $('#cbFondos');
    const $cbUsuarios = $('#cbUsuarios');
    const $btnNuevoMov = $('#btnNuevoMov').click(function (e) {
-      
+
       e.preventDefault();
-      
+
    });
 
    const $txtFechaMov = $('#txtFechaMov').val(obtieneFechaActual());
@@ -45,6 +45,7 @@ $(function(){
             },
             {
                data: 'docRef',
+               width: '20%'
 
             },
             {
@@ -80,16 +81,20 @@ $(function(){
       $('#tblMovCaja tbody').on('click', 'button.editar', function () {
 
          //let data = $tblMovFondo.row($(this).parents('tr')).data();
-         let fila = $tblMovCaja.row($(this).parents('tr')).index();     
+         let fila = $tblMovCaja.row($(this).parents('tr')).index();
 
-        $txtFechaMov.val(listaMovCaja[fila].fecMov);
-        $txtDocRef.val(listaMovCaja[fila].docRef);
-        $txtDetalle.val(listaMovCaja[fila].detMov);
-        $txtMonMov.val(nf_entero.format(listaMovCaja[fila].monMov));
-        numConse = listaMovCaja[fila].numConse;
-        nuevo = false;
+         let a_fecha = (listaMovCaja[fila].fecMov).split('/');
+         let fecha_mov = a_fecha[2] + '-' + a_fecha[1] + '-' + a_fecha[0];
 
-        $('#modForCaja').modal('show');
+         $txtFechaMov.val(fecha_mov);
+
+         $txtDocRef.val(listaMovCaja[fila].docRef);
+         $txtDetalle.val(listaMovCaja[fila].detMov);
+         $txtMonMov.val(nf_entero.format(listaMovCaja[fila].monMov));
+         numConse = listaMovCaja[fila].numConse;
+         nuevo = false;
+
+         $('#modForCaja').modal('show');
 
 
 
@@ -104,7 +109,7 @@ $(function(){
          numConse = listaMovCaja[fila].numConse;
 
          anulaMovimiento();
-     
+
 
 
       }); // Fin de funcion boton eliminar numero table
@@ -157,11 +162,11 @@ $(function(){
       });
 
       $cbFondos.change(function () {
-    
+
          let _codFondo = $(":selected", $('#cbFondos')).val();
          let _codUsuario = $(":selected", $('#cbUsuarios')).val();
 
-         if ( _codFondo != 0 && _codUsuario !=0) {
+         if (_codFondo != 0 && _codUsuario != 0) {
             consultaMovimientos();
          } else {
 
@@ -177,7 +182,7 @@ $(function(){
          let _codFondo = $(":selected", $('#cbFondos')).val();
          let _codUsuario = $(":selected", $('#cbUsuarios')).val();
 
-         if ( _codFondo != 0 && _codUsuario !=0) {
+         if (_codFondo != 0 && _codUsuario != 0) {
             consultaMovimientos();
          } else {
 
@@ -293,7 +298,7 @@ $(function(){
 
    }
 
-   
+
    function llenaComboUsuarios() {
 
       $('#spinner').show();
@@ -370,9 +375,10 @@ $(function(){
                   let mov = new Object();
                   mov.numConse = _movimientos[i].num_conse;
 
-                  //let a_fecha = (_movimientos[i].fec_mov).split('-');
-                  //let fecha_liq = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
-                  mov.fecMov = _movimientos[i].fec_mov;
+                  let a_fecha = (_movimientos[i].fec_mov).split('-');
+                  let fecha_liq = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
+                  
+                  mov.fecMov = fecha_liq;
                   mov.docRef = _movimientos[i].doc_refe;
                   mov.detMov = _movimientos[i].detalle;
 
@@ -398,7 +404,7 @@ $(function(){
 
    function guardaMovimiento() {
 
-    
+
       $('#spinner').show();
 
       let req = [];
@@ -418,7 +424,7 @@ $(function(){
          function (data) {
             $('#spinner').hide();
 
-            $('#modForCaja').modal('hide');          
+            $('#modForCaja').modal('hide');
             consultaMovimientos();
             let msg = data.resp.msg;
             sweetAlert({ title: msg, type: "success" });
@@ -431,10 +437,10 @@ $(function(){
       );
 
    }
-   
+
    function anulaMovimiento() {
 
-    
+
       $('#spinner').show();
 
       let req = [];
@@ -446,7 +452,7 @@ $(function(){
          req,
          function (data) {
             $('#spinner').hide();
-           
+
             consultaMovimientos();
             let msg = data.resp.msg;
             sweetAlert({ title: msg, type: "success" });

@@ -38,10 +38,11 @@ $(function () {
             {
                data: 'fecMov',
                className: 'dt-center',
-               width: '10%'
+               width: '20%'
             },
             {
                data: 'docRef',
+               width: '20%'
 
             },
             {
@@ -77,16 +78,21 @@ $(function () {
       $('#tblMovFondo tbody').on('click', 'button.editar', function () {
 
          //let data = $tblMovFondo.row($(this).parents('tr')).data();
-         let fila = $tblMovFondo.row($(this).parents('tr')).index();     
+         let fila = $tblMovFondo.row($(this).parents('tr')).index();
 
-        $txtFechaMov.val(listaMovFondo[fila].fecMov);
-        $txtDocRef.val(listaMovFondo[fila].docRef);
-        $txtDetalle.val(listaMovFondo[fila].detMov);
-        $txtMonMov.val(nf_entero.format(listaMovFondo[fila].monMov));
-        numConse = listaMovFondo[fila].numConse;
-        nuevo = false;
+         //console.log(listaMovFondo[fila].fecMov);
 
-        $('#modForFondo').modal('show');
+         let a_fecha = (listaMovFondo[fila].fecMov).split('/');
+         let fecha_mov = a_fecha[2] + '-' + a_fecha[1] + '-' + a_fecha[0];
+       
+         $txtFechaMov.val(fecha_mov);
+         $txtDocRef.val(listaMovFondo[fila].docRef);
+         $txtDetalle.val(listaMovFondo[fila].detMov);
+         $txtMonMov.val(nf_entero.format(listaMovFondo[fila].monMov));
+         numConse = listaMovFondo[fila].numConse;
+         nuevo = false;
+
+         $('#modForFondo').modal('show');
 
 
 
@@ -101,7 +107,7 @@ $(function () {
          numConse = listaMovFondo[fila].numConse;
 
          anulaMovimiento();
-     
+
 
 
       }); // Fin de funcion boton eliminar numero table
@@ -212,12 +218,6 @@ $(function () {
          e.preventDefault();
       })
 
-
-
-
-
-
-
    }
 
 
@@ -297,9 +297,11 @@ $(function () {
                   let mov = new Object();
                   mov.numConse = _movimientos[i].num_conse;
 
-                  //let a_fecha = (_movimientos[i].fec_mov).split('-');
-                  //let fecha_liq = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
-                  mov.fecMov = _movimientos[i].fec_mov;
+                  let a_fecha = (_movimientos[i].fec_mov).split('-');
+                  let fecha_liq = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
+                  mov.fecMov = fecha_liq;
+
+                  //mov.fecMov = _movimientos[i].fec_mov;
                   mov.docRef = _movimientos[i].doc_refe;
                   mov.detMov = _movimientos[i].detalle;
 
@@ -325,7 +327,7 @@ $(function () {
 
    function guardaMovimiento() {
 
-    
+
       $('#spinner').show();
 
       let req = [];
@@ -347,7 +349,7 @@ $(function () {
 
             console.log(data);
 
-            $('#modForFondo').modal('hide');          
+            $('#modForFondo').modal('hide');
             consultaMovimientos();
             let msg = data.resp.msg;
             sweetAlert({ title: msg, type: "success" });
@@ -360,10 +362,10 @@ $(function () {
       );
 
    }
-   
+
    function anulaMovimiento() {
 
-    
+
       $('#spinner').show();
 
       let req = [];
@@ -376,7 +378,7 @@ $(function () {
          function (data) {
             $('#spinner').hide();
 
-           
+
             consultaMovimientos();
             let msg = data.resp.msg;
             sweetAlert({ title: msg, type: "success" });
