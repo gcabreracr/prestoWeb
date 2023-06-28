@@ -135,9 +135,9 @@
                 </div>
 
                 <div class="row mb-3">
-                  <label for="txtCodCliente" class="col-sm-3 col-form-label">Código Cliente</label>
+                  <label for="txtCodCli" class="col-sm-3 col-form-label">Código Cliente</label>
                   <div class="col-sm-3 me-2">
-                    <input id="txtCodCliente" name="txtCodCliente" type="text" class="form-control"
+                    <input id="txtCodCli" name="txtCodCli" type="text" class="form-control"
                       oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="6" inputmode="numeric">
                   </div>
                   <div class="col-3">
@@ -156,7 +156,7 @@
 
                 <div class="row mb-3 mt-2">
                   <label for="txtFecPtmo" class="col-sm-3 col-form-label">Fecha</label>
-                  <div class="col-sm-3">
+                  <div class="col-sm-4">
                     <input id="txtFecPtmo" name="txtFechaIni" type="date" class="form-control">
                   </div>
                 </div>
@@ -204,16 +204,16 @@
 
 
                     <div class="row mb-3">
-                      <label for="txtTotMov" class="col-sm-6 col-form-label text-end">Monto Ints</label>
+                      <label for="txtMonInts" class="col-sm-6 col-form-label text-end">Monto Ints</label>
                       <div class="col-sm-6">
-                        <input id="txtTotMov" name="txtTotMov" type="text" class="form-control text-end" disabled>
+                        <input id="txtMonInts" name="txtMonInts" type="text" class="form-control text-end" disabled>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="txtSaldoFin" class="col-sm-6 col-form-label text-end">Monto Total</label>
+                      <label for="txtMonTot" class="col-sm-6 col-form-label text-end">Monto Total</label>
                       <div class="col-sm-6">
-                        <input id="txtSaldoFin" name="txtSaldoFin" type="text" class="form-control text-end" disabled>
+                        <input id="txtMonTot" name="txtMonTot" type="text" class="form-control text-end" disabled>
                       </div>
                     </div>
 
@@ -224,24 +224,26 @@
 
 
                     <div class="row mb-3">
-                      <label for="txtMonPtmo" class="col-sm-6 col-form-label text-end">Numero Cuotas</label>
+                      <label for="txtNumCuo" class="col-sm-6 col-form-label text-end">Numero Cuotas</label>
                       <div class="col-sm-6">
-                        <input id="txtMonPtmo" name="txtMonPtmo" type="text" class="form-control text-end">
+                        <input id="txtNumCuo" name="txtNumCuo" type="text" class="form-control text-end" disabled>
                       </div>
                     </div>
 
 
                     <div class="row mb-3">
-                      <label for="txtTotMov" class="col-sm-6 col-form-label text-end">Monto Cuota</label>
+                      <label for="txtMonCuo" class="col-sm-6 col-form-label text-end">Monto Cuota</label>
                       <div class="col-sm-6">
-                        <input id="txtTotMov" name="txtTotMov" type="text" class="form-control text-end" disabled>
+                        <input id="txtMonCuo" name="txtMonCuo" type="text" class="form-control text-end" disabled>
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="cbForPago" class="col-sm-6 col-form-label text-end">Forma Pago</label>
                       <div class="col-sm-6">
-                        <select id="cb>ForPago" class="form-select" aria-label="Default select example">
+                        <select id="cbForPago" class="form-select" aria-label="Default select example" disabled>
+                          <option selected value="1">Diaria</option>
+                          <option value="2">Semanal</option>
                         </select>
                       </div>
                     </div>
@@ -296,7 +298,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modBuscaPtmoLabel">Buscar Cliente</h5>
+          <h5 class="modal-title" id="modBuscaPtmoLabel">Buscar Prestamos</h5>
           <button id="btnCerrarModPtmo" type="button" class="btn-close" data-bs-dismiss="modal"
             aria-label="Close"></button>
         </div>
@@ -307,9 +309,9 @@
                 <table id="tblPtmos" class="table table-light" width="100%">
                   <thead>
                     <tr>
-                      <th class="col-2">Numero</th>
-                      <th class="">Cliente</th>
-                      <th class="col-1"></th>
+                      <th class="col-2 text-center">Numero</th>
+                      <th class="col-8">Cliente</th>
+                      <th class=""></th>
                     </tr>
                   </thead>
                   <tbody>
