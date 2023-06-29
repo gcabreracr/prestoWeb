@@ -64,16 +64,25 @@ $(function () {
             {
                data: 'numCuota',
                className: 'dt-center',
-               width: '20%'
+               width: '10%'
             },
             {
                data: 'fecCuota',
+               className: 'dt-center',
+               width: '30%'
 
+            },
+            {
+               data: 'monCuota',
+               width: '30%',
+               className: 'dt-right',
+               render: DataTable.render.number(',', '.'),
+               searchable: false
             },
 
             {
-               data: 'salCuota',
-               width: '20%',
+               data: 'salPtmo',
+               width: '30%',
                className: 'dt-right',
                render: DataTable.render.number(',', '.'),
                searchable: false
@@ -234,26 +243,24 @@ $(function () {
 
                console.log('Registrando nuevo prestamo');
 
-               activaCampos();
+
 
                nuevo = true;
-               $txtCodCli.val('');
-               $txtNomCli.val('');
+               document.forms.regPtmo_form.reset();
                $txtFecPtmo.val(obtieneFechaActual());
                $txtMonPtmo.val('0');
                $txtMonInts.val('0');
                $txtMonTot.val('0');
                $txtNumCuo.val('0');
                $txtMonCuo.val('0');
-
-               $("#cbUsuarios option[value='" + codUsuario + "']").attr("selected", true);
-               $("#cbForPago option[value='" + 1 + "']").attr("selected", true);
-               $("#cbFondos option[value='" + 0 + "']").attr("selected", true);
-               $("#cbProductos option[value='" + 0 + "']").attr("selected", true);
-
-            
-               
                $tblCuotas.clear().draw();
+
+               $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+
+               $btnGuardar.prop("disabled", false);
+
+
+               activaCampos();
 
                $txtCodCli.focus();
             }
@@ -303,6 +310,25 @@ $(function () {
          }
       });
 
+      $btnGuardar.click(function (e) {
+
+
+         guardaPrestamo();
+      });
+
+
+      $btnAnular.click(function (e) {
+
+
+      });
+
+      $btnCancelar.click(function (e) {
+
+         location.reload();
+
+      });
+
+
 
 
 
@@ -317,6 +343,10 @@ $(function () {
       $cbProductos.prop("disabled", true);
       $txtMonPtmo.prop("disabled", true);
       $btnBuscaCli.prop("disabled", true);
+      $btnGuardar.prop("disabled", true);
+      $btnAnular.prop("disabled", true);
+
+
 
    }
 
@@ -544,7 +574,6 @@ $(function () {
             $cbFondos.focus();
 
 
-
          }, function (data) {
             sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
          });
@@ -566,14 +595,12 @@ $(function () {
 
             numCuotas = Number.parseInt(data.resp.num_cuotas);
             $txtNumCuo.val(data.resp.num_cuotas);
-            
-            //tipoCuota = Number.parseInt(data.resp.tipo_cuota);
-            tipoCuota = data.resp.tipo_cuota;
 
-            console.log(tipoCuota);           
+            tipoCuota = Number.parseInt(data.resp.tipo_cuota);
+            //tipoCuota = data.resp.tipo_cuota;                
 
             $("#cbForPago option[value='" + tipoCuota + "']").attr("selected", true);
-            
+
             tasaInts = Number.parseInt(data.resp.tasa_ints);
             tipoInts = Number.parseInt(data.resp.tipo_ints);
 
@@ -610,7 +637,7 @@ $(function () {
 
          let dias = $(":selected", $('#cbForPago')).val() == 1 ? 1 : 7;
 
-         let _saldoCuota = _monTot;
+         let _saldoPtmo = _monTot;
 
          for (let i = 0; i < numCuotas; i++) {
 
@@ -623,10 +650,11 @@ $(function () {
             }
             cuota.fecCuota = fechaCuota.toLocaleDateString('es');
 
-            _saldoCuota = _saldoCuota > _monCuota ? _saldoCuota -= _monCuota : 0;
+            cuota.monCuota = _saldoPtmo > _monCuota ? _monCuota : _saldoPtmo;
 
-            cuota.salCuota = _saldoCuota;
+            //_saldoCuota = _saldoCuota > _monCuota ? _saldoCuota -= _monCuota : 0;
 
+            cuota.salPtmo = _saldoPtmo > _monCuota ? _saldoPtmo -= _monCuota : 0;
 
             listaCuotas.push(cuota);
          }
@@ -638,6 +666,44 @@ $(function () {
 
    }
 
+   function guardaPrestamo() {
+
+      if ($txtCodCli.val().length == 0 || $txtNomCli.val().length == 0) {
+         $txtCodCli.focus();
+         sweetAlert({ title: "Debe seleccionar un Cliente válido", type: "error" });
+         return;
+
+      }
+      if ($(":selected", $('#cbUsuarios')).val() == 0) {
+         $cbUsuarios.focus();
+         sweetAlert({ title: "Debe seleccionar un Usuario", type: "error" });
+         return;
+      }
+
+      if ($(":selected", $('#cbFondos')).val() == 0) {
+         $cbFondos.focus();
+         sweetAlert({ title: "Debe seleccionar un Fondo", type: "error" });
+         return;
+      }
+      if ($(":selected", $('#cbProductos')).val() == 0) {
+         $cbProductos.focus();
+         sweetAlert({ title: "Debe seleccionar un Tipo Prestamo", type: "error" });
+         return;
+      }
+
+
+      let _montoPtmo = Number.parseInt($txtMonPtmo.val().replace(/,/g, ''));
+      if (_montoPtmo == 0) {
+         $txtMonPtmo.focus();
+         sweetAlert({ title: "Digite un monto de prestamo", type: "error" });
+         return;
+      }
+
+      calculaCuotas();
+
+
+
+   }
 
 
    function sumarDias(fecha, dias) {
