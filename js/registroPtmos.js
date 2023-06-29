@@ -10,7 +10,7 @@ $(function () {
    var tasaInts = 0;
    var tipoInts = 1;
    var numCuotas = 30;
-   var tipoCuota = 1;
+   var tipoCuota = '1';
    var montoPtmo = 0;
 
 
@@ -28,6 +28,7 @@ $(function () {
 
    const $txtCodCli = $('#txtCodCli');
    const $txtNomCli = $('#txtNomCli');
+
 
    const $txtFecPtmo = $('#txtFecPtmo').val(obtieneFechaActual());
 
@@ -52,7 +53,6 @@ $(function () {
    llenaComboProductos();
    inactivaCampos();
 
-
    function ini_componentes() {
 
 
@@ -72,7 +72,7 @@ $(function () {
             },
 
             {
-               data: 'monCuota',
+               data: 'salCuota',
                width: '20%',
                className: 'dt-right',
                render: DataTable.render.number(',', '.'),
@@ -168,6 +168,15 @@ $(function () {
       $tblPtmos.clear().draw();
 
 
+      $txtFecPtmo.change(function (e) {
+
+         calculaCuotas();
+         $txtMonPtmo.focus();
+
+         e.preventDefault();
+      });
+
+
 
       $cbFondos.change(function () {
 
@@ -183,9 +192,14 @@ $(function () {
 
       $cbProductos.change(function () {
 
-         consultaProducto();
+         if ($(":selected", $('#cbProductos')).val() > 0) {
 
-         $txtMonPtmo.focus();
+            consultaProducto();
+
+            $txtMonPtmo.focus();
+
+         }
+
 
       });
 
@@ -212,13 +226,17 @@ $(function () {
 
             if ($txtNumPtmo.val().length > 0) {
 
+               console.log('Consultando prestamo');
+
                consultaPrestamo();
 
             } else {
 
-               nuevo = true;
+               console.log('Registrando nuevo prestamo');
 
                activaCampos();
+
+               nuevo = true;
                $txtCodCli.val('');
                $txtNomCli.val('');
                $txtFecPtmo.val(obtieneFechaActual());
@@ -227,10 +245,15 @@ $(function () {
                $txtMonTot.val('0');
                $txtNumCuo.val('0');
                $txtMonCuo.val('0');
+
                $("#cbUsuarios option[value='" + codUsuario + "']").attr("selected", true);
-               $("#cbFonfos option[value=0]").attr("selected", true);
-               $("#cbProductos option[value=0]").attr("selected", true);
-               $("#cbForPago option[value=1]").attr("selected", true);
+               $("#cbForPago option[value='" + 1 + "']").attr("selected", true);
+               $("#cbFondos option[value='" + 0 + "']").attr("selected", true);
+               $("#cbProductos option[value='" + 0 + "']").attr("selected", true);
+
+            
+               
+               $tblCuotas.clear().draw();
 
                $txtCodCli.focus();
             }
@@ -270,9 +293,9 @@ $(function () {
                let x = Number.parseInt($(this).val());
 
                $(this).val(nf_entero.format(x));
-               
+
                calculaCuotas();
-       
+
 
             }
 
@@ -543,8 +566,14 @@ $(function () {
 
             numCuotas = Number.parseInt(data.resp.num_cuotas);
             $txtNumCuo.val(data.resp.num_cuotas);
-            tipoCuota = Number.parseInt(data.resp.tipo_cuota);
+            
+            //tipoCuota = Number.parseInt(data.resp.tipo_cuota);
+            tipoCuota = data.resp.tipo_cuota;
+
+            console.log(tipoCuota);           
+
             $("#cbForPago option[value='" + tipoCuota + "']").attr("selected", true);
+            
             tasaInts = Number.parseInt(data.resp.tasa_ints);
             tipoInts = Number.parseInt(data.resp.tipo_ints);
 
@@ -562,14 +591,58 @@ $(function () {
       let _montoPtmo = Number.parseInt($txtMonPtmo.val().replace(/,/g, ''));
       let _monInts = _montoPtmo * tasaInts / 100;
       let _monTot = _montoPtmo + _monInts;
-      let _monCuota = _monTot > 0 ? Math.round(_monTot / numCuotas) : 0;
+      let _monCuota = _monTot > 0 ? Math.ceil(_monTot / numCuotas) : 0;
       $txtMonCuo.val(nf_entero.format(_monCuota));
       $txtMonInts.val(nf_entero.format(_monInts));
       $txtMonTot.val(nf_entero.format(_monTot));
+
+      listaCuotas = [];
+      $tblCuotas.clear().draw();
+
+      if (_montoPtmo > 0) {
+
+         let a_fecha = $txtFecPtmo.val().split('-');
+         let fechaCuota = new Date(parseInt(a_fecha[0]), parseInt(a_fecha[1] - 1), parseInt(a_fecha[2]));
+
+         if ($(":selected", $('#cbForPago')).val() == '2' && fechaCuota.getDay() == 0) {
+            fechaCuota = sumarDias(fechaCuota, 1);
+         }
+
+         let dias = $(":selected", $('#cbForPago')).val() == 1 ? 1 : 7;
+
+         let _saldoCuota = _monTot;
+
+         for (let i = 0; i < numCuotas; i++) {
+
+            let cuota = new Object();
+            cuota.numCuota = i + 1;
+
+            fechaCuota = sumarDias(fechaCuota, dias);
+            if (fechaCuota.getDay() == 0) {
+               fechaCuota = sumarDias(fechaCuota, dias);
+            }
+            cuota.fecCuota = fechaCuota.toLocaleDateString('es');
+
+            _saldoCuota = _saldoCuota > _monCuota ? _saldoCuota -= _monCuota : 0;
+
+            cuota.salCuota = _saldoCuota;
+
+
+            listaCuotas.push(cuota);
+         }
+
+         $tblCuotas.rows.add(listaCuotas).draw();
+
+      }
 
 
    }
 
 
+
+   function sumarDias(fecha, dias) {
+      fecha.setDate(fecha.getDate() + dias);
+      return fecha;
+   }
 
 });
