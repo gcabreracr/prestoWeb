@@ -13,10 +13,9 @@ $(function () {
 
    var $tblSaldosCaja;
    ini_componentes();
-
    llenaComboUsuarios();
 
-
+  
    function ini_componentes() {
 
 
@@ -87,10 +86,10 @@ $(function () {
 
       $cbUsuarios.empty();
 
-      $cbUsuarios.append($("<option>", {
+      /*$cbUsuarios.append($("<option>", {
          value: 0,
          text: 'Seleccione un Usuario'
-      }));
+      }));*/
 
       api_postRequest(
          req,
@@ -112,6 +111,16 @@ $(function () {
                   }));
                }
 
+               $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+              
+               if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
+                  $cbUsuarios.prop("disabled", false);
+               } else {
+                  $cbUsuarios.prop("disabled", true);
+               }
+            
+               consultaSaldos();
+            
 
             }
          },
@@ -125,7 +134,6 @@ $(function () {
 
 
    function consultaSaldos() {
-
 
       $('#spinner').show();
 
@@ -151,7 +159,7 @@ $(function () {
                let _saldos = data.resp.saldos;
 
                for (let i = 0; i < _saldos.length; i++) {
-                  
+
                   let fondo = new Object();
 
                   fondo.codigo = _saldos[i].cod_fondo;
@@ -160,11 +168,11 @@ $(function () {
                   let _saldo = Number.parseInt(_saldos[i].saldo);
                   fondo.saldo = _saldo;
 
-                  _saldoTotal += _saldo;                
+                  _saldoTotal += _saldo;
 
                   listaSaldosCaja.push(fondo);
                }
-              
+
             }
 
             $tblSaldosCaja.rows.add(listaSaldosCaja).draw();

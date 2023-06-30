@@ -82,9 +82,17 @@
         <!-- Barra botones -->
         <div class="col-8 d-flex justify-content-end">
 
-          <button id="btnGuardar" class="btn btn-primary me-2">Guardar</i></button>
-          <button id="btnAnular" class="btn btn-warning me-2">Anular</i></button>
-          <button id="btnCancelar" class="btn btn-dark">Cancelar</i></button>
+         
+          <!--button id="btnGuardar" class="btn btn-light" data-bs-toggle="tooltip" title="Guardar"><i
+              class="bi bi-save2-fill"></i></button-->
+
+
+          <!--button id="btnAnular" class="btn btn-light" data-bs-toggle="tooltip" title="Anular"><i
+              class="bi bi-trash"></i></button-->
+     
+          <button id="btnVistaPrevia" class="btn btn-light" data-bs-toggle="tooltip" title="Imprimir"><i
+              class="bi bi-printer-fill"></i></button>
+
 
         </div>
 
@@ -119,24 +127,28 @@
 
 
                 <div class="row mb-3">
-                  <label for="txtNumPtmo" class="col-sm-3 col-form-label"># Tarjeta</label>
-                  <div class="col-sm-3 me-2">
+                  <label for="txtNumPtmo" class="col-sm-3 col-form-label"># Prestamo</label>
+                  <div class="col-4 me-2">
                     <input id="txtNumPtmo" name="txtNumPtmo" type="text" class="form-control"
                       oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="10" inputmode="numeric"
                       autofocus>
                   </div>
-                  <div class="col-3">
+                  <div class="col-2">
                     <button id="btnBuscaPtmo" class="btn btn-light" data-bs-toggle="modal"
                       data-bs-target="#modBuscaPtmo"><i class="bi bi-search" data-bs-toggle="tooltip"
                         title="Buscar"></i></button>
 
                   </div>
+                  <div class="col-2">
+                    <button id="btnNuevo" class="btn btn-dark">Nuevo</button>
+                  </div>
+
 
                 </div>
 
                 <div class="row mb-3">
                   <label for="txtCodCli" class="col-sm-3 col-form-label">Código Cliente</label>
-                  <div class="col-sm-3 me-2">
+                  <div class="col-4 me-2">
                     <input id="txtCodCli" name="txtCodCli" type="text" class="form-control"
                       oninput="this.value = this.value.replace(/[A-Za-z]/,'')" maxlength="6" inputmode="numeric">
                   </div>
@@ -191,14 +203,10 @@
 
                   <div class="col-6">
 
-
-
-
-
                     <div class="row mb-3">
                       <label for="txtMonPtmo" class="col-sm-6 col-form-label text-end">Monto Prestamo</label>
                       <div class="col-sm-6">
-                        <input id="txtMonPtmo" name="txtMonPtmo" type="text" class="form-control text-end">
+                        <input id="txtMonPtmo" name="txtMonPtmo" type="text" class="form-control text-end" maxlength="12" inputmode="numeric">
                       </div>
                     </div>
 
@@ -219,7 +227,7 @@
 
 
                   </div>
-                  
+
                   <div class="col-6">
 
 
@@ -247,50 +255,62 @@
                         </select>
                       </div>
                     </div>
+                  </div>
+                </div>
 
+                
+                <div class="input-group mb-3">
+                  <label class="col-sm-3 col-form-label"></label>
+                  <div class="col-sm-6">
+
+                    <button id="btnGuardar" class="btn btn-success me-3">Guardar</i></button>
+                    <button id="btnAnular" class="btn btn-danger me-3">Anular</i></button>
+                    <button id="btnCancelar" class="btn btn-dark">Cancelar</i></button>
 
                   </div>
 
                 </div>
 
+
+
               </form>
 
+            </div>
           </div>
+
+
+
         </div>
 
+        <!-- Div del data teble-->
+        <div class="col-md-5">
 
+          <div class="card">
+            <div class="card-body">
+              <h5>Plan de pagos</h5>
 
-      </div>
+              <div class="table-responsive">
+                <table id="tblCuotas" class="table table-primary">
+                  <thead>
+                    <tr>
+                      <th class="col-2 text-center">#</th>
+                      <th class="col-2 text-center">Fecha</th>
+                      <th class="col-4 text-end">Abono</th>
+                      <th class="col-4 text-end">Saldo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-      <!-- Div del data teble-->
-      <div class="col-md-5">
-
-        <div class="card">
-          <div class="card-body">
-            <h5>Plan de pagos</h5>
-
-            <div class="table-responsive">
-              <table id="tblCuotas" class="table table-primary">
-                <thead>
-                  <tr>
-                    <th class="col-2 text-center">#</th>
-                    <th class="col-2 text-center">Fecha</th>
-                    <th class="col-4 text-end">Abono</th>
-                    <th class="col-4 text-end">Saldo</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
 
-    </div>
-
-  </div><!-- End #main -->
+    </div><!-- End #main -->
 
   </div>
 

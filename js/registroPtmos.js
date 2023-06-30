@@ -41,6 +41,7 @@ $(function () {
    const $btnGuardar = $('#btnGuardar');
    const $btnAnular = $('#btnAnular');
    const $btnCancelar = $('#btnCancelar');
+   const $btnNuevo = $('#btnNuevo');
 
 
    var $tblCuotas;
@@ -241,28 +242,8 @@ $(function () {
 
             } else {
 
-               console.log('Registrando nuevo prestamo');
-
-
-
-               nuevo = true;
-               document.forms.regPtmo_form.reset();
-               $txtFecPtmo.val(obtieneFechaActual());
-               $txtMonPtmo.val('0');
-               $txtMonInts.val('0');
-               $txtMonTot.val('0');
-               $txtNumCuo.val('0');
-               $txtMonCuo.val('0');
-               $tblCuotas.clear().draw();
-
-               $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
-
-               $btnGuardar.prop("disabled", false);
-
-
-               activaCampos();
-
-               $txtCodCli.focus();
+               nuevoPrestamo();
+              
             }
 
             e.preventDefault();
@@ -303,6 +284,8 @@ $(function () {
 
                calculaCuotas();
 
+               $btnGuardar.focus();
+
 
             }
 
@@ -310,16 +293,25 @@ $(function () {
          }
       });
 
+      $btnNuevo.click(function (e) {
+
+         nuevoPrestamo();
+
+         e.preventDefault();
+      });
+
+
       $btnGuardar.click(function (e) {
 
-
          guardaPrestamo();
+
+         e.preventDefault();
       });
 
 
       $btnAnular.click(function (e) {
 
-
+         e.preventDefault();
       });
 
       $btnCancelar.click(function (e) {
@@ -327,7 +319,6 @@ $(function () {
          location.reload();
 
       });
-
 
 
 
@@ -359,6 +350,32 @@ $(function () {
       $cbProductos.prop("disabled", false);
       $txtMonPtmo.prop("disabled", false);
       $btnBuscaCli.prop("disabled", false);
+
+   }
+
+   function nuevoPrestamo(){
+
+      console.log('Registrando nuevo prestamo');
+
+      nuevo = true;
+      document.forms.regPtmo_form.reset();
+      $txtFecPtmo.val(obtieneFechaActual());
+      $txtMonPtmo.val('0');
+      $txtMonInts.val('0');
+      $txtMonTot.val('0');
+      $txtNumCuo.val('0');
+      $txtMonCuo.val('0');
+      $tblCuotas.clear().draw();
+
+      $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+      $("#cbForPago option[value='" + 1 + "']").attr("selected", true);
+
+      $btnGuardar.prop("disabled", false);
+
+
+      activaCampos();
+
+      $txtCodCli.focus();
 
    }
 
@@ -700,6 +717,26 @@ $(function () {
       }
 
       calculaCuotas();
+
+      sweetAlert({ title: "Prestamo Guardado", type: "success" });
+      return;
+
+      $('#spinner').show();
+
+      let req = [];
+      req.w = 'apiPresto';
+      req.r = 'agrega_prestamo';
+
+      api_postRequest(req,
+         function (data) {
+            $('#spinner').hide();
+
+
+
+
+         }, function (data) {
+            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+         });
 
 
 
