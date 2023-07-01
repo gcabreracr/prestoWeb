@@ -10,6 +10,7 @@ $(function () {
    var tasaInts = 0;
    var tipoInts = 1;
    var numCuotas = 30;
+   var monCuota = 0;
    var tipoCuota = '1';
    var montoPtmo = 0;
 
@@ -49,7 +50,7 @@ $(function () {
 
 
    ini_componentes();
-   llenaComboFondos();
+   //llenaComboFondos();
    llenaComboUsuarios();
    llenaComboProductos();
    inactivaCampos();
@@ -243,7 +244,7 @@ $(function () {
             } else {
 
                nuevoPrestamo();
-              
+
             }
 
             e.preventDefault();
@@ -344,16 +345,20 @@ $(function () {
    function activaCampos() {
 
       $txtCodCli.prop("disabled", false);
-      $txtFecPtmo.prop("disabled", false);
       $cbFondos.prop("disabled", false);
-      $cbUsuarios.prop("disabled", false);
+
+      if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
+         $cbUsuarios.prop("disabled", false);
+         $txtFecPtmo.prop("disabled", false);
+      }
+
       $cbProductos.prop("disabled", false);
       $txtMonPtmo.prop("disabled", false);
       $btnBuscaCli.prop("disabled", false);
 
    }
 
-   function nuevoPrestamo(){
+   function nuevoPrestamo() {
 
       console.log('Registrando nuevo prestamo');
 
@@ -428,6 +433,55 @@ $(function () {
 
    }
 
+   function llenaComboFondosUsu() {
+
+      $('#spinner').show();
+
+      let req = [];
+      req.w = 'apiPresto';
+      req.r = 'lista_fondos_usu';
+      req.cod_usuario = $(":selected", $('#cbUsuarios')).val();
+
+      $cbFondos.empty();
+
+      $cbFondos.append($("<option>", {
+         value: 0,
+         text: 'Seleccione un Fondo'
+      }));
+
+      api_postRequest(
+         req,
+         function (data) {
+            $('#spinner').hide();
+
+            if (data.resp != null) {
+
+               let _listaFondos = data.resp.fondosUsu;
+
+
+               for (item in _listaFondos) {
+
+                  let _codFondo = _listaFondos[item]['cod_fondo'];
+                  let _nomFondo = _listaFondos[item]['nom_fondo'];
+
+                  $cbFondos.append($("<option>", {
+                     value: _codFondo,
+                     text: _nomFondo
+                  }));
+               }
+
+
+            }
+         },
+         function (data) {
+            $('#spinner').hide();
+            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+         }
+      );
+
+   }
+
+
 
    function llenaComboUsuarios() {
 
@@ -463,6 +517,21 @@ $(function () {
                      text: _nomUsu
                   }));
                }
+
+
+               $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+
+               if (sessionStorage.getItem("TIPO_USUARIO") != 3) {
+
+                  $cbUsuarios.prop("disabled", true);
+                  $txtFecPtmo.prop("disabled", true);
+
+                  llenaComboFondosUsu();
+               } else {
+
+                  llenaComboFondos();
+               }
+
 
 
             }
@@ -552,7 +621,6 @@ $(function () {
                   listaClientes.push(cliente);
                }
 
-
                $tblClientes.rows.add(listaClientes).draw();
 
             }
@@ -632,18 +700,18 @@ $(function () {
 
    function calculaCuotas() {
 
-      let _montoPtmo = Number.parseInt($txtMonPtmo.val().replace(/,/g, ''));
-      let _monInts = _montoPtmo * tasaInts / 100;
-      let _monTot = _montoPtmo + _monInts;
-      let _monCuota = _monTot > 0 ? Math.ceil(_monTot / numCuotas) : 0;
-      $txtMonCuo.val(nf_entero.format(_monCuota));
-      $txtMonInts.val(nf_entero.format(_monInts));
-      $txtMonTot.val(nf_entero.format(_monTot));
+      montoPtmo = Number.parseInt($txtMonPtmo.val().replace(/,/g, ''));
+      monInts = montoPtmo * tasaInts / 100;
+      monTot = montoPtmo + monInts;
+      monCuota = monTot > 0 ? Math.ceil(monTot / numCuotas) : 0;
+      $txtMonCuo.val(nf_entero.format(monCuota));
+      $txtMonInts.val(nf_entero.format(monInts));
+      $txtMonTot.val(nf_entero.format(monTot));
 
       listaCuotas = [];
       $tblCuotas.clear().draw();
 
-      if (_montoPtmo > 0) {
+      if (montoPtmo > 0) {
 
          let a_fecha = $txtFecPtmo.val().split('-');
          let fechaCuota = new Date(parseInt(a_fecha[0]), parseInt(a_fecha[1] - 1), parseInt(a_fecha[2]));
@@ -654,7 +722,7 @@ $(function () {
 
          let dias = $(":selected", $('#cbForPago')).val() == 1 ? 1 : 7;
 
-         let _saldoPtmo = _monTot;
+         let _saldoPtmo = monTot;
 
          for (let i = 0; i < numCuotas; i++) {
 
@@ -667,11 +735,11 @@ $(function () {
             }
             cuota.fecCuota = fechaCuota.toLocaleDateString('es');
 
-            cuota.monCuota = _saldoPtmo > _monCuota ? _monCuota : _saldoPtmo;
+            cuota.monCuota = _saldoPtmo > monCuota ? monCuota : _saldoPtmo;
 
             //_saldoCuota = _saldoCuota > _monCuota ? _saldoCuota -= _monCuota : 0;
 
-            cuota.salPtmo = _saldoPtmo > _monCuota ? _saldoPtmo -= _monCuota : 0;
+            cuota.salPtmo = _saldoPtmo > monCuota ? _saldoPtmo -= monCuota : 0;
 
             listaCuotas.push(cuota);
          }
@@ -718,20 +786,42 @@ $(function () {
 
       calculaCuotas();
 
-      sweetAlert({ title: "Prestamo Guardado", type: "success" });
-      return;
+      let fecha = new Date();
+      let hora = fecha.getHours() + ':' + fecha.getMinutes() + ':' + fecha.getSeconds();
+
 
       $('#spinner').show();
 
       let req = [];
       req.w = 'apiPresto';
       req.r = 'agrega_prestamo';
+      req.cod_cliente = $txtCodCli.val();
+      req.cod_usuario = $(":selected", $('#cbUsuarios')).val();
+      req.cod_fondo = $(":selected", $('#cbFondos')).val();
+      req.cod_ptmo = $(":selected", $('#cbProductos')).val();
+      req.fec_ptmo = $txtFecPtmo.val();
+      req.hora_ptmo = hora;
+      req.mon_ptmo = montoPtmo;
+      req.tasa_ints = tasaInts;
+      req.mon_ints = monInts;
+      req.forma_pago = $(":selected", $('#cbForPago')).val();
+      req.num_cuotas = numCuotas;
+      req.mon_cuota = monCuota;
+      req.listaCuotas = JSON.stringify(listaCuotas);    
 
       api_postRequest(req,
          function (data) {
             $('#spinner').hide();
 
+            console.log(data);
 
+            $txtNumPtmo.val(data.resp.num_ptmo);
+            let msg = data.resp.msg;
+
+            sweetAlert({ title: msg, type: "success" });
+
+            inactivaCampos();
+            $txtNumPtmo.focus();
 
 
          }, function (data) {

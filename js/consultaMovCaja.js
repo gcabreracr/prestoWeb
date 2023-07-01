@@ -2,9 +2,9 @@ $(function () {
 
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
-  
+
    var listaMovCaja = [];
- 
+
 
    const $cbFondos = $('#cbFondos');
    const $cbUsuarios = $('#cbUsuarios');
@@ -23,7 +23,7 @@ $(function () {
 
 
    ini_componentes();
-   llenaComboFondos();
+   //llenaComboFondos();
    llenaComboUsuarios();
 
 
@@ -37,24 +37,22 @@ $(function () {
          columns: [
             {
                data: 'fecMov',
-               className: 'dt-center',
-               width: '20%'
-            },
-            {
-               data: 'docRef',
+               className: 'dt-center'
 
             },
             {
-               data: 'detMov',
+               data: 'docRef'
 
             },
-
             {
                data: 'monMov',
-               width: '20%',
                className: 'dt-right',
                render: DataTable.render.number(',', '.'),
                searchable: false
+            },
+            {
+               data: 'detMov'
+
             }
 
          ],
@@ -161,6 +159,56 @@ $(function () {
    }
 
 
+   function llenaComboFondosUsu() {
+
+      $('#spinner').show();
+
+      let req = [];
+      req.w = 'apiPresto';
+      req.r = 'lista_fondos_usu';
+      req.cod_usuario = $(":selected", $('#cbUsuarios')).val();
+
+      $cbFondos.empty();
+
+      $cbFondos.append($("<option>", {
+         value: 0,
+         text: 'Seleccione un Fondo'
+      }));
+
+      api_postRequest(
+         req,
+         function (data) {
+            $('#spinner').hide();
+
+            if (data.resp != null) {
+
+               let _listaFondos = data.resp.fondosUsu;
+
+
+               for (item in _listaFondos) {
+
+                  let _codFondo = _listaFondos[item]['cod_fondo'];
+                  let _nomFondo = _listaFondos[item]['nom_fondo'];
+
+                  $cbFondos.append($("<option>", {
+                     value: _codFondo,
+                     text: _nomFondo
+                  }));
+               }
+
+
+            }
+         },
+         function (data) {
+            $('#spinner').hide();
+            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+         }
+      );
+
+   }
+
+
+
    function llenaComboUsuarios() {
 
       $('#spinner').show();
@@ -196,6 +244,20 @@ $(function () {
                   }));
                }
 
+
+               $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+
+
+
+               if (sessionStorage.getItem("TIPO_USUARIO") != 3) {
+
+                  $cbUsuarios.prop("disabled", true);
+                  llenaComboFondosUsu();
+               }else{
+                  llenaComboFondos();
+               }
+
+               $cbFondos.focus();
 
             }
          },

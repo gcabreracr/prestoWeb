@@ -123,7 +123,7 @@ function obtenerHoraActual() {
 /* Function para hacer request POST           */
 /* Req request data, func success, func error */
 /**********************************************/
-async function api_postRequest(req, success, error, timeout = 8000, times = 0) {
+async function api_postRequest(req, success, error, timeout = 30000, times = 0) {
 
   /*generate the form*/
   var _data = new FormData();
@@ -155,7 +155,15 @@ async function api_postRequest(req, success, error, timeout = 8000, times = 0) {
   };
   oReq.ontimeout = function (e) {
 
-    sweetAlert({ title: "Agotado el tiempo de espera con el servidor", type: "error" });
+    times = times + 1;
+    if (times < 2) {
+        api_postRequest(req, success, error, timeout, times);
+        
+    } else {
+      sweetAlert({ title: "Agotado el tiempo de espera con el servidor", type: "error" });
+    }
+
+   
   }
   oReq.send(_data);
 }
