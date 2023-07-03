@@ -24,6 +24,7 @@ $(function () {
 
    const $btnBuscaPtmo = $('#btnBuscaPtmo');
    const $btnBuscaCli = $('#btnBuscaCli');
+   const $btnImprimir = $('#btnImprimir');
 
    const $txtNumPtmo = $('#txtNumPtmo');
 
@@ -178,6 +179,23 @@ $(function () {
 
       $tblPtmos.clear().draw();
 
+      $('#tblPtmos').on('click', 'button.editar', function () {
+
+         let fila = $tblPtmos.row($(this).parents('tr')).index();
+
+         $('#modBuscaPtmo').modal('hide');
+
+         $txtNumPtmo.val(listaPtmos[fila].numPtmo);
+
+         consultaPrestamo();
+
+
+      }); // Fin de funcion boton editar numero table
+
+
+
+
+
 
       $txtFecPtmo.change(function (e) {
 
@@ -223,6 +241,8 @@ $(function () {
       })
 
       $btnBuscaPtmo.click(function (e) {
+
+         listaPtmosTotal();
 
          e.preventDefault();
       })
@@ -312,12 +332,55 @@ $(function () {
 
       $btnAnular.click(function (e) {
 
+         Swal.fire({
+            title: 'Desea anular el prestamo?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si'
+         }).then((result) => {
+            if (result.isConfirmed) {
+               console.log('Anulando el prestamo')
+
+               anulaPrestamo();
+            } else {
+               document.forms.regPtmo_form.reset();
+               $txtFecPtmo.val(obtieneFechaActual());
+               $txtMonPtmo.val('0');
+               $txtMonInts.val('0');
+               $txtMonTot.val('0');
+               $txtNumCuo.val('0');
+               $txtMonCuo.val('0');
+               $tblCuotas.clear().draw();
+
+               $("#cbUsuarios option[value='0']").attr("selected", true);
+               $("#cbFondos option[value='0']").attr("selected", true);
+               $("#cbProductos option[value='0']").attr("selected", true);
+
+               $("#cbForPago option[value='" + 1 + "']").attr("selected", true);
+
+               $txtNumPtmo.focus();
+
+            }
+
+
+         })
+
+
+
          e.preventDefault();
       });
 
       $btnCancelar.click(function (e) {
 
          location.reload();
+
+      });
+
+      $btnImprimir.click(function (e) {
+
+         console.log('Imprimiendo Prestamo')
 
       });
 
@@ -337,9 +400,7 @@ $(function () {
       $btnBuscaCli.prop("disabled", true);
       $btnGuardar.prop("disabled", true);
       $btnAnular.prop("disabled", true);
-
-
-
+      $btnImprimir.prop("disabled", true);
    }
 
    function activaCampos() {
@@ -427,7 +488,7 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -475,7 +536,7 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -538,7 +599,7 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -586,7 +647,8 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
+
          }
       );
 
@@ -627,7 +689,7 @@ $(function () {
 
          }
          , function (data) {
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          });
    }
 
@@ -649,7 +711,7 @@ $(function () {
             if (data.resp == null) {
 
                $txtCodCli.focus();
-               sweetAlert({ title: "Código Cliente NO Existe", type: "error" });
+               Swal.fire({ title: "Código Cliente NO Existe", icon: "error" });
                return;
             }
 
@@ -660,7 +722,7 @@ $(function () {
 
 
          }, function (data) {
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          });
    }
 
@@ -692,11 +754,187 @@ $(function () {
             calculaCuotas();
 
          }, function (data) {
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          });
 
 
    }
+
+   
+   function listaPtmosTotal() {
+
+      $('#spinner').show();
+
+      let req = [];
+      req.w = 'apiPresto';
+      req.r = 'lista_ptmos_total';      
+
+      $tblPtmos.clear().draw();
+
+      api_postRequest(req,
+         function (data) {
+            $('#spinner').hide();         
+          
+            listaPtmos = [];
+
+            if (data.resp != null) {
+
+               let _ptmos = data.resp.listaPtmos;
+
+               for (let i = 0; i < _ptmos.length; i++) {
+                  
+                  let _ptmo = new Object();
+                  _ptmo.numPtmo = _ptmos[i].num_ptmo;
+                  _ptmo.nomCliente = _ptmos[i].nomCliente;
+                  _salPtmo = parseInt(_ptmos[i].mon_saldo);
+                  _ptmo.salPtmo = _salPtmo;
+
+                  listaPtmos.push(_ptmo);
+               }
+
+               $tblPtmos.rows.add(listaPtmos).draw();
+            }
+
+         }, function (data) {
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
+         });
+
+   }
+
+
+
+
+   function consultaPrestamo() {
+
+      $('#spinner').show();
+
+      let req = [];
+      req.w = 'apiPresto';
+      req.r = 'consulta_prestamo';
+      req.num_ptmo = $txtNumPtmo.val();
+
+      api_postRequest(req,
+         function (data) {
+            $('#spinner').hide();
+
+            console.log(data);
+
+            if (data.resp == null) {
+               $txtNumPtmo.focus();
+
+               Swal.fire("Préstamo No Exite");
+
+               //sweetAlert({ title: "Préstamo NO existe", type: "error" });
+               return;
+            }
+
+            $txtCodCli.val(data.resp.cod_cliente);
+            $txtNomCli.val(data.resp.nomCliente);
+            $txtFecPtmo.val(data.resp.fecha_reg);
+
+            $("#cbUsuarios option[value='" + data.resp.cod_usuario + "']").attr("selected", true);
+            $("#cbFondos option[value='" + data.resp.cod_fondo + "']").attr("selected", true);
+            $("#cbProductos option[value='" + data.resp.cod_ptmo + "']").attr("selected", true);
+
+            let _montoPtmo = parseInt(data.resp.mon_ptmo);
+            $txtMonPtmo.val(nf_entero.format(_montoPtmo));
+            let _montoInts = parseInt(data.resp.mon_ints);
+            $txtMonInts.val(nf_entero.format(_montoInts));
+            let _montoTot = _montoPtmo + _montoInts;
+            $txtMonTot.val(nf_entero.format(_montoTot));
+            let saldo_ptmo = parseInt(data.resp.mon_saldo);
+
+            let _numCuotas = parseInt(data.resp.num_cuotas);
+            $txtNumCuo.val(nf_entero.format(_numCuotas));
+            let _monCuota = parseInt(data.resp.mon_cuota);
+            $txtMonCuo.val(nf_entero.format(_monCuota));
+            $("#cbForPago option[value='" + data.resp.forma_pago + "']").attr("selected", true);
+
+            let _cuotas = data.resp.cuotas;
+
+            listaCuotas = [];
+            $tblCuotas.clear().draw();
+
+            let _saldoPtmo = _montoTot;
+
+            for (let i = 0; i < _cuotas.length; i++) {
+               let _cuota = new Object();
+               _cuota.numCuota = _cuotas[i].num_cuota;
+
+               let _fecha = _cuotas[i].fec_cuota;
+
+               let a_fecha = _fecha.split('-');
+
+               _cuota.fecCuota = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
+
+               //_cuota.fecCuota = _fecha;
+
+               _cuota.monCuota = _saldoPtmo > _monCuota ? _monCuota : _saldoPtmo;
+
+               _cuota.salPtmo = _saldoPtmo > _monCuota ? _saldoPtmo -= _monCuota : 0;
+
+               listaCuotas.push(_cuota);
+            }
+
+            $tblCuotas.rows.add(listaCuotas).draw();
+
+
+            if (saldo_ptmo == _montoTot && sessionStorage.getItem("TIPO_USUARIO") == 3) {
+
+               $btnAnular.prop("disabled", false);
+            }
+
+            $btnImprimir.prop("disabled", false);
+            $btnImprimir.focus();
+
+         }, function (data) {
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
+         });
+
+
+   }
+
+
+   function anulaPrestamo() {
+
+      $('#spinner').show();
+
+      let req = [];
+      req.w = 'apiPresto';
+      req.r = 'anula_prestamo';
+      req.num_ptmo = $txtNumPtmo.val();
+
+      api_postRequest(req,
+         function (data) {
+            $('#spinner').hide();
+
+            document.forms.regPtmo_form.reset();
+            $txtFecPtmo.val(obtieneFechaActual());
+            $txtMonPtmo.val('0');
+            $txtMonInts.val('0');
+            $txtMonTot.val('0');
+            $txtNumCuo.val('0');
+            $txtMonCuo.val('0');
+            $tblCuotas.clear().draw();
+            $("#cbUsuarios option[value='0']").attr("selected", true);
+            $("#cbFondos option[value='0']").attr("selected", true);
+            $("#cbProductos option[value='0']").attr("selected", true);
+
+            $("#cbForPago option[value='" + 1 + "']").attr("selected", true);
+            $txtNumPtmo.focus();
+
+            let msg = data.resp.msg;
+
+            Swal.fire({ title: msg, icon: "success" });
+
+
+         }, function (data) {
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
+         });
+
+
+   }
+
 
    function calculaCuotas() {
 
@@ -755,24 +993,24 @@ $(function () {
 
       if ($txtCodCli.val().length == 0 || $txtNomCli.val().length == 0) {
          $txtCodCli.focus();
-         sweetAlert({ title: "Debe seleccionar un Cliente válido", type: "error" });
+         Swal.fire({ title: "Debe seleccionar un Cliente válido", icon: "error" });
          return;
 
       }
       if ($(":selected", $('#cbUsuarios')).val() == 0) {
          $cbUsuarios.focus();
-         sweetAlert({ title: "Debe seleccionar un Usuario", type: "error" });
+         Swal.fire({ title: "Debe seleccionar un Usuario", icon: "error" });
          return;
       }
 
       if ($(":selected", $('#cbFondos')).val() == 0) {
          $cbFondos.focus();
-         sweetAlert({ title: "Debe seleccionar un Fondo", type: "error" });
+         Swal.fire({ title: "Debe seleccionar un Fondo", icon: "error" });
          return;
       }
       if ($(":selected", $('#cbProductos')).val() == 0) {
          $cbProductos.focus();
-         sweetAlert({ title: "Debe seleccionar un Tipo Prestamo", type: "error" });
+         Swal.fire({ title: "Debe seleccionar un Tipo Prestamo", icon: "error" });
          return;
       }
 
@@ -780,7 +1018,7 @@ $(function () {
       let _montoPtmo = Number.parseInt($txtMonPtmo.val().replace(/,/g, ''));
       if (_montoPtmo == 0) {
          $txtMonPtmo.focus();
-         sweetAlert({ title: "Digite un monto de prestamo", type: "error" });
+         Swal.fire({ title: "Digite un monto de prestamo", icon: "error" });
          return;
       }
 
@@ -807,7 +1045,7 @@ $(function () {
       req.forma_pago = $(":selected", $('#cbForPago')).val();
       req.num_cuotas = numCuotas;
       req.mon_cuota = monCuota;
-      req.listaCuotas = JSON.stringify(listaCuotas);    
+      req.listaCuotas = JSON.stringify(listaCuotas);
 
       api_postRequest(req,
          function (data) {
@@ -818,14 +1056,17 @@ $(function () {
             $txtNumPtmo.val(data.resp.num_ptmo);
             let msg = data.resp.msg;
 
-            sweetAlert({ title: msg, type: "success" });
-
             inactivaCampos();
-            $txtNumPtmo.focus();
+            //$txtNumPtmo.focus();            
+            $btnImprimir.prop("disabled", false);
+            $btnImprimir.focus();
+
+            Swal.fire({ title: msg, icon: "success" });
+
 
 
          }, function (data) {
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          });
 
 

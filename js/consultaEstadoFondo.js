@@ -1,96 +1,32 @@
-$(function(){
+$(function () {
 
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
 
-   var listaMovFondo = [];
- 
+   const $cbFondos = $('#cbFondos');
 
-   const $cbFondos = $('#cbFondos');  
-
-   const $txtFechaIni = $('#txtFechaIni').val(obtieneFechaActual());
-   const $txtFechaFin = $('#txtFechaFin').val(obtieneFechaActual());
-
-   const $txtSaldoIni = $('#txtSaldoIni').val('0');
-   const $txtTotMov = $('#txtTotMov').val('0');
-   const $txtSaldoFin = $('#txtSaldoFin').val('0');
-
-   const $btnConsultar = $('#btnConsultar');
-
-   var $tblMovFondo;
-
-
+   const $txtAcuFondo = $('#txtAcuFondo').val('0');
+   const $txtMonPtmos = $('#txtMonPtmos').val('0');
+   const $txtEfeCajas = $('#txtEfeCajas').val('0');
+   const $txtEfeFondo = $('#txtEfeFondo').val('0');
 
    ini_componentes();
    llenaComboFondos();
 
-
-
    function ini_componentes() {
 
 
-      $tblMovFondo = $('#tblMovFondo').DataTable({
 
-         destroy: true,
-         data: listaMovFondo,
-         columns: [
-            {
-               data: 'fecMov',
-               className: 'dt-center',
-               width: '20%'
-            },
-            {
-               data: 'docRef',
+      $cbFondos.change(function (e) {
 
-            },
-            {
-               data: 'detMov',
-
-            },
-
-            {
-               data: 'monMov',
-               width: '20%',
-               className: 'dt-right',
-               render: DataTable.render.number(',', '.'),
-               searchable: false
-            }
-
-         ],
-
-         ordering: false,
-         language: lenguaje_data_table
-
-      }); /// Fin de creacion de datatable
-
-      $tblMovFondo.clear().draw();
-
-
-      $cbFondos.change(function () {
-
-         $tblMovFondo.clear().draw();
-         listaMovFondo = [];
-
-      });
-
-      
-      $btnConsultar.click(function (e) {
+         consultaEstado();
 
          e.preventDefault();
 
-         let _codFondo = $(":selected", $('#cbFondos')).val();
-
-         if (_codFondo == 0) {
-
-            $cbFondos.focus();
-            sweetAlert({ title: "Debe seleccionar un fondo", type: "error" });
-            return;
-
-         }
-
-         consultaMovimientos();
 
       });
+
+
 
    }
 
@@ -143,64 +79,31 @@ $(function(){
    }
 
 
-   function consultaMovimientos() {
+   function consultaEstado() {
 
 
       $('#spinner').show();
 
       let req = [];
       req.w = 'apiPresto';
-      req.r = 'consulta_periodo_mov_fondo';
-      req.cod_fondo = $(":selected", $('#cbFondos')).val();     
-      req.fecha_inicial = $txtFechaIni.val();
-      req.fecha_final = $txtFechaFin.val();
+      req.r = 'consulta_estado_fondo';
+      req.cod_fondo = $(":selected", $('#cbFondos')).val();
 
-
-      $tblMovFondo.clear().draw();
 
       api_postRequest(
          req,
          function (data) {
             $('#spinner').hide();
-            //console.log(data);
 
-            if (data.resp != null) {
+            let _acumFondo = parseInt(data.resp.acum_fondo);
+            let _monPtmos = parseInt(data.resp.saldo_ptmos);
+            let _efeCajas = parseInt(data.resp.saldo_cajas);
+            let _efeFondo = _acumFondo - _monPtmos - _efeCajas;
 
-               let _saldoIni = Number.parseInt(data.resp.saldo_inicial);
-
-               let _movimientos = data.resp.movimientos;
-
-               listaMovFondo = [];
-
-               let _montoMov = 0;
-
-               for (let i = 0; i < _movimientos.length; i++) {
-                  let mov = new Object();
-                  mov.numConse = _movimientos[i].num_conse;
-
-                  let a_fecha = (_movimientos[i].fec_mov).split('-');
-                  let fecha_liq = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
-                  mov.fecMov = fecha_liq;
-                  //mov.fecMov = _movimientos[i].fec_mov;
-                  mov.docRef = _movimientos[i].doc_refe;
-                  mov.detMov = _movimientos[i].det_mov;
-
-                  mov.monMov = Number.parseInt(_movimientos[i].mon_mov);
-                  //mov.monMov = _movimientos[i].mon_mov;
-                  _montoMov = _montoMov + Number.parseInt(_movimientos[i].mon_mov);
-
-                  listaMovFondo.push(mov);
-               }
-
-               _saldoFin = _saldoIni + _montoMov;
-
-               $txtSaldoIni.val(nf_entero.format(_saldoIni));
-               $txtTotMov.val(nf_entero.format(_montoMov));
-               $txtSaldoFin.val(nf_entero.format(_saldoFin));
-
-
-               $tblMovFondo.rows.add(listaMovFondo).draw();
-            }
+            $txtAcuFondo.val(nf_entero.format(_acumFondo));
+            $txtMonPtmos.val(nf_entero.format(_monPtmos));
+            $txtEfeCajas.val(nf_entero.format(_efeCajas));
+            $txtEfeFondo.val(nf_entero.format(_efeFondo));
 
          },
          function (data) {
@@ -213,8 +116,8 @@ $(function(){
 
 
 
-  
 
-   
+
+
 
 });
