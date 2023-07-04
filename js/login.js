@@ -99,6 +99,9 @@ $(function () {
                             let nom_usuario = data.resp.nom_usuario;
                             let tipo_usuario = data.resp.tipo_usuario;
                             let est_usuario = data.resp.est_usuario;
+                            let anchoTkt = data.resp.ancho_tkt;
+                            let nom_cia = data.resp.nom_cia;
+
 
                             if (est_usuario==0){
                                 sweetAlert({ title: "Usuario INACTIVO", type: "error" });
@@ -127,6 +130,8 @@ $(function () {
                             sessionStorage.setItem("TIPO_USUARIO", tipo_usuario);
                             sessionStorage.setItem("TIT_USUARIO", titUsuario);
                             sessionStorage.setItem("NOM_USUARIO", nom_usuario);
+                            sessionStorage.setItem("NOM_CIA", nom_cia);
+                            sessionStorage.setItem("ANCHO_TKT", anchoTkt);
 
                             localStorage.setItem("COD_CLIENTE", $('#codCliente').val());
 

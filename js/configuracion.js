@@ -2,7 +2,7 @@ $(function () {
 
     /** Procesos de carga de pagina */
     cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
-    activaBotonMenu();
+    //activaBotonMenu();
 
     //** Constantes y variables globales de la página */
 
@@ -20,10 +20,7 @@ $(function () {
             }
         });
 
-    var $msgTkt = $('#msgTkt').val(sessionStorage.getItem('MSG_TKT')).focus(() => {
-        $(this).select();
-    });
-
+   
     let anchoTkt = sessionStorage.getItem('ANCHO_TKT');
 
     $("input[name=anchoTkt][value='" + anchoTkt + "']").prop("checked", true);
@@ -40,22 +37,20 @@ $(function () {
     function actualizaConfiguracion() {
 
         let titTkt = $tituloTkt.val();
-        let msgTkt = $msgTkt.val();
+        
         let anchoTkt = $("input[type=radio][name=anchoTkt]:checked").val();
 
-        console.log(titTkt, msgTkt, anchoTkt)
+        console.log(titTkt, anchoTkt)
 
-        sessionStorage.setItem('TIT_TKT', titTkt);
-        sessionStorage.setItem('MSG_TKT', msgTkt);
+        sessionStorage.setItem('TIT_TKT', titTkt);        
         sessionStorage.setItem('ANCHO_TKT', anchoTkt);
 
 
         let req = new Object();
-        req.w = 'apiLotto';
+        req.w = 'apiPresto';
         req.r = 'configura_tkt';
         req.cod_usuario = sessionStorage.getItem('COD_USUARIO');
         req.tit_tkt = titTkt;
-        req.msg_tkt = msgTkt;
         req.ancho_tkt = anchoTkt;
 
         fetch_postRequest(req,

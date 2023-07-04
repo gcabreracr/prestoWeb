@@ -214,12 +214,9 @@ function cerrarSession() {
   sessionStorage.removeItem('COD_USUARIO');
   sessionStorage.removeItem('NOM_USUARIO');
   sessionStorage.removeItem('TIPO_USUARIO');
-  sessionStorage.removeItem('COD_PDV');
-  sessionStorage.removeItem('NOM_PDV');
-  sessionStorage.removeItem('COD_BODEGA');
-  sessionStorage.removeItem('COD_AGENCIA');
-  sessionStorage.removeItem('NOM_AGENCIA');
-  sessionStorage.removeItem('TIT_USUARIO');
+  sessionStorage.removeItem('NOM_CIA');
+  sessionStorage.removeItem('ANCHO_TKT');
+  sessionStorage.removeItem('TIT_USUARIO');  
   sessionStorage.removeItem('URL_API');
 
 

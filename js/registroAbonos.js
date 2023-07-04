@@ -34,6 +34,11 @@ $(function () {
    const $btnCancelar = $('#btnCancelar');
    const $btnNuevo = $('#btnNuevo');
 
+   $('#btnImprimir').click(function () { imprimeTkt(); });
+   $('#btnCopiar').click(function () { copiaTkt(); })
+
+
+
 
 
    ini_componentes();
@@ -260,12 +265,11 @@ $(function () {
 
       $btnVistaPrevia.click(function (e) {
 
-         console.log('Imprimiendo Prestamo')
+         console.log('Imprimiendo Recibo')
+
+         imprimeRecibo();
 
       });
-
-
-
 
    }
 
@@ -467,7 +471,7 @@ $(function () {
          function (data) {
             $('#spinner').hide();
 
-            //console.log(data);
+            console.log(data);
 
             if (data.resp == null) {
                $txtNumRecibo.focus();
@@ -691,12 +695,13 @@ $(function () {
       let fecha = aFecha[2] + '/' + aFecha[1] + '/' + aFecha[0];
 
       let datos = new Object();
-      datos.num_recibo = numeroTkt;
+      datos.num_recibo = _numRecibo;
       datos.fec_recibo = fecha;
-      datos.nom_cliente = $txtNomCli.val();
-      datos.saldo_ini = $txtSalIni.val();
-      datos.mon_abono = $txtMonAbo.val();
-      datos.saldo_fin = $txtSalFin.val();
+      datos.nomCliente = $txtNomCli.val();
+      datos.det_abono = 'abono OP-' + $txtNumPtmo.val();
+      datos.salIni = $txtSalIni.val();
+      datos.monAbo = $txtMonAbo.val();
+      datos.salFin = $txtSalFin.val();
 
 
 
