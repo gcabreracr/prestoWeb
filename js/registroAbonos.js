@@ -754,5 +754,27 @@ $(function () {
       $('#btnImprimir').focus();
    }
 
+   function imprimeTkt() {
+
+      var divToPrint = document.getElementById("divTT");
+  
+      newWin = window.open("");
+      newWin.document.write(divToPrint.outerHTML);
+      newWin.print();
+      newWin.close();
+  
+  }
+  
+  function copiaTkt() {
+      let range = document.createRange();
+      range.selectNode(document.getElementById('divTT'));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      //alert('Tiquete copiado');
+  
+  }
+  
+
 
 });
