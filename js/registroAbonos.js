@@ -220,7 +220,40 @@ $(function () {
 
       $btnAnular.click(function (e) {
 
-         Swal.fire({
+
+         Swal
+         .fire({
+            title: "Desea Eliminar el Movimiento?",              
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+         })
+         .then(resultado => {
+            if (resultado.value) {
+                         
+               anulaRecibo();
+            } else{
+
+               document.forms.regAbo_form.reset();
+               $txtFecAbono.val(obtieneFechaActual());
+               $txtSalIni.val('0');
+               $txtMonAbo.val('0');
+               $txtSalFin.val('0');
+
+
+               $("#cbUsuarios option[value='0']").attr("selected", true);
+               $("#cbFondos option[value='0']").attr("selected", true);
+
+
+               $txtNumRecibo.focus();
+
+
+            }
+         });
+
+
+       /*  Swal.fire({
             title: 'Desea anular el recibo?',
             icon: 'warning',
             showCancelButton: true,
@@ -250,7 +283,7 @@ $(function () {
             }
 
 
-         })
+         })*/
 
 
 

@@ -332,7 +332,45 @@ $(function () {
 
       $btnAnular.click(function (e) {
 
-         Swal.fire({
+
+
+         Swal
+            .fire({
+               title: "Desea Eliminar el Movimiento?",              
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonText: "Sí, eliminar",
+               cancelButtonText: "Cancelar",
+            })
+            .then(resultado => {
+               if (resultado.value) {
+               
+                  anulaPrestamo();
+
+               } else{
+
+                  document.forms.regPtmo_form.reset();
+                  $txtFecPtmo.val(obtieneFechaActual());
+                  $txtMonPtmo.val('0');
+                  $txtMonInts.val('0');
+                  $txtMonTot.val('0');
+                  $txtNumCuo.val('0');
+                  $txtMonCuo.val('0');
+                  $tblCuotas.clear().draw();
+   
+                  $("#cbUsuarios option[value='0']").attr("selected", true);
+                  $("#cbFondos option[value='0']").attr("selected", true);
+                  $("#cbProductos option[value='0']").attr("selected", true);
+   
+                  $("#cbForPago option[value='" + 1 + "']").attr("selected", true);   
+                  $txtNumPtmo.focus();   
+
+               }
+            });
+
+
+
+        /* Swal.fire({
             title: 'Desea anular el prestamo?',
             icon: 'warning',
             showCancelButton: true,
@@ -365,7 +403,7 @@ $(function () {
             }
 
 
-         })
+         })*/
 
 
 

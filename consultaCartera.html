@@ -34,7 +34,7 @@
 
 
   <!-- Sweet Alert Files-->
-  <link type="text/css" href="../assets/css/sweetalert2.min.css" rel="stylesheet" />
+  <!--link type="text/css" href="../assets/css/sweetalert2.min.css" rel="stylesheet" /-->
   <script src="../assets/js/sweetalert2.all.min.js"></script>
 
 
@@ -70,7 +70,7 @@
 
     <div class="container">
 
-      <div class="mb-lg-3">
+      <div class="row mb-2">
 
         <div class="col-6">
           <h2>Cartera de Crédito</h2>
@@ -79,10 +79,9 @@
         </div><!-- End Page Title -->
 
         <!-- Barra botones -->
-        <div class="col-6">
+        <div class="col-6 d-flex justify-content-center">
 
-          <!--button id="btnActualizar" class="btn btn-primary" data-bs-toggle="tooltip"
-            title="Enviar">Actualizar</i></button-->
+          <button id="btnVistaPrevia" class="btn btn-light">Imprimir</button>
 
         </div>
 
@@ -127,7 +126,7 @@
 
 
                 <div class="row mb-3">
-                  <label for="txtTotPtmos" class="col-3 col-form-label">Total Cartera</label>
+                  <label for="txtTotPtmos" class="col-5 col-form-label text-end">Total Cartera</label>
                   <div class="col-4">
                     <input id="txtTotPtmos" name="txtTotPtmos" type="text" class="form-control text-end" disabled>
                   </div>

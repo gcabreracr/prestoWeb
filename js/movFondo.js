@@ -101,12 +101,30 @@ $(function () {
 
       $('#tblMovFondo tbody').on('click', 'button.eliminar', function () {
 
-
          let fila = $tblMovFondo.row($(this).parents('tr')).index();
-
          numConse = listaMovFondo[fila].numConse;
+         
+         Swal
+            .fire({
+               title: "Desea Eliminar el Movimiento?",              
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonText: "Sí, eliminar",
+               cancelButtonText: "Cancelar",
+            })
+            .then(resultado => {
+               if (resultado.value) {
+                  // Hicieron click en "Sí"
+                  console.log("Eliminando el movimiento");
 
-         anulaMovimiento();
+                  anulaMovimiento();
+
+               } 
+            });
+
+
+
+         //anulaMovimiento();
 
 
 
@@ -175,7 +193,7 @@ $(function () {
 
          if ($(":selected", $('#cbFondos')).val() == 0) {
             $cbFondos.focus();
-            sweetAlert({ title: "Debe seleccionar un fondo", type: "error" });
+            Swal.fire({ title: "Debe seleccionar un fondo", icon: "error" });
             return;
 
          }
@@ -200,14 +218,14 @@ $(function () {
          if ($txtDocRef.val().length == 0) {
 
             $txtDocRef.focus();
-            sweetAlert({ title: "Campo Documento Referencia es requerido", type: "error" });
+            Swal.fire({ title: "Campo Documento Referencia es requerido", icon: "error" });
             return;
 
          }
          if ($txtDetalle.val().length == 0) {
 
             $txtDetalle.focus();
-            sweetAlert({ title: "Campo Documento Referencia es requerido", type: "error" });
+            Swal.fire({ title: "Campo Documento Referencia es requerido", icon: "error" });
             return;
 
          }
@@ -245,7 +263,6 @@ $(function () {
 
                let _listaFondos = data.resp.listaFondos;
 
-
                for (item in _listaFondos) {
 
                   let _codFondo = _listaFondos[item]['cod_fondo'];
@@ -262,7 +279,7 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -285,7 +302,7 @@ $(function () {
          req,
          function (data) {
             $('#spinner').hide();
-            console.log(data);
+            //console.log(data);
 
             if (data.resp != null) {
 
@@ -318,7 +335,7 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -347,17 +364,17 @@ $(function () {
          function (data) {
             $('#spinner').hide();
 
-            console.log(data);
+            //console.log(data);
 
             $('#modForFondo').modal('hide');
             consultaMovimientos();
             let msg = data.resp.msg;
-            sweetAlert({ title: msg, type: "success" });
+            Swal.fire({ title: msg, icon: "success" });
 
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -381,17 +398,15 @@ $(function () {
 
             consultaMovimientos();
             let msg = data.resp.msg;
-            sweetAlert({ title: msg, type: "success" });
+            Swal.fire({ title: msg, icon: "success" });
 
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
    }
-
-
 
 });

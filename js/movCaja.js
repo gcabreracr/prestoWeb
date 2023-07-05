@@ -103,13 +103,31 @@ $(function () {
 
       $('#tblMovCaja tbody').on('click', 'button.eliminar', function () {
 
-
+         
          let fila = $tblMovCaja.row($(this).parents('tr')).index();
-
          numConse = listaMovCaja[fila].numConse;
 
-         anulaMovimiento();
 
+         Swal
+            .fire({
+               title: "Desea Eliminar el Movimiento?",              
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonText: "Sí, eliminar",
+               cancelButtonText: "Cancelar",
+            })
+            .then(resultado => {
+               if (resultado.value) {
+                  // Hicieron click en "Sí"
+                  console.log("Eliminando el movimiento");
+
+                  anulaMovimiento();
+
+               } 
+            });
+
+
+        
 
 
       }); // Fin de funcion boton eliminar numero table
@@ -198,14 +216,14 @@ $(function () {
 
          if ($(":selected", $('#cbFondos')).val() == 0) {
             $cbFondos.focus();
-            sweetAlert({ title: "Debe seleccionar un fondo", type: "error" });
+            Swal.fire({ title: "Debe seleccionar un fondo", icon: "error" });
             return;
 
          }
 
          if ($(":selected", $('#cbUsuarios')).val() == 0) {
             $cbUsuarios.focus();
-            sweetAlert({ title: "Debe seleccionar un usuario", type: "error" });
+            Swal.fire({ title: "Debe seleccionar un usuario", icon: "error" });
             return;
 
          }
@@ -230,14 +248,14 @@ $(function () {
          if ($txtDocRef.val().length == 0) {
 
             $txtDocRef.focus();
-            sweetAlert({ title: "Campo Documento Referencia es requerido", type: "error" });
+            Swal.fire({ title: "Campo Documento Referencia es requerido", icon: "error" });
             return;
 
          }
          if ($txtDetalle.val().length == 0) {
 
             $txtDetalle.focus();
-            sweetAlert({ title: "Campo Documento Referencia es requerido", type: "error" });
+            Swal.fire({ title: "Campo Documento Referencia es requerido", icon: "error" });
             return;
 
          }
@@ -292,7 +310,7 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -339,7 +357,7 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -377,7 +395,7 @@ $(function () {
 
                   let a_fecha = (_movimientos[i].fec_mov).split('-');
                   let fecha_liq = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
-                  
+
                   mov.fecMov = fecha_liq;
                   mov.docRef = _movimientos[i].doc_refe;
                   mov.detMov = _movimientos[i].detalle;
@@ -395,7 +413,7 @@ $(function () {
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
@@ -427,19 +445,18 @@ $(function () {
             $('#modForCaja').modal('hide');
             consultaMovimientos();
             let msg = data.resp.msg;
-            sweetAlert({ title: msg, type: "success" });
+            Swal.fire({ title: msg, icon: "success" });
 
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
 
    }
 
    function anulaMovimiento() {
-
 
       $('#spinner').show();
 
@@ -455,14 +472,15 @@ $(function () {
 
             consultaMovimientos();
             let msg = data.resp.msg;
-            sweetAlert({ title: msg, type: "success" });
+            Swal.fire({ title: msg, icon: "success" });
 
          },
          function (data) {
             $('#spinner').hide();
-            sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
          }
       );
+
 
    }
 
