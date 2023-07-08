@@ -222,68 +222,36 @@ $(function () {
 
 
          Swal
-         .fire({
-            title: "Desea Eliminar el Movimiento?",              
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: "Sí, eliminar",
-            cancelButtonText: "Cancelar",
-         })
-         .then(resultado => {
-            if (resultado.value) {
-                         
-               anulaRecibo();
-            } else{
+            .fire({
+               title: "Desea Eliminar el Abono?",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonText: "Sí, eliminar",
+               cancelButtonText: "Cancelar",
+            })
+            .then(resultado => {
+               if (resultado.value) {
 
-               document.forms.regAbo_form.reset();
-               $txtFecAbono.val(obtieneFechaActual());
-               $txtSalIni.val('0');
-               $txtMonAbo.val('0');
-               $txtSalFin.val('0');
+                  anulaRecibo();
+               } else {
 
-
-               $("#cbUsuarios option[value='0']").attr("selected", true);
-               $("#cbFondos option[value='0']").attr("selected", true);
+                  document.forms.regAbo_form.reset();
+                  $txtFecAbono.val(obtieneFechaActual());
+                  $txtSalIni.val('0');
+                  $txtMonAbo.val('0');
+                  $txtSalFin.val('0');
 
 
-               $txtNumRecibo.focus();
+                  $("#cbUsuarios option[value='0']").attr("selected", true);
+                  $("#cbFondos option[value='0']").attr("selected", true);
 
 
-            }
-         });
+                  $txtNumRecibo.focus();
 
 
-       /*  Swal.fire({
-            title: 'Desea anular el recibo?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si'
-         }).then((result) => {
-            if (result.isConfirmed) {
-               console.log('Anulando recibos')
+               }
+            });
 
-               anulaRecibo();
-            } else {
-
-               document.forms.regAbo_form.reset();
-               $txtFecAbono.val(obtieneFechaActual());
-               $txtSalIni.val('0');
-               $txtMonAbo.val('0');
-               $txtSalFin.val('0');
-
-
-               $("#cbUsuarios option[value='0']").attr("selected", true);
-               $("#cbFondos option[value='0']").attr("selected", true);
-
-
-               $txtNumRecibo.focus();
-
-            }
-
-
-         })*/
 
 
 
@@ -344,7 +312,16 @@ $(function () {
       $txtMonAbo.val('0');
       $txtSalFin.val('0');
 
-      $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+
+      if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
+
+         $("#cbUsuarios option[value='0']").attr("selected", true);
+
+      } else {
+         $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+      }
+
+
       $("#cbFondos option[value='0']").attr("selected", true);
 
       $txtNumPtmo.prop("disabled", false);
@@ -757,24 +734,24 @@ $(function () {
    function imprimeTkt() {
 
       var divToPrint = document.getElementById("divTT");
-  
+
       newWin = window.open("");
       newWin.document.write(divToPrint.outerHTML);
       newWin.print();
       newWin.close();
-  
-  }
-  
-  function copiaTkt() {
+
+   }
+
+   function copiaTkt() {
       let range = document.createRange();
       range.selectNode(document.getElementById('divTT'));
       window.getSelection().removeAllRanges();
       window.getSelection().addRange(range);
       document.execCommand("copy");
       //alert('Tiquete copiado');
-  
-  }
-  
+
+   }
+
 
 
 });

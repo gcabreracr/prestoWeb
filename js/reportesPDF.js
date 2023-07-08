@@ -1,14 +1,14 @@
 
 
-class MovFondo extends jsPDF {
+class MovFondo {
 
    
 
 
     constructor(){
-        super();
+        
 
-        this.LTH = 50;
+        
 
         
     }

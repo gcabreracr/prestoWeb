@@ -336,7 +336,7 @@ $(function () {
 
          Swal
             .fire({
-               title: "Desea Eliminar el Movimiento?",              
+               title: "Desea Eliminar el Prestamo?",
                icon: 'warning',
                showCancelButton: true,
                confirmButtonText: "Sí, eliminar",
@@ -344,10 +344,10 @@ $(function () {
             })
             .then(resultado => {
                if (resultado.value) {
-               
+
                   anulaPrestamo();
 
-               } else{
+               } else {
 
                   document.forms.regPtmo_form.reset();
                   $txtFecPtmo.val(obtieneFechaActual());
@@ -357,53 +357,16 @@ $(function () {
                   $txtNumCuo.val('0');
                   $txtMonCuo.val('0');
                   $tblCuotas.clear().draw();
-   
+
                   $("#cbUsuarios option[value='0']").attr("selected", true);
                   $("#cbFondos option[value='0']").attr("selected", true);
                   $("#cbProductos option[value='0']").attr("selected", true);
-   
-                  $("#cbForPago option[value='" + 1 + "']").attr("selected", true);   
-                  $txtNumPtmo.focus();   
+
+                  $("#cbForPago option[value='" + 1 + "']").attr("selected", true);
+                  $txtNumPtmo.focus();
 
                }
             });
-
-
-
-        /* Swal.fire({
-            title: 'Desea anular el prestamo?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si'
-         }).then((result) => {
-            if (result.isConfirmed) {
-               console.log('Anulando el prestamo')
-
-               anulaPrestamo();
-            } else {
-               document.forms.regPtmo_form.reset();
-               $txtFecPtmo.val(obtieneFechaActual());
-               $txtMonPtmo.val('0');
-               $txtMonInts.val('0');
-               $txtMonTot.val('0');
-               $txtNumCuo.val('0');
-               $txtMonCuo.val('0');
-               $tblCuotas.clear().draw();
-
-               $("#cbUsuarios option[value='0']").attr("selected", true);
-               $("#cbFondos option[value='0']").attr("selected", true);
-               $("#cbProductos option[value='0']").attr("selected", true);
-
-               $("#cbForPago option[value='" + 1 + "']").attr("selected", true);
-
-               $txtNumPtmo.focus();
-
-            }
-
-
-         })*/
 
 
 
@@ -471,7 +434,20 @@ $(function () {
       $txtMonCuo.val('0');
       $tblCuotas.clear().draw();
 
-      $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+      // $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+
+
+
+      if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
+
+         $("#cbUsuarios option[value='0']").attr("selected", true);
+
+      } else {
+         $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
+      }
+
+
+
       $("#cbForPago option[value='" + 1 + "']").attr("selected", true);
 
       $btnGuardar.prop("disabled", false);
@@ -756,7 +732,13 @@ $(function () {
             let _nombre = data.resp.ape_cliente + ', ' + data.resp.nom_cliente;
             $txtNomCli.val(_nombre);
 
-            $cbFondos.focus();
+            if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
+
+               $cbUsuarios.focus();
+            } else {
+
+               $cbFondos.focus();
+            }
 
 
          }, function (data) {
@@ -798,21 +780,21 @@ $(function () {
 
    }
 
-   
+
    function listaPtmosTotal() {
 
       $('#spinner').show();
 
       let req = [];
       req.w = 'apiPresto';
-      req.r = 'lista_ptmos_total';      
+      req.r = 'lista_ptmos_total';
 
       $tblPtmos.clear().draw();
 
       api_postRequest(req,
          function (data) {
-            $('#spinner').hide();         
-          
+            $('#spinner').hide();
+
             listaPtmos = [];
 
             if (data.resp != null) {
@@ -820,7 +802,7 @@ $(function () {
                let _ptmos = data.resp.listaPtmos;
 
                for (let i = 0; i < _ptmos.length; i++) {
-                  
+
                   let _ptmo = new Object();
                   _ptmo.numPtmo = _ptmos[i].num_ptmo;
                   _ptmo.nomCliente = _ptmos[i].nomCliente;
