@@ -34,8 +34,8 @@
 
 
   <!-- Sweet Alert Files-->
-  <link type="text/css" href="../assets/css/sweetalert.css" rel="stylesheet" />
-  <script src="../assets/js/sweetalert.min.js"></script>
+  <!--link type="text/css" href="../assets/css/sweetalert.css" rel="stylesheet" /-->
+  <script src="../assets/js/sweetalert2.all.min.js"></script>
 
 
   <!-- jQuery js-->
@@ -71,7 +71,7 @@
 
     <div class="container">
 
-      <div class="mb-lg-3">
+      <div class="row mb-2">
 
         <div class="col-6">
           <h2>Prestamos Emitidos</h2>
@@ -80,10 +80,10 @@
         </div><!-- End Page Title -->
 
         <!-- Barra botones -->
-        <div class="col-6">
+        <div class="col-6 d-flex justify-content-center">
 
-          <!--button id="btnActualizar" class="btn btn-primary" data-bs-toggle="tooltip"
-            title="Enviar">Actualizar</i></button-->
+
+          <button id="btnVistaPrevia" class="btn btn-light">Imprimir</button>
 
         </div>
 
@@ -105,11 +105,11 @@
         </div>
       </div>
 
-
       <div class="row d-flex justify-content-center">
 
+
         <!-- Div del formulario-->
-        <div class="col-lg-5">
+        <div class="col-md-5">
 
           <div class="card">
             <div class="card-body">
@@ -118,8 +118,8 @@
 
 
                 <div class="row mb-3">
-                  <label class="col-lg-3 col-form-label">Fondo</label>
-                  <div class="col-lg-8">
+                  <label class="col-sm-3 col-form-label">Fondo</label>
+                  <div class="col-sm-8">
                     <select id="cbFondos" class="form-select" aria-label="Default select example" autofocus>
 
                     </select>
@@ -127,35 +127,30 @@
                 </div>
 
 
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Caja</label>
+                  <div class="col-sm-8">
+                    <select id="cbUsuarios" class="form-select" aria-label="Default select example" autofocus>
+                    </select>
+                  </div>
+                </div>
+
+
+
                 <div class="row mb-3 mt-2">
-                  <label for="fechaIni" class="col-sm-3 col-form-label">Fecha Inicial</label>
+                  <label for="txtFechaIni" class="col-sm-3 col-form-label">Fecha Inicial</label>
                   <div class="col-sm-4">
-                    <input id="fechaIni" name="fechaIni" type="date" class="form-control">
+                    <input id="txtFechaIni" name="txtFechaIni" type="date" class="form-control">
                   </div>
                 </div>
 
                 <div class="row mb-3 mt-2">
-                  <label for="fechaFin" class="col-sm-3 col-form-label">Fecha Final</label>
+                  <label for="txtFechaFin" class="col-sm-3 col-form-label">Fecha Final</label>
                   <div class="col-sm-4">
-                    <input id="fechaFin" name="fechaFin" type="date" class="form-control">
+                    <input id="txtFechaFin" name="txtFechaFin" type="date" class="form-control">
                   </div>
                   <div class="col-3">
                     <button id="btnConsultar" class="btn btn-dark">Consultar</button>
-                  </div>
-                </div>
-
-
-                <div class="row mb-3">
-                  <label for="txtMonCap" class="col-sm-6 col-form-label text-end">Monto Capital</label>
-                  <div class="col-sm-4">
-                    <input id="txtMonCap" name="txtMonCap" type="text" class="form-control text-end" disabled>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="txtMonInts" class="col-sm-6 col-form-label text-end">Monto Ints</label>
-                  <div class="col-sm-4">
-                    <input id="txtMonInts" name="txtMonInts" type="text" class="form-control text-end" disabled>
                   </div>
                 </div>
 
@@ -166,32 +161,33 @@
                   </div>
                 </div>
 
-
-
-
               </form>
 
             </div>
           </div>
         </div>
 
+
+
+
+
+
         <!-- Div del data teble-->
-        <div class="col-lg-7">
+        <div class="col-md-7">
 
           <div class="card">
             <div class="card-body">
               <h5>Detalle Prestamos</h5>
 
               <div class="table-responsive">
-                <table id="tblMovFondo" class="table table-primary">
+                <table id="tblPtmos" class="table table-primary">
                   <thead>
                     <tr>
                       <th class="col-2 text-center">Fecha</th>
-                      <th class="col-1"># Ptmo</th>
-                      <th class="col-3">Cliente</th>
+                      <th class="col-2"># Ptmo</th>
+                      <th class="col-4">Cliente</th>
                       <th class="col-2 text-end">Monto</th>
-                      <th class="col-2 text-end">Ganancia</th>
-                      <th class="col-2 text-end">Total</th>
+                      <th class="col-2 text-center">Caja</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -210,7 +206,7 @@
   </div>
 
   <!-- ======= Footer ======= -->
-  <footer >
+  <footer>
     <div class="text-center">
       &copy; Copyright <strong><span>Seccab Software</span></strong>. Derechos Reservados
     </div>

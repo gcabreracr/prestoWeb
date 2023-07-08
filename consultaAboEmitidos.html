@@ -71,25 +71,24 @@
 
     <div class="container">
 
-      <div class="mb-lg-3">
+      <div class="row mb-2">
 
         <div class="col-6">
-          <h2>Abonos registrados</h2>
+          <h2>Abonos Registrados</h2>
 
 
         </div><!-- End Page Title -->
 
         <!-- Barra botones -->
-        <div class="col-6">
+        <div class="col-6 d-flex justify-content-center">
 
-          <!--button id="btnActualizar" class="btn btn-primary" data-bs-toggle="tooltip"
-            title="Enviar">Actualizar</i></button-->
+
+          <button id="btnVistaPrevia" class="btn btn-light">Imprimir</button>
 
         </div>
 
 
       </div>
-
     </div>
 
   </header><!-- End Header -->
@@ -114,13 +113,13 @@
           <div class="card">
             <div class="card-body">
 
-              <form id="estadoCaja_form" method="POST" autocomplete="off">
+              <form id="consultaAbo_form" method="POST" autocomplete="off">
 
 
                 <div class="row mb-3">
                   <label class="col-lg-3 col-form-label">Caja</label>
                   <div class="col-lg-8">
-                    <select id="cbCajas" class="form-select" aria-label="Default select example" autofocus>
+                    <select id="cbUsuarios" class="form-select" aria-label="Default select example" autofocus>
 
                     </select>
                   </div>
@@ -136,16 +135,16 @@
 
 
                 <div class="row mb-3 mt-2">
-                  <label for="fechaIni" class="col-sm-3 col-form-label">Fecha Inicial</label>
+                  <label for="txtFechaIni" class="col-sm-3 col-form-label">Fecha Inicial</label>
                   <div class="col-sm-4">
-                    <input id="fechaIni" name="fechaIni" type="date" class="form-control">
+                    <input id="txtFechaIni" name="txtFechaIni" type="date" class="form-control">
                   </div>
                 </div>
 
                 <div class="row mb-3 mt-2">
-                  <label for="fechaFin" class="col-sm-3 col-form-label">Fecha Final</label>
+                  <label for="txtFechaFin" class="col-sm-3 col-form-label">Fecha Final</label>
                   <div class="col-sm-4">
-                    <input id="fechaFin" name="fechaFin" type="date" class="form-control">
+                    <input id="txtFechaFin" name="txtFechaFin" type="date" class="form-control">
                   </div>
                   <div class="col-3">
                     <button id="btnConsultar" class="btn btn-dark">Consultar</button>
@@ -153,9 +152,9 @@
                 </div>
 
                 <div class="row mb-3">
-                  <label for="txtTotalAbo" class="col-sm-6 col-form-label text-end">Monto Total</label>
+                  <label for="txtMonTotal" class="col-sm-6 col-form-label text-end">Monto Total</label>
                   <div class="col-sm-4">
-                    <input id="txtTotalAbo" name="txtTotalAbo" type="text" class="form-control text-end" disabled>
+                    <input id="txtMonTotal" name="txtMonTotal" type="text" class="form-control text-end" disabled>
                   </div>
                 </div>
 
@@ -173,7 +172,7 @@
               <h5>Detalle Abonos</h5>
 
               <div class="table-responsive">
-                <table id="tblMovCaja" class="table table-primary">
+                <table id="tblAbonos" class="table table-primary">
                   <thead>
                     <tr>
                       <th class="col-2 text-center">Fecha</th>
