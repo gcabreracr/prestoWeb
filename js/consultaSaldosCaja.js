@@ -10,12 +10,14 @@ $(function () {
 
    const $txtSaldoTot = $('#txtSaldoTot').val('0');
 
+   const $btnImprimir = $('#btnImprimir');
+
 
    var $tblSaldosCaja;
    ini_componentes();
    llenaComboUsuarios();
 
-  
+
    function ini_componentes() {
 
 
@@ -53,11 +55,9 @@ $(function () {
 
 
 
-
       $cbUsuarios.change(function () {
 
          $tblSaldosCaja.clear().draw();
-         //listaSaldosCaja = [];
          $txtSaldoTot.val('0');
 
          let _codUsuario = $(":selected", $('#cbUsuarios')).val();
@@ -72,6 +72,9 @@ $(function () {
          consultaSaldos();
 
       });
+
+    
+
 
    }
 
@@ -112,15 +115,15 @@ $(function () {
                }
 
                $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
-              
+
                if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
                   $cbUsuarios.prop("disabled", false);
                } else {
                   $cbUsuarios.prop("disabled", true);
                }
-            
+
                consultaSaldos();
-            
+
 
             }
          },
@@ -186,5 +189,8 @@ $(function () {
          }
       );
    }
+
+
+
 
 });

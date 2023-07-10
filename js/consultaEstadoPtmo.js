@@ -223,10 +223,19 @@ $(function () {
            //console.log(data);
 
             if (data.resp == null) {
+
+             
+
+               $txtNomCli.val('');
+               $txtMonPtmo.val('0');
+               $txtMonAbo.val('0');
+               $txtSalPtmo.val('0');
+               $tblAbonos.clear().draw();
+               listaAbonos=[];
+
                $txtNumPtmo.focus();
 
-               Swal.fire("Préstamo No Exite");
-              
+               Swal.fire("Préstamo No Exite");              
                return;
             }
 
@@ -248,7 +257,7 @@ $(function () {
             listaAbonos = [];
             $tblAbonos.clear().draw();
 
-            let _saldo = _montoPtmo;
+            //let _saldo = _montoPtmo;
 
             for (let i = 0; i < _abonos.length; i++) {
                let _abono = new Object();
@@ -264,7 +273,9 @@ $(function () {
             
                _abono.monAbo = _monAbo;
 
-               _saldo -= _monAbo;
+               let _saldo= parseInt(_abonos[i].sal_final);
+
+               //_saldo -= _monAbo;
 
                _abono.salPtmo =  _saldo;
 

@@ -1,12 +1,12 @@
-$(function(){
+$(function () {
 
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
 
    var listaMovFondo = [];
- 
 
-   const $cbFondos = $('#cbFondos');  
+
+   const $cbFondos = $('#cbFondos');
 
    const $txtFechaIni = $('#txtFechaIni').val(obtieneFechaActual());
    const $txtFechaFin = $('#txtFechaFin').val(obtieneFechaActual());
@@ -16,6 +16,7 @@ $(function(){
    const $txtSaldoFin = $('#txtSaldoFin').val('0');
 
    const $btnConsultar = $('#btnConsultar');
+   const $btnImprimir = $('#btnImprimir');
 
    var $tblMovFondo;
 
@@ -73,7 +74,7 @@ $(function(){
 
       });
 
-      
+
       $btnConsultar.click(function (e) {
 
          e.preventDefault();
@@ -91,6 +92,16 @@ $(function(){
          consultaMovimientos();
 
       });
+
+      $btnImprimir.click(function (e) {
+
+         e.preventDefault();
+
+         imprimeReporte();
+
+      });
+
+
 
    }
 
@@ -151,7 +162,7 @@ $(function(){
       let req = [];
       req.w = 'apiPresto';
       req.r = 'consulta_periodo_mov_fondo';
-      req.cod_fondo = $(":selected", $('#cbFondos')).val();     
+      req.cod_fondo = $(":selected", $('#cbFondos')).val();
       req.fecha_inicial = $txtFechaIni.val();
       req.fecha_final = $txtFechaFin.val();
 
@@ -211,10 +222,28 @@ $(function(){
    }
 
 
+   function imprimeReporte() {
+
+      if ($(":selected", $('#cbFondos')).val() != 0) {
+         console.log('Imprimiendo reporte');
+
+         let datos = new Object();
+         datos.nomFondo = $(":selected", $('#cbFondos')).text()
+         datos.salIni = $txtSaldoIni.val();
+         datos.monMov = $txtTotMov.val();
+         datos.salFin = $txtSaldoFin.val();
+         let a_fecha = $txtFechaIni.val().split('-');
+         datos.fecIni = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
+         a_fecha = $txtFechaFin.val().split('-');
+         datos.fecFin = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
+         datos.listaMov = listaMovFondo;
+         
 
 
-  
+         new Movimientos_Fondo(datos);
 
-   
+      }
+   }
+
 
 });

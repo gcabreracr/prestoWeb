@@ -75,28 +75,19 @@
 
       <div class="row mb-2">
 
-        <div class="col-4">
+        <div class="col-6">
           <h2>Registro Prestamos</h2>
 
 
         </div><!-- End Page Title -->
 
-        <!-- Barra botones -->
-        <div class="col-8 d-flex justify-content-end">
+       <!-- Barra botones -->
+       <div class="col-6 d-flex justify-content-center">        
 
+        <button id="btnVistaPrevia" class="btn btn-light">Imprimir</button>
 
-          <!--button id="btnGuardar" class="btn btn-light" data-bs-toggle="tooltip" title="Guardar"><i
-              class="bi bi-save2-fill"></i></button-->
+      </div>
 
-
-          <!--button id="btnAnular" class="btn btn-light" data-bs-toggle="tooltip" title="Anular"><i
-              class="bi bi-trash"></i></button-->
-
-          <button id="btnImprimir" class="btn btn-light" data-bs-toggle="tooltip" title="Imprimir"><i
-              class="bi bi-printer-fill"></i></button>
-
-
-        </div>
 
 
       </div>
@@ -390,6 +381,33 @@
   </div>
 
 
+    <!-- Modal para compartir tiquete-->
+    <div id="modalTkt" class="modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Vista Previa Tarjeta</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+          
+            <div id="divTT">
+  
+            </div>
+  
+  
+          </div>
+          <div class="modal-footer">
+           
+            <button id="btnImprimir" type="button" class="btn btn-primary">Imprimir</button>
+            <button id="btnCopiar" type="button" class="btn btn-secondary">Copiar</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   <!-- ======= Footer ======= -->
   <footer>
     <div class="text-center">
@@ -407,6 +425,7 @@
   <!-- Archivo JS pagina -->
 
   <script src="./js/registroPtmos.js"></script>
+  <script src="./js/crearTkts.js"></script>
 
 </body>
 

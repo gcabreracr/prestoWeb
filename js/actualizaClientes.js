@@ -279,7 +279,7 @@ $(function () {
 
                 }
             }, function (data) {
-                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+                Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
             });
 
 
@@ -319,7 +319,7 @@ $(function () {
                 }
 
             }, function (data) {
-                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+                Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
             });
 
 
@@ -358,7 +358,7 @@ $(function () {
                     $("#cbDistritos option[value='" + idDistrito + "']").attr("selected", true);
                 }
             }, function (data) {
-                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+                Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
             });
 
 
@@ -382,7 +382,7 @@ $(function () {
                 if (data.resp == null) {
 
                     $txtCodCliente.focus();
-                    sweetAlert({ title: "Código Cliente NO Existe", type: "error" });
+                    Swal.fire({ title: "Código Cliente NO Existe", icon: "error" });
                     return;
                 }
 
@@ -404,7 +404,7 @@ $(function () {
 
 
             }, function (data) {
-                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+                Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
             });
     }
 
@@ -414,14 +414,14 @@ $(function () {
         if ($txtNomCliente.val().length == 0) {
 
             $txtNomCliente.focus();
-            sweetAlert({ title: "Campo de nombre es requerido", type: "error" });
+            Swal.fire({ title: "Campo de nombre es requerido", icon: "error" });
             return;
         }
 
         if ($txtApeCliente.val().length == 0) {
 
             $txtApeCliente.focus();
-            sweetAlert({ title: "Campo de apellidos es requerido", type: "error" });
+            Swal.fire({ title: "Campo de apellidos es requerido", icon: "error" });
             return;
 
         }
@@ -429,21 +429,21 @@ $(function () {
         if ($(":selected", $('#cbProvincias')).val() == 0) {
 
             $cbProvincias.focus();
-            sweetAlert({ title: "Seleccione una provincia válida", type: "error" });
+            Swal.fire({ title: "Seleccione una provincia válida", icon: "error" });
             return;
 
         }
         if ($(":selected", $('#cbCantones')).val() == 0) {
 
             $cbCantones.focus();
-            sweetAlert({ title: "Seleccione un cantón válido", type: "error" });
+            Swal.fire({ title: "Seleccione un cantón válido", icon: "error" });
             return;
 
         }
         if ($(":selected", $('#cbDistritos')).val() == 0) {
 
             $cbDistritos.focus();
-            sweetAlert({ title: "Seleccione un distrito válido", type: "error" });
+            Swal.fire({ title: "Seleccione un distrito válido", icon: "error" });
             return;
 
         }
@@ -452,7 +452,7 @@ $(function () {
         if ($txtSennas.val().length == 0) {
 
             $txtSennas.focus();
-            sweetAlert({ title: "Campo de otras señas es requerido", type: "error" });
+            Swal.fire({ title: "Campo de otras señas es requerido", icon: "error" });
             return;
 
         }
@@ -485,21 +485,28 @@ $(function () {
             function (data) {
                 $('#spinner').hide();
 
-                let _msg = data.resp.msg;
+                let msg = data.resp.msg;
                 $txtCodCliente.focus();
                 idProvincia = 0;
                 idCanton = 0;
                 idDistrito = 0;
                 limpiaCampos();
 
-                sweetAlert({ title: _msg, type: "success" });
+                //Swal.fire({ title: _msg, icon: "success" });
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: msg,
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
 
 
 
             }, function (data) {
                 $('#spinner').hide();
 
-                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+                Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
             });
 
     }
@@ -540,7 +547,7 @@ $(function () {
 
             }
             , function (data) {
-                sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
+                Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
             });
     }
 

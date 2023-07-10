@@ -14,6 +14,7 @@ $(function () {
 
 
    const $txtMonTotal = $('#txtMonTotal').val('0');
+   const $txtMonCaja = $('#txtMonCaja').val('0');
 
    const $btnConsultar = $('#btnConsultar');
    const $btnVistaPrevia = $('#btnVistaPrevia');
@@ -39,12 +40,15 @@ $(function () {
          columns: [
             {
                data: 'fecPtmo',
-               className: 'dt-center'
+               className: 'dt-center',
+               width: '10%'
 
             },
             {
                data: 'numPtmo',
-               className: 'dt-center'
+               className: 'dt-center',
+               width: '10%'
+               
 
             },
             {
@@ -55,12 +59,22 @@ $(function () {
                data: 'monPtmo',
                className: 'dt-right',
                render: DataTable.render.number(',', '.'),
-               searchable: false
+               searchable: false,
+               width: '20%'
             },
             {
-               data: 'codUsuario'
+               data: 'monCaja',
+               className: 'dt-right',
+               render: DataTable.render.number(',', '.'),
+               searchable: false,
+               width: '20%'
+            },
+            {
+               data: 'codUsuario',
+               width: '20%'
 
             }
+           
 
          ],
 
@@ -217,7 +231,7 @@ $(function () {
       $tblPtmos.clear().draw();
       listaPtmos = [];
 
-      console.log(req)
+      //console.log(req)
 
       api_postRequest(
          req,
@@ -227,9 +241,11 @@ $(function () {
 
             if (data.resp != null) {
 
-           
-               let _ptmos = data.resp.listaPtmos;              
+
+               let _ptmos = data.resp.listaPtmos;
                let _totPtmos = 0;
+               let _totCaja = 0;
+
 
                for (let i = 0; i < _ptmos.length; i++) {
                   let ptmo = new Object();
@@ -238,21 +254,26 @@ $(function () {
                   let a_fecha = (_ptmos[i].fecha_reg).split('-');
                   let fecha_liq = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
                   ptmo.fecPtmo = fecha_liq;
-                
+
                   ptmo.nomCliente = _ptmos[i].nomCliente;
-                
-                  let _monPtmo = Number.parseInt(_ptmos[i].mon_ptmo)+Number.parseInt(_ptmos[i].mon_ints);
+
+                  let _monCaja = Number.parseInt(_ptmos[i].mon_ptmo);
+                  let _monPtmo = Number.parseInt(_ptmos[i].mon_ptmo) + Number.parseInt(_ptmos[i].mon_ints);
 
                   ptmo.monPtmo = _monPtmo;
                   _totPtmos += _monPtmo;
 
                   ptmo.codUsuario = _ptmos[i].cod_usuario;
+                  ptmo.monCaja = _monCaja
+                  _totCaja += _monCaja;
+
 
                   listaPtmos.push(ptmo);
                }
 
-              
+
                $txtMonTotal.val(nf_entero.format(_totPtmos));
+               $txtMonCaja.val(nf_entero.format(_totCaja));
 
 
                $tblPtmos.rows.add(listaPtmos).draw();

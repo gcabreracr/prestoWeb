@@ -71,22 +71,19 @@
 
     <div class="container">
 
-      <div class="mb-lg-3">
+      <div class="row mb-2">
 
         <div class="col-6">
+
           <h2>Consulta Movimientos Caja</h2>
-
-
         </div><!-- End Page Title -->
 
-        <!-- Barra botones -->
-        <div class="col-6">
+         <!-- Barra botones -->
+         <div class="col-6 d-flex justify-content-center">        
 
-          <!--button id="btnActualizar" class="btn btn-primary" data-bs-toggle="tooltip"
-            title="Enviar">Actualizar</i></button-->
+          <button id="btnImprimir" class="btn btn-light">Imprimir</button>
 
         </div>
-
 
       </div>
 
@@ -224,8 +221,10 @@
 
 
   <!-- Archivo JS pagina -->
-
+  <script src="../assets/jsPDF/jspdf.debug.js"></script>
   <script src="./js/consultaMovCaja.js"></script>
+  <script src="./js/reportesPDF.js"></script>
+
 
 </body>
 

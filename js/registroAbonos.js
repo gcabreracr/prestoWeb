@@ -37,10 +37,6 @@ $(function () {
    $('#btnImprimir').click(function () { imprimeTkt(); });
    $('#btnCopiar').click(function () { copiaTkt(); })
 
-
-
-
-
    ini_componentes();
    llenaComboFondos();
    llenaComboUsuarios();
@@ -220,6 +216,25 @@ $(function () {
 
       $btnAnular.click(function (e) {
 
+         e.preventDefault();
+
+         let _monAbono = Number.parseInt($txtMonAbo.val().replace(/,/g, ''));
+         let _saldoFin = Number.parseInt($txtSalFin.val().replace(/,/g, ''));
+
+         if (_monAbono == 0) {
+
+            $txtNumRecibo.focus();
+            Swal.fire({ title: "Recibo ya fue anulado anteriormente", icon: "success" });
+            return;
+         }
+
+
+         if (_saldoFin != _saldoPtmo) {
+
+            $txtNumRecibo.focus();
+            Swal.fire({ title: "Recibo NO es el ultimo abono registrado", icon: "success" });
+            return;
+         }
 
          Swal
             .fire({
@@ -233,6 +248,7 @@ $(function () {
                if (resultado.value) {
 
                   anulaRecibo();
+
                } else {
 
                   document.forms.regAbo_form.reset();
@@ -241,10 +257,8 @@ $(function () {
                   $txtMonAbo.val('0');
                   $txtSalFin.val('0');
 
-
                   $("#cbUsuarios option[value='0']").attr("selected", true);
                   $("#cbFondos option[value='0']").attr("selected", true);
-
 
                   $txtNumRecibo.focus();
 
@@ -253,9 +267,6 @@ $(function () {
             });
 
 
-
-
-         e.preventDefault();
       });
 
       $btnCancelar.click(function (e) {
@@ -266,7 +277,7 @@ $(function () {
 
       $btnVistaPrevia.click(function (e) {
 
-         console.log('Imprimiendo Recibo')
+         // console.log('Imprimiendo Recibo')
 
          imprimeRecibo();
 
@@ -481,20 +492,24 @@ $(function () {
          function (data) {
             $('#spinner').hide();
 
-            console.log(data);
+            //console.log(data);
 
             if (data.resp == null) {
                $txtNumRecibo.focus();
                Swal.fire({ title: "Abono NO existe", icon: "error" });
                return;
             }
+
             $txtNumPtmo.val(data.resp.num_ptmo);
             $txtFecAbono.val(data.resp.fecha_abo);
             $txtNomCli.val(data.resp.nomCliente);
 
             $("#cbFondos option[value='" + data.resp.cod_fondo + "']").attr("selected", true);
             $("#cbUsuarios option[value='" + data.resp.cod_usuario + "']").attr("selected", true);
-            let _saldoFin = parseInt(data.resp.sal_final);
+
+            _saldoPtmo = parseInt(data.resp.mon_saldo); // Saldo del prestamo actual
+
+            let _saldoFin = parseInt(data.resp.sal_final); // Saldo final del prestamo en el recibo
             let _abono = parseInt(data.resp.mon_abono);
             let _saldoIni = _saldoFin + _abono;
 
@@ -534,8 +549,6 @@ $(function () {
          function (data) {
             $('#spinner').hide();
 
-            // console.log(data);
-
             if (data.resp == null) {
                $txtNumPtmo.focus();
                Swal.fire({ title: "Préstamo No Exite", icon: "error" });
@@ -571,6 +584,8 @@ $(function () {
 
    function anulaRecibo() {
 
+
+
       $('#spinner').show();
 
       let req = [];
@@ -582,19 +597,34 @@ $(function () {
          function (data) {
             $('#spinner').hide();
 
-
-            console.log(data);
-
             let msg = data.resp.msg;
 
             inactivaCampos();
+
+            document.forms.regAbo_form.reset();
+            $txtFecAbono.val(obtieneFechaActual());
+            $txtSalIni.val('0');
+            $txtMonAbo.val('0');
+            $txtSalFin.val('0');
+
+            $("#cbUsuarios option[value='0']").attr("selected", true);
+            $("#cbFondos option[value='0']").attr("selected", true);
 
             $txtNumPtmo.prop("disabled", true);
             $btnVistaPrevia.prop("disabled", true);
             $btnAnular.prop("disabled", true);
             $txtNumRecibo.focus();
 
-            Swal.fire({ title: msg, icon: "success" })
+            Swal.fire({
+               position: 'top-end',
+               icon: 'success',
+               title: msg,
+               showConfirmButton: false,
+               timer: 1500
+            })
+
+
+            // Swal.fire({ title: msg, icon: "success" })
 
          }, function (data) {
             Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
@@ -683,7 +713,17 @@ $(function () {
             $btnVistaPrevia.prop("disabled", false);
             $btnVistaPrevia.focus();
 
-            Swal.fire({ title: msg, icon: "success" });
+
+            Swal.fire({
+               position: 'top-end',
+               icon: 'success',
+               title: msg,
+               showConfirmButton: false,
+               timer: 1500
+            })
+
+
+            //Swal.fire({ title: msg, icon: "success" });
 
          }, function (data) {
             Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });

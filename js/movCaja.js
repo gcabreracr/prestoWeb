@@ -445,7 +445,17 @@ $(function () {
             $('#modForCaja').modal('hide');
             consultaMovimientos();
             let msg = data.resp.msg;
-            Swal.fire({ title: msg, icon: "success" });
+
+            Swal.fire({
+               position: 'top-end',
+               icon: 'success',
+               title: msg,
+               showConfirmButton: false,
+               timer: 1500
+             })
+
+
+            //Swal.fire({ title: msg, icon: "success" });
 
          },
          function (data) {
@@ -472,7 +482,16 @@ $(function () {
 
             consultaMovimientos();
             let msg = data.resp.msg;
-            Swal.fire({ title: msg, icon: "success" });
+
+
+            Swal.fire({
+               position: 'top-end',
+               icon: 'success',
+               title: msg,
+               showConfirmButton: false,
+               timer: 1500
+             })
+            //Swal.fire({ title: msg, icon: "success" });
 
          },
          function (data) {

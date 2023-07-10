@@ -24,7 +24,7 @@ $(function () {
 
    const $btnBuscaPtmo = $('#btnBuscaPtmo');
    const $btnBuscaCli = $('#btnBuscaCli');
-   const $btnImprimir = $('#btnImprimir');
+   const $btnVistaPrevia = $('#btnVistaPrevia');  
 
    const $txtNumPtmo = $('#txtNumPtmo');
 
@@ -44,6 +44,16 @@ $(function () {
    const $btnAnular = $('#btnAnular');
    const $btnCancelar = $('#btnCancelar');
    const $btnNuevo = $('#btnNuevo');
+
+  
+
+   
+   $('#btnImprimir').click(function () { imprimeTkt(); });
+   $('#btnCopiar').click(function () { copiaTkt(); })
+
+
+
+
 
 
    var $tblCuotas;
@@ -379,9 +389,10 @@ $(function () {
 
       });
 
-      $btnImprimir.click(function (e) {
+      
+      $btnVistaPrevia.click(function (e) {
 
-         console.log('Imprimiendo Prestamo')
+       imprimeTarjeta();
 
       });
 
@@ -401,7 +412,7 @@ $(function () {
       $btnBuscaCli.prop("disabled", true);
       $btnGuardar.prop("disabled", true);
       $btnAnular.prop("disabled", true);
-      $btnImprimir.prop("disabled", true);
+     
    }
 
    function activaCampos() {
@@ -434,10 +445,7 @@ $(function () {
       $txtMonCuo.val('0');
       $tblCuotas.clear().draw();
 
-      // $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
-
-
-
+   
       if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
 
          $("#cbUsuarios option[value='0']").attr("selected", true);
@@ -837,7 +845,7 @@ $(function () {
          function (data) {
             $('#spinner').hide();
 
-            console.log(data);
+           // console.log(data);
 
             if (data.resp == null) {
                $txtNumPtmo.focus();
@@ -904,8 +912,8 @@ $(function () {
                $btnAnular.prop("disabled", false);
             }
 
-            $btnImprimir.prop("disabled", false);
-            $btnImprimir.focus();
+            //$btnImprimir.prop("disabled", false);
+            //$btnImprimir.focus();
 
          }, function (data) {
             Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
@@ -1081,7 +1089,15 @@ $(function () {
             $btnImprimir.prop("disabled", false);
             $btnImprimir.focus();
 
-            Swal.fire({ title: msg, icon: "success" });
+           // Swal.fire({ title: msg, icon: "success" });
+
+            Swal.fire({
+               position: 'top-end',
+               icon: 'success',
+               title: msg,
+               showConfirmButton: false,
+               timer: 1500
+             })
 
 
 
@@ -1098,5 +1114,65 @@ $(function () {
       fecha.setDate(fecha.getDate() + dias);
       return fecha;
    }
+
+
+
+   function imprimeTarjeta() {
+
+      let _numPtmo = parseInt($txtNumPtmo.val());
+
+      if (_numPtmo == 0) {
+         //sweetAlert({ title: "Tiquete NO ha sido enviado", type: "warning" });
+         return;
+      }
+
+
+      let aFecha = $txtFecPtmo.val().split('-');
+      let fecha = aFecha[2] + '/' + aFecha[1] + '/' + aFecha[0];
+
+      let datos = new Object();
+      datos.num_ptmo = _numPtmo;
+      datos.fec_ptmo = fecha;
+      datos.nomCliente = $txtNomCli.val();
+     
+      datos.mon_ptmo = $txtMonTot.val();
+      datos.num_cuotas = $txtNumCuo.val();
+      datos.mon_cuota = $txtMonCuo.val();
+      datos.cuotas = listaCuotas;
+
+      //console.log(listaCuotas);
+
+      let detalleTkt = '';
+
+      detalleTkt = creaTarjetaPtmo(datos);
+
+
+      document.getElementById("divTT").innerHTML = detalleTkt;
+
+      $('#modalTkt').modal('show');
+      $('#btnImprimir').focus();
+   }
+
+   function imprimeTkt() {
+
+      var divToPrint = document.getElementById("divTT");
+
+      newWin = window.open("");
+      newWin.document.write(divToPrint.outerHTML);
+      newWin.print();
+      newWin.close();
+
+   }
+
+   function copiaTkt() {
+      let range = document.createRange();
+      range.selectNode(document.getElementById('divTT'));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      //alert('Tiquete copiado');
+
+   }
+
 
 });

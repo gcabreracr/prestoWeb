@@ -17,6 +17,7 @@ $(function () {
    const $txtSaldoFin = $('#txtSaldoFin').val('0');
 
    const $btnConsultar = $('#btnConsultar');
+   const $btnImprimir = $('#btnImprimir');
 
    var $tblMovCaja;
 
@@ -103,6 +104,14 @@ $(function () {
          }
 
          consultaMovimientos();
+
+      });
+
+      $btnImprimir.click(function (e) {
+
+         e.preventDefault();
+
+         imprimeReporte();
 
       });
 
@@ -290,7 +299,7 @@ $(function () {
          req,
          function (data) {
             $('#spinner').hide();
-            console.log(data);
+           // console.log(data);
 
             if (data.resp != null) {
 
@@ -336,6 +345,28 @@ $(function () {
             sweetAlert({ title: "Error en la respuesta del servidor", type: "error" });
          }
       );
+   }
+
+   function imprimeReporte() {
+
+      if ($(":selected", $('#cbFondos')).val() != 0 && $(":selected", $('#cbUsuarios')).val() != 0) {
+         console.log('Imprimiendo reporte');
+
+         let datos = new Object();
+         datos.nomFondo = $(":selected", $('#cbFondos')).text()
+         datos.nomCaja = $(":selected", $('#cbUsuarios')).text()
+         datos.salIni = $txtSaldoIni.val();
+         datos.monMov = $txtTotMov.val();
+         datos.salFin = $txtSaldoFin.val();
+         let a_fecha = $txtFechaIni.val().split('-');
+         datos.fecIni = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
+         a_fecha = $txtFechaFin.val().split('-');
+         datos.fecFin = a_fecha[2] + '/' + a_fecha[1] + '/' + a_fecha[0];
+         datos.listaMov = listaMovCaja;
+
+         new Movimientos_Caja(datos);
+
+      }
    }
 
 });
