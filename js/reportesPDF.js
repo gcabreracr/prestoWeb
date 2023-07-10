@@ -6,7 +6,6 @@
 * Reporte de movimientos por fondo
 */
 
-
 class Movimientos_Fondo {
 
 
@@ -37,12 +36,12 @@ class Movimientos_Fondo {
 
         let _nomCia = sessionStorage.getItem("NOM_CIA");
         this.doc.setFontSize(14)
-        this.doc.text(_nomCia, 10, 20)
+        this.doc.text(_nomCia, 20, 20)
         this.doc.setFontSize(12)
-        this.doc.text('Reporte de Movimientos del Fondo', 10, 30);
+        this.doc.text('Reporte de Movimientos del Fondo', 20, 30);
 
         this.doc.setFontSize(10)
-        this.doc.text('Nombre del fondo: ' + this.datos.nomFondo, 10, 40);
+        this.doc.text('Nombre del fondo: ' + this.datos.nomFondo, 20, 40);
 
 
         //this.doc.text(20, 50, 'Periodo')
@@ -60,23 +59,22 @@ class Movimientos_Fondo {
         this.doc.text(this.datos.salFin.padStart(12), 200, 70)
 
         this.doc.setFontSize(8);
-        this.doc.text(10, 80, ''.padEnd(120, '-'))
-        this.doc.text(10, 90, '   Fecha')
-        this.doc.text(60, 90, '   Doc. Referencia')
+        this.doc.text(20, 80, ''.padEnd(115, '-'))
+        this.doc.text(25, 90, '   Fecha')
+        this.doc.text(70, 90, '   Doc. Referencia')
 
         this.doc.text(150, 90, 'Monto'.padStart(12));
         this.doc.text(200, 90, 'Detalle')
-        this.doc.text(10, 100, ''.padEnd(120, '-'))
+        this.doc.text(20, 100, ''.padEnd(115, '-'))
 
 
 
     }
 
     addFooter() {
-        this.doc.text(10, 570, ''.padEnd(120, '-'))
-        this.doc.text(170, 580, ' Pagina' + this._numPag)
 
-
+        this.doc.text(20, 570, ''.padEnd(115, '-'))
+        this.doc.text(375, 580, ' Pagina: ' + this._numPag)
     }
 
 
@@ -86,40 +84,46 @@ class Movimientos_Fondo {
 
         this.addTitulo();
 
-        this._lineasPag = 1;
+        this._lineasPag = 0;
         this._impTit = 0;
         this._numPag = 1;
+        this._impFooter = 1;
 
         for (let i = 0; i < listaMov.length; i++) {
 
             if (this._impTit == 1) {
-
                 this.doc.addPage();
                 this.addTitulo();
                 this._numPag += 1;
                 this._impTit = 0;
+                this._impFooter = 1;
             }
 
+            this._lineasPag += 1;
 
-            this.doc.text(listaMov[i].fecMov, 10, 100 + (this._lineasPag * 10))
-            this.doc.text(listaMov[i].docRef, 60, 100 + (this._lineasPag * 10))
+            this.doc.text(listaMov[i].fecMov, 25, 100 + (this._lineasPag * 10))
+            this.doc.text(listaMov[i].docRef, 70, 100 + (this._lineasPag * 10))
             let _monto = nf_entero.format(listaMov[i].monMov);
             this.doc.text(_monto.padStart(12), 150, 100 + (this._lineasPag * 10))
             this.doc.text(listaMov[i].detMov, 200, 100 + (this._lineasPag * 10))
 
-            this._lineasPag += 1;
-
-            if (this._lineasPag > 45) {
+            if (this._lineasPag >= 45) {
 
                 this.addFooter();
-                this._lineasPag = 1;
+                this._lineasPag = 0;
                 this._impTit = 1;
-
+                this._impFooter = 0;
             }
 
         }
 
-        this.addFooter();
+        if (this._impFooter == 1) {
+
+            this.addFooter();
+
+        }
+
+
 
         this.doc.output('dataurlnewwindow')
 
@@ -127,6 +131,9 @@ class Movimientos_Fondo {
 
 }
 
+/**
+ * Reporte de movimiento de caja
+ */
 
 class Movimientos_Caja {
 
@@ -155,17 +162,15 @@ class Movimientos_Caja {
     addTitulo() {
 
         //this.doc.setFont('times', 'bold')
-
         let _nomCia = sessionStorage.getItem("NOM_CIA");
         this.doc.setFontSize(14)
-        this.doc.text(_nomCia, 10, 20)
+        this.doc.text(_nomCia, 20, 20)
         this.doc.setFontSize(12)
-        this.doc.text('Reporte de Movimientos de Caja', 10, 30);
+        this.doc.text('Reporte de Movimientos de Caja', 20, 30);
         this.doc.setFontSize(10)
 
-
-        this.doc.text('Usuario: ' + this.datos.nomCaja, 10, 40);
-        this.doc.text('Fondo..: ' + this.datos.nomFondo, 10, 50);
+        this.doc.text('Usuario: ' + this.datos.nomCaja, 20, 40);
+        this.doc.text('Fondo..: ' + this.datos.nomFondo, 20, 50);
 
 
 
@@ -183,21 +188,20 @@ class Movimientos_Caja {
         this.doc.text(this.datos.salFin.padStart(12), 200, 80)
 
         this.doc.setFontSize(8);
-        this.doc.text(10, 90, ''.padEnd(120, '-'))
-        this.doc.text(10, 100, '   Fecha')
-        this.doc.text(60, 100, '   Doc. Referencia')
+        this.doc.text(20, 90, ''.padEnd(115, '-'))
+        this.doc.text(25, 100, '   Fecha')
+        this.doc.text(70, 100, '   Doc. Referencia')
 
         this.doc.text(150, 100, 'Monto'.padStart(12));
         this.doc.text(200, 100, 'Detalle')
-        this.doc.text(10, 110, ''.padEnd(120, '-'))
-
+        this.doc.text(20, 110, ''.padEnd(115, '-'))
 
 
     }
 
     addFooter() {
-        this.doc.text(10, 570, ''.padEnd(120, '-'))
-        this.doc.text(170, 580, ' Pagina' + this._numPag)
+        this.doc.text(20, 570, ''.padEnd(115, '-'))
+        this.doc.text(375, 580, ' Pagina: ' + this._numPag)
 
 
     }
@@ -209,9 +213,10 @@ class Movimientos_Caja {
 
         this.addTitulo();
 
-        this._lineasPag = 1;
+        this._lineasPag = 0;
         this._impTit = 0;
         this._numPag = 1;
+        this._impFooter = 1;
 
         for (let i = 0; i < listaMov.length; i++) {
 
@@ -221,150 +226,37 @@ class Movimientos_Caja {
                 this.addTitulo();
                 this._numPag += 1;
                 this._impTit = 0;
+                this._impFooter = 1;
             }
 
-
-            this.doc.text(listaMov[i].fecMov, 10, 110 + (this._lineasPag * 10))
-            this.doc.text(listaMov[i].docRef, 60, 110 + (this._lineasPag * 10))
+            this._lineasPag += 1;
+            this.doc.text(listaMov[i].fecMov, 25, 110 + (this._lineasPag * 10))
+            this.doc.text(listaMov[i].docRef, 70, 110 + (this._lineasPag * 10))
             let _monto = nf_entero.format(listaMov[i].monMov);
-           // console.log(_monto)
+            // console.log(_monto)
             this.doc.text(_monto.padStart(12), 150, 110 + (this._lineasPag * 10))
-            this.doc.text(listaMov[i].detMov, 200, 110 + (this._lineasPag * 10))
+            this.doc.text(listaMov[i].detMov, 200, 110 + (this._lineasPag * 10))           
 
-            this._lineasPag += 1;
-
-            if (this._lineasPag > 45) {
+            if (this._lineasPag >= 45) {
 
                 this.addFooter();
-                this._lineasPag = 1;
+                this._lineasPag = 0;
                 this._impTit = 1;
+                this._impFooter = 0;
 
             }
 
         }
 
-        this.addFooter();
+        if (this._impFooter == 1) {
 
-        this.doc.output('dataurlnewwindow')
-
-    }
-
-}
-
-
-
-class Reporte {
-
-
-
-    _numPag = 0;
-    _lineasPag = 1;
-
-
-
-    constructor() {
-        this.doc = new jsPDF({
-            orientation: 'p',
-            unit: 'px',
-            format: 'letter'
-        });
-
-        this.doc.setFont('Times', 'Roman')
-
-
-        this.generaPDF();
-    }
-
-
-    addTitulo() {
-        //this.doc.setFont('times', 'bold')
-        this.doc.setFontSize(14)
-        this.doc.text(10, 20, 'Titulo')
-        this.doc.setFontSize(12)
-        this.doc.text(10, 30, 'Nombre del reporte')
-
-
-        this.doc.setFontSize(10)
-
-        this.doc.text(20, 50, 'Periodo')
-        this.doc.text(200, 50, 'Saldo Inicial'.padStart(15))
-        this.doc.text(20, 60, 'Del: ')
-        this.doc.text(200, 60, 'Monto Mov'.padStart(15))
-        this.doc.text(20, 70, 'al: ')
-        this.doc.text(200, 70, 'Saldo Final'.padStart(15))
-
-
-        this.doc.text(10, 80, ''.padEnd(175, '-'))
-        this.doc.text(10, 90, '   Fecha')
-        this.doc.text(60, 90, '     Doc. Referencia')
-
-        this.doc.text(150, 90, 'Monto'.padStart(12));
-        this.doc.text(200, 90, 'Detalle')
-        this.doc.text(10, 100, ''.padEnd(175, '-'))
-
-    }
-
-    addFooter() {
-        this.doc.text(10, 570, ''.padEnd(175, '-'))
-        this.doc.text(150, 580, ' Pagina' + this._numPag)
-
-
-    }
-
-
-    generaPDF() {
-
-
-        this.addTitulo();
-
-        this._lineasPag = 1;
-        this._impTit = 0;
-        this._numPag = 1;
-
-        for (let i = 0; i < 100; i++) {
-
-            if (this._impTit == 1) {
-
-                this.doc.addPage();
-                this.addTitulo();
-                this._numPag += 1;
-                this._impTit = 0;
-            }
-
-
-            this.doc.text('07/08/2023', 10, 100 + (this._lineasPag * 10))
-            this.doc.text(''.padEnd(20, '99'), 60, 100 + (this._lineasPag * 10))
-            let _detalle = 'Imprimiendo el movimiento numero ' + i;
-
-            this.doc.text('99,999,999'.padStart(12), 150, 100 + (this._lineasPag * 10))
-            this.doc.text(_detalle, 200, 100 + (this._lineasPag * 10))
-
-            this._lineasPag += 1;
-
-            if (this._lineasPag > 45) {
-
-                this.addFooter();
-                this._lineasPag = 1;
-                this._impTit = 1;
-
-
-
-            }
-
-
-
+            this.addFooter();
         }
 
-
-        this.addFooter();
-
-
-
-
-
         this.doc.output('dataurlnewwindow')
     }
 
 }
+
 
 
