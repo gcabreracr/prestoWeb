@@ -149,7 +149,6 @@ async function api_postRequest(req, success, error, timeout = 30000, times = 0) 
 
     } else {
       var r = oReq.responseText;
-
       error(r);
     }
   };
@@ -157,13 +156,13 @@ async function api_postRequest(req, success, error, timeout = 30000, times = 0) 
 
     times = times + 1;
     if (times < 2) {
-        api_postRequest(req, success, error, timeout, times);
-        
+      api_postRequest(req, success, error, timeout, times);
+
     } else {
       sweetAlert({ title: "Agotado el tiempo de espera con el servidor", type: "error" });
     }
 
-   
+
   }
   oReq.send(_data);
 }
@@ -171,7 +170,7 @@ async function api_postRequest(req, success, error, timeout = 30000, times = 0) 
 
 /**********************************************/
 /* Function para hacer request POST con Fetch */
-/* Req request data, func success, func error */
+/* Req request data, func success */
 /**********************************************/
 function fetch_postRequest(req, success) {
 
@@ -216,7 +215,7 @@ function cerrarSession() {
   sessionStorage.removeItem('TIPO_USUARIO');
   sessionStorage.removeItem('NOM_CIA');
   sessionStorage.removeItem('ANCHO_TKT');
-  sessionStorage.removeItem('TIT_USUARIO');  
+  sessionStorage.removeItem('TIT_USUARIO');
   sessionStorage.removeItem('URL_API');
 
 
@@ -264,7 +263,7 @@ function activaMenu() {
           }
         }
 
-        console.log('Menu Activado');
+        //console.log('Menu Activado');
       }
 
     }, function (data) {

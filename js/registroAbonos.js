@@ -9,6 +9,8 @@ $(function () {
    var _saldoPtmo = 0;
    var _monAbono = 0;
 
+   var nuevo = true;
+
 
    const $cbFondos = $('#cbFondos');
    const $cbUsuarios = $('#cbUsuarios');
@@ -316,7 +318,6 @@ $(function () {
 
       nuevo = true;
 
-
       document.forms.regAbo_form.reset();
       $txtFecAbono.val(obtieneFechaActual());
       $txtSalIni.val('0');
@@ -500,6 +501,8 @@ $(function () {
                return;
             }
 
+            nuevo = false;
+
             $txtNumPtmo.val(data.resp.num_ptmo);
             $txtFecAbono.val(data.resp.fecha_abo);
             $txtNomCli.val(data.resp.nomCliente);
@@ -520,6 +523,8 @@ $(function () {
 
             if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
 
+               $txtFecAbono.prop("disabled", false);
+               $btnGuardar.prop("disabled", false);
                $btnAnular.prop("disabled", false);
             }
 
@@ -646,6 +651,7 @@ $(function () {
 
    function guardaRecibo() {
 
+      calculaMontos();
 
       if ($(":selected", $('#cbUsuarios')).val() == 0) {
          $cbUsuarios.focus();

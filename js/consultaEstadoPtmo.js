@@ -88,20 +88,18 @@ $(function () {
          destroy: true,
          data: listaAbonos,
          columns: [
-
-           
-            {
-               data: 'fecAbo',
-               className: 'dt-center',
-               width: '20%'
-
-            },
-
             {
                data: 'numConse',
                className: 'dt-center',
 
             },
+           
+            {
+               data: 'fecAbo',
+               className: 'dt-center'
+            },
+
+           
 
             {
                data: 'monAbo',
