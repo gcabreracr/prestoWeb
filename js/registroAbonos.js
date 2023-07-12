@@ -3,7 +3,7 @@ $(function () {
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
 
-
+   var fechaActual = obtieneFechaActual();
    var listaPtmos = [];
 
    var _saldoPtmo = 0;
@@ -127,6 +127,13 @@ $(function () {
 
       $txtFecAbono.change(function (e) {
 
+         if ($txtFecAbono.val() > fechaActual) {
+            $txtFecAbono.focus();
+            Swal.fire({ title: "Fecha del abono no puede ser mayor que la fecha actual", icon: "error" });
+            return;
+         }
+   
+
          $txtMonAbo.focus();
 
          e.preventDefault();
@@ -159,7 +166,7 @@ $(function () {
       $txtNumPtmo.focus(function () {
          $(this).select();
          inactivaCampos();
-        
+
       }).keydown(function (e) {
          let code = e.keyCode || e.which;
          if (code == 13 || code == 9) {
@@ -656,6 +663,14 @@ $(function () {
 
    function guardaRecibo() {
 
+
+      if ($txtFecAbono.val() > fechaActual) {
+         $txtFecAbono.focus();
+         Swal.fire({ title: "Fecha del abono no puede ser mayor que la fecha actual", icon: "error" });
+         return;
+      }
+
+
       if (nuevo) {
 
          calculaMontos();
@@ -747,12 +762,12 @@ $(function () {
          req.num_conse = parseInt($txtNumRecibo.val());
          req.fecha_abo = $txtFecAbono.val();
 
-        
+
          api_postRequest(
             req,
             function (data) {
 
-            
+
                $('#spinner').hide();
 
                let msg = data.resp.msg;
@@ -772,7 +787,7 @@ $(function () {
                })
 
             }, function (data) {
-                   
+
                $('#spinner').hide();
                Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
             });

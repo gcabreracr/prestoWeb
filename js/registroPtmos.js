@@ -3,6 +3,8 @@ $(function () {
    /** Procesos de carga de pagina */
    cargaDatosUsuario(); // Carga los datos del usuario en el Header la pagina
 
+   var fechaActual = obtieneFechaActual();
+
    var listaCuotas = [];
    var listaClientes = [];
    var listaPtmos = [];
@@ -1041,6 +1043,13 @@ $(function () {
          Swal.fire({ title: "Debe seleccionar un Tipo Prestamo", icon: "error" });
          return;
       }
+
+      if ($txtFecPtmo.val() > fechaActual) {
+         $txtFecPtmo.focus();
+         Swal.fire({ title: "Fecha del prestamo no puede ser mayor que la fecha actual", icon: "error" });
+         return;
+      }
+
 
 
       let _montoPtmo = Number.parseInt($txtMonPtmo.val().replace(/,/g, ''));
