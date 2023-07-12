@@ -100,6 +100,8 @@ $(function () {
       $txtNumRecibo.focus(function () {
          $(this).select();
          inactivaCampos();
+         document.forms.regAbo_form.reset();
+
          $txtNumPtmo.prop("disabled", true);
          $btnBuscaPtmo.prop("disabled", true);
 
@@ -157,7 +159,7 @@ $(function () {
       $txtNumPtmo.focus(function () {
          $(this).select();
          inactivaCampos();
-
+        
       }).keydown(function (e) {
          let code = e.keyCode || e.which;
          if (code == 13 || code == 9) {
@@ -489,6 +491,8 @@ $(function () {
       req.r = 'consulta_abono';
       req.num_conse = $txtNumRecibo.val();
 
+
+
       api_postRequest(req,
          function (data) {
             $('#spinner').hide();
@@ -562,6 +566,7 @@ $(function () {
 
             $txtNomCli.val(data.resp.nomCliente);
             $("#cbFondos option[value='" + data.resp.cod_fondo + "']").attr("selected", true);
+            $("#cbUsuarios option[value='" + data.resp.cod_usuario + "']").attr("selected", true);
             _saldoPtmo = parseInt(data.resp.mon_saldo);
 
             $txtSalIni.val(nf_entero.format(_saldoPtmo));
@@ -651,89 +656,128 @@ $(function () {
 
    function guardaRecibo() {
 
-      calculaMontos();
+      if (nuevo) {
 
-      if ($(":selected", $('#cbUsuarios')).val() == 0) {
-         $cbUsuarios.focus();
-         Swal.fire({ title: "Debe seleccionar un Usuario", icon: "error" });
-         return;
+         calculaMontos();
+
+         if ($(":selected", $('#cbUsuarios')).val() == 0) {
+            $cbUsuarios.focus();
+            Swal.fire({ title: "Debe seleccionar un Usuario", icon: "error" });
+            return;
+         }
+
+         if ($(":selected", $('#cbFondos')).val() == 0) {
+            $cbFondos.focus();
+            Swal.fire({ title: "Debe seleccionar un Fondo", icon: "error" });
+            return;
+         }
+
+         let _monAbono = Number.parseInt($txtMonAbo.val().replace(/,/g, ''));
+         let _saldoFin = Number.parseInt($txtSalFin.val().replace(/,/g, ''));
+
+         if (_monAbono == 0) {
+            $txtMonAbo.focus();
+            Swal.fire({ title: "Monto abono no puede ser CERO", icon: "error" });
+            return;
+         }
+
+         if (_monAbono > _saldoPtmo) {
+
+            $txtMonAbo.focus();
+            Swal.fire({ title: "Abono NO puede ser mayor al saldo del prestamo", icon: "error" });
+            return;
+         }
+
+         let fecha = new Date();
+         let hora = fecha.getHours() + ':' + fecha.getMinutes() + ':' + fecha.getSeconds();
+
+
+         $('#spinner').show();
+
+         let req = [];
+         req.w = 'apiPresto';
+         req.r = 'agrega_abono';
+         req.num_ptmo = $txtNumPtmo.val();
+         req.cod_usuario = $(":selected", $('#cbUsuarios')).val();
+         req.cod_fondo = $(":selected", $('#cbFondos')).val();
+         req.fec_abono = $txtFecAbono.val();
+         req.hora_ptmo = hora;
+         req.mon_abono = _monAbono;
+         req.saldo_fin = _saldoFin;
+
+
+         api_postRequest(req,
+            function (data) {
+               $('#spinner').hide();
+
+               //console.log(data);
+
+               $txtNumRecibo.val(data.resp.num_conse);
+               let msg = data.resp.msg;
+
+               inactivaCampos();
+
+               $txtNumPtmo.prop("disabled", true);
+               $btnVistaPrevia.prop("disabled", false);
+               $btnVistaPrevia.focus();
+
+
+               Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: msg,
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+
+
+               //Swal.fire({ title: msg, icon: "success" });
+
+            }, function (data) {
+               Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
+            });
+
+      } else {
+
+         $('#spinner').show();
+
+         let req = [];
+         req.w = 'apiPresto';
+         req.r = 'actualiza_abono';
+         req.num_conse = parseInt($txtNumRecibo.val());
+         req.fecha_abo = $txtFecAbono.val();
+
+        
+         api_postRequest(
+            req,
+            function (data) {
+
+            
+               $('#spinner').hide();
+
+               let msg = data.resp.msg;
+
+               inactivaCampos();
+
+               $txtNumPtmo.prop("disabled", true);
+               $btnVistaPrevia.prop("disabled", false);
+               $btnVistaPrevia.focus();
+
+               Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: msg,
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+
+            }, function (data) {
+                   
+               $('#spinner').hide();
+               Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
+            });
+
       }
-
-      if ($(":selected", $('#cbFondos')).val() == 0) {
-         $cbFondos.focus();
-         Swal.fire({ title: "Debe seleccionar un Fondo", icon: "error" });
-         return;
-      }
-
-
-
-      let _monAbono = Number.parseInt($txtMonAbo.val().replace(/,/g, ''));
-      let _saldoFin = Number.parseInt($txtSalFin.val().replace(/,/g, ''));
-
-      if (_monAbono == 0) {
-         $txtMonAbo.focus();
-         Swal.fire({ title: "Monto abono no puede ser CERO", icon: "error" });
-         return;
-      }
-
-      if (_monAbono > _saldoPtmo) {
-
-         $txtMonAbo.focus();
-         Swal.fire({ title: "Abono NO puede ser mayor al saldo del prestamo", icon: "error" });
-         return;
-      }
-
-
-
-
-      let fecha = new Date();
-      let hora = fecha.getHours() + ':' + fecha.getMinutes() + ':' + fecha.getSeconds();
-
-
-      $('#spinner').show();
-
-      let req = [];
-      req.w = 'apiPresto';
-      req.r = 'agrega_abono';
-      req.num_ptmo = $txtNumPtmo.val();
-      req.cod_usuario = $(":selected", $('#cbUsuarios')).val();
-      req.cod_fondo = $(":selected", $('#cbFondos')).val();
-      req.fec_abono = $txtFecAbono.val();
-      req.hora_ptmo = hora;
-      req.mon_abono = _monAbono;
-      req.saldo_fin = _saldoFin;
-
-
-      api_postRequest(req,
-         function (data) {
-            $('#spinner').hide();
-
-            //console.log(data);
-
-            $txtNumRecibo.val(data.resp.num_conse);
-            let msg = data.resp.msg;
-
-            inactivaCampos();
-
-            $txtNumPtmo.prop("disabled", true);
-            $btnVistaPrevia.prop("disabled", false);
-            $btnVistaPrevia.focus();
-
-
-            Swal.fire({
-               position: 'top-end',
-               icon: 'success',
-               title: msg,
-               showConfirmButton: false,
-               timer: 1500
-            })
-
-
-            //Swal.fire({ title: msg, icon: "success" });
-
-         }, function (data) {
-            Swal.fire({ title: "Error en la respuesta del servidor", icon: "error" });
-         });
 
    }
 

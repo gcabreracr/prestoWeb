@@ -233,7 +233,7 @@ $(function () {
       $tblAbonos.clear().draw();
       listaAbonos = [];
 
-      console.log(req)
+     // console.log(req)
 
       api_postRequest(
          req,
