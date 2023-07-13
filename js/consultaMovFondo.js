@@ -97,6 +97,12 @@ $(function () {
 
          e.preventDefault();
 
+         if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Windows Phone/i)) {
+           
+            sweetAlert({ title: "Proceso de impresión no esta disponible en dispositivos móviles", type: "error" });
+            return;            
+        } 
+
          imprimeReporte();
 
       });

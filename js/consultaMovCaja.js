@@ -109,6 +109,14 @@ $(function () {
 
       $btnImprimir.click(function (e) {
 
+
+         if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Windows Phone/i)) {
+            console.log("Estás usando un dispositivo móvil!!");
+            sweetAlert({ title: "Proceso de impresion no esta disponible en dispositivos móviles", type: "error" });
+            return;            
+        } 
+        
+
          e.preventDefault();
 
          imprimeReporte();

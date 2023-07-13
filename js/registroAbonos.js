@@ -328,6 +328,8 @@ $(function () {
       nuevo = true;
 
       document.forms.regAbo_form.reset();
+      
+     // location.reload();
       $txtFecAbono.val(obtieneFechaActual());
       $txtSalIni.val('0');
       $txtMonAbo.val('0');
@@ -573,7 +575,7 @@ $(function () {
 
             $txtNomCli.val(data.resp.nomCliente);
             $("#cbFondos option[value='" + data.resp.cod_fondo + "']").attr("selected", true);
-            $("#cbUsuarios option[value='" + data.resp.cod_usuario + "']").attr("selected", true);
+            //$("#cbUsuarios option[value='" + data.resp.cod_usuario + "']").attr("selected", true);
             _saldoPtmo = parseInt(data.resp.mon_saldo);
 
             $txtSalIni.val(nf_entero.format(_saldoPtmo));
@@ -837,6 +839,12 @@ $(function () {
    }
 
    function imprimeTkt() {
+
+      if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Windows Phone/i)) {
+         
+         sweetAlert({ title: "Proceso de impresión no esta disponible en dispositivos móviles", type: "error" });
+         return;            
+     } 
 
       var divToPrint = document.getElementById("divTT");
 
