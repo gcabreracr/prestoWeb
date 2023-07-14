@@ -132,7 +132,7 @@ $(function () {
             Swal.fire({ title: "Fecha del abono no puede ser mayor que la fecha actual", icon: "error" });
             return;
          }
-   
+
 
          $txtMonAbo.focus();
 
@@ -323,22 +323,26 @@ $(function () {
 
    function nuevoRecibo() {
 
-      console.log('Registrando nuevo recibo');
+      //console.log('Registrando nuevo recibo');
 
       nuevo = true;
 
       document.forms.regAbo_form.reset();
-      
-     // location.reload();
+
+      llenaComboFondos();
+      //llenaComboUsuarios();
+
       $txtFecAbono.val(obtieneFechaActual());
       $txtSalIni.val('0');
       $txtMonAbo.val('0');
       $txtSalFin.val('0');
+      //$txtNumPtmo.val('');
+      //$txtNumRecibo.val('');
 
 
       if (sessionStorage.getItem("TIPO_USUARIO") == 3) {
 
-         $("#cbUsuarios option[value='0']").attr("selected", true);
+         $("#cbUsuarios option[value=0]").attr("selected", true);
 
       } else {
          $("#cbUsuarios option[value='" + sessionStorage.getItem("COD_USUARIO") + "']").attr("selected", true);
@@ -366,7 +370,7 @@ $(function () {
       $cbFondos.empty();
 
       $cbFondos.append($("<option>", {
-         value: 0,
+         value: '0',
          text: 'Seleccione un Fondo'
       }));
 
@@ -415,7 +419,7 @@ $(function () {
       $cbUsuarios.empty();
 
       $cbUsuarios.append($("<option>", {
-         value: 0,
+         value: '0',
          text: 'Seleccione un Usuario'
       }));
 
@@ -841,10 +845,10 @@ $(function () {
    function imprimeTkt() {
 
       if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Windows Phone/i)) {
-         
+
          sweetAlert({ title: "Proceso de impresión no esta disponible en dispositivos móviles", type: "error" });
-         return;            
-     } 
+         return;
+      }
 
       var divToPrint = document.getElementById("divTT");
 

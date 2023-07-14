@@ -46,21 +46,11 @@ $(function () {
    const $btnAnular = $('#btnAnular');
    const $btnCancelar = $('#btnCancelar');
    const $btnNuevo = $('#btnNuevo');
-
-  
-
    
-   $('#btnImprimir').click(function () { imprimeTkt(); });
-   $('#btnCopiar').click(function () { copiaTkt(); })
-
-
-
-
-
+  const $btnImprimir= $('#btnImprimir').click(function () { imprimeTkt(); });
+  const $btnCopiar = $('#btnCopiar').click(function () { copiaTkt(); })
 
    var $tblCuotas;
-
-
 
    ini_componentes();
    //llenaComboFondos();
